@@ -1,0 +1,232 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IMD protocol walk · Moni research</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap"><style>
+html,body{margin:0;padding:0;background:transparent}
+#imdw{--bg:#ffffff;--soft:#fafafb;--text:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--accent:#6c42eb;--accent-soft:#6c42eb14;--emerald:#0fa968;--amber:#f59e0b;--slate:#94a3b8;font-family:Geist,system-ui,sans-serif;color:var(--body);background:var(--bg);width:100%;max-width:none;overflow:hidden;line-height:1.5}
+#imdw *{box-sizing:border-box;min-width:0}
+#imdw .hd{padding:20px 22px 12px}
+#imdw .kick{font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--accent)}
+#imdw h2{margin:7px 0 6px;font:700 25px/1.12 Geist,sans-serif;letter-spacing:-.025em;color:var(--text)}
+#imdw .sub{margin:0;font-size:12px;line-height:1.45}
+#imdw .body{padding:0 22px 18px}
+#imdw .scene{position:relative;height:200px;background:var(--soft);border:1px solid var(--line);overflow:hidden;cursor:pointer}
+#imdw .ground{position:absolute;left:0;right:0;bottom:0;height:26px;background:#fff;border-top:1px solid var(--line)}
+#imdw .world{position:absolute;left:0;top:0;bottom:0;will-change:transform}
+#imdw .road{position:absolute;bottom:12px;height:2px;background-image:linear-gradient(90deg,#d9d1fb 0 10px,transparent 10px 18px);background-size:18px 2px}
+#imdw .st{position:absolute;bottom:25px;width:120px;margin-left:-60px;transition:opacity .3s}
+#imdw .st svg{display:block;width:120px;height:110px}
+#imdw .st .tag{position:absolute;left:50%;top:-30px;transform:translateX(-50%);white-space:nowrap;font:600 8.5px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:#fff;border:1px solid var(--line);padding:5px 6px;transition:all .25s}
+#imdw .st.on .tag{color:var(--accent);border-color:var(--accent);background:#f3effe}
+#imdw .st:not(.on){opacity:.55}
+#imdw .num{position:absolute;bottom:4px;font:600 9px/1 'IBM Plex Mono',monospace;color:var(--muted);transform:translateX(-50%)}
+#imdw .hero{position:absolute;z-index:2;bottom:20px;height:124px;width:60px;margin-left:-30px;pointer-events:none}
+#imdw .hero img{position:absolute;bottom:0;left:50%;height:124px;transform:translateX(-50%);transition:opacity .15s}
+#imdw .hero .side{opacity:0}
+#imdw .hero.walk .side{opacity:1}
+#imdw .hero.walk .front{opacity:0}
+#imdw .hero .shadow{position:absolute;bottom:-3px;left:50%;width:38px;height:6px;margin-left:-19px;background:#6c42eb22;border-radius:50%}
+#imdw .pop{position:absolute;z-index:3;bottom:166px;white-space:nowrap;transform:translateX(-50%);font:700 13px/1 Geist,sans-serif;color:var(--accent);background:#fff;border:1px solid var(--accent);padding:5px 7px;opacity:0;pointer-events:none}
+#imdw .pop.show{animation:imdwpop 1.6s ease forwards}
+@keyframes imdwpop{0%{opacity:0;transform:translate(-50%,8px)}15%{opacity:1;transform:translate(-50%,0)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-10px)}}
+#imdw .ctrl{display:flex;align-items:center;gap:8px;margin:10px 0 0}
+#imdw button{font:500 11px/1.3 Geist,sans-serif;padding:7px 10px;border:1px solid var(--line);background:var(--bg);color:var(--body);cursor:pointer}
+#imdw button:hover{border-color:var(--accent)}
+#imdw button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+#imdw button:disabled{opacity:.4;cursor:default;border-color:var(--line)}
+#imdw button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#imdw .dots{display:flex;gap:4px;flex:1;justify-content:center}
+#imdw .dots button{width:22px;height:22px;padding:0;font:600 9px/1 'IBM Plex Mono',monospace;color:var(--muted)}
+#imdw .dots button.on{color:var(--accent)}
+#imdw .dots button.done{color:var(--accent);border-color:#6c42eb55}
+#imdw .cards{display:grid;margin-top:10px}
+#imdw .card{grid-area:1/1;border:1px solid var(--line);padding:13px 14px 12px;visibility:hidden;opacity:0;transition:opacity .25s}
+#imdw .card.on{visibility:visible;opacity:1}
+#imdw .ch{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#imdw .step{font:600 9px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--muted)}
+#imdw .ev{font:600 8.5px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:4px 5px;border:1px solid}
+#imdw .ev.onc{color:var(--emerald);border-color:#0fa96855}
+#imdw .ev.cnt{color:#b7790a;border-color:#f59e0b66}
+#imdw .ev.exp{color:#64748b;border-color:#94a3b8aa}
+#imdw .ev.open{color:var(--accent);border-color:#6c42eb66}
+#imdw h3{margin:7px 0 4px;font:700 17px/1.2 Geist,sans-serif;letter-spacing:-.02em;color:var(--text)}
+#imdw .card p{margin:0;font-size:12px;line-height:1.5}
+#imdw .figs{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:9px}
+#imdw .fig b{display:block;font:700 18px/1.15 Geist,sans-serif;letter-spacing:-.02em;color:var(--text)}
+#imdw .fig.hl b{color:var(--accent)}
+#imdw .fig span{display:block;font-size:10px;color:var(--muted)}
+#imdw .source{margin:9px 0 0;font-size:10px;color:var(--muted)}
+#imdw a{color:var(--accent);text-decoration:none}
+#imdw .ft{height:31px;padding:0 17px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:flex-end}
+#imdw .brand{display:flex;align-items:center;gap:4px;color:var(--accent);font-size:12px;font-weight:600}
+#imdw .eye{width:15px;height:15px;display:block;flex:0 0 15px}
+#imdw .brand i{color:var(--text);font:600 italic 12px Geist,sans-serif}
+@media (max-width:520px){#imdw .hd{padding:16px 14px 10px}#imdw .body{padding:0 14px 14px}#imdw h2{font-size:21px}#imdw .dots button{width:18px}#imdw .fig b{font-size:16px}}
+@media (prefers-reduced-motion:reduce){#imdw .pop.show{animation:none}}
+</style></head><body>
+<div id="imdw">
+  <div class="hd">
+    <div class="kick">IMD · protocol walk</div>
+    <h2>A worker's walk through IMD</h2>
+    <p class="sub">Follow one worker seat through the operating cycle, from joining the swarm to the open question at the end.</p>
+  </div>
+  <div class="body">
+    <div class="scene" id="scene" title="Click to walk to the next stop">
+      <div class="ground"></div>
+      <div class="world" id="world">
+        <div class="road" id="road"></div>
+        <div class="hero" id="hero"><div class="shadow"></div><img class="front" src="assets/imd-walker-front.png" alt="IMD worker"><img class="side" id="side" src="assets/imd-walker-side.png" alt=""></div>
+        <div class="pop" id="pop"></div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <button id="prev" aria-label="Previous stop">← Back</button>
+      <div class="dots" id="dots"></div>
+      <button id="next" class="on" aria-label="Next stop">Next →</button>
+    </div>
+    <div class="cards" id="cards"></div>
+    <p class="source">Snapshot 12 Oct 2026. Counters come from IMD's own dashboards; transfers and splits are checked onchain or in contracts.</p>
+  </div>
+  <div class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt=""><span>moni</span><i>research</i></span></div>
+</div>
+<script>
+(() => {
+  const P = '#6c42eb', L = '#e4dcfd', M = '#c4b5f8', T = 'font-family:IBM Plex Mono,monospace;font-weight:600';
+  const stops = [
+    { tag: 'Swarm gate', pop: 'seat taken', ev: ['cnt', 'Counter'], title: 'Join the swarm',
+      text: 'A worker connects to IMD and takes a seat. Seats decide who can pick up jobs and who shares launch allocations.',
+      figs: [['~1,000', 'connected agents', 1]],
+      svg: `<rect x="12" y="22" width="8" height="88" fill="${P}"/><rect x="100" y="22" width="8" height="88" fill="${P}"/><rect x="6" y="8" width="108" height="20" fill="${P}"/><text x="60" y="22" text-anchor="middle" fill="#fff" font-size="10" style="${T}">SWARM</text><rect x="44" y="76" width="34" height="6" fill="${M}"/><rect x="72" y="50" width="6" height="32" fill="${M}"/><rect x="46" y="82" width="4" height="28" fill="${M}"/><rect x="72" y="82" width="4" height="28" fill="${M}"/>` },
+    { tag: 'Job board', pop: '+0.5 IMD', ev: ['cnt', 'Counter'], title: 'Take a paid job',
+      text: 'Applications post requests and pay per job. The worker picks one up, runs it, and earns IMD for accepted work.',
+      figs: [['0.5 IMD', 'per standard request', 1], ['~4,000', 'paid orders']],
+      svg: `<rect x="10" y="14" width="100" height="66" fill="#fff" stroke="${P}" stroke-width="3"/><rect x="24" y="80" width="5" height="30" fill="${P}"/><rect x="91" y="80" width="5" height="30" fill="${P}"/>${[0,1,2].map(i=>`<rect x="${20+i*28}" y="26" width="22" height="${i==1?40:30}" fill="${i==1?P:L}"/><text x="${31+i*28}" y="${i==1?50:44}" text-anchor="middle" font-size="8" fill="${i==1?'#fff':P}" style="${T}">0.5</text>`).join('')}` },
+    { tag: 'Payout desk', pop: '+4,174 IMD', ev: ['onc', 'Onchain'], title: 'Get paid in batches',
+      text: 'One wallet sent three October payout batches to workers. Each batch reached more wallets than the last.',
+      figs: [['217 → 263 → 483', 'wallets · Oct 2 / 6 / 12'], ['9,156.5 IMD', 'paid in total', 1]],
+      svg: `${[[217,1760],[263,3222],[483,4174]].map(([w,v],i)=>{const h=Math.round(v/4174*62);return `<rect x="${18+i*30}" y="${78-h}" width="22" height="${h}" fill="${i==2?P:M}"/><text x="${29+i*30}" y="${72-h}" text-anchor="middle" font-size="7.5" fill="${P}" style="${T}">${w}</text>`}).join('')}<rect x="6" y="78" width="108" height="8" fill="${P}"/><rect x="12" y="86" width="96" height="24" fill="#fff" stroke="${P}" stroke-width="2"/><circle cx="60" cy="98" r="6" fill="${L}" stroke="${P}" stroke-width="2"/>` },
+    { tag: 'Trading pool', pop: 'fee 1.25%', ev: ['onc', 'Contract'], title: 'Every trade drips a fee',
+      text: 'Projects launched through IMD trade in pools that charge a fee on each swap. Most of it goes back to the requester who launched the project.',
+      figs: [['1.25%', 'pool fee', 1], ['80 / 20', 'requester / network']],
+      svg: `<path d="M14 40 V104 H106 V40" fill="none" stroke="${P}" stroke-width="3"/><rect x="16" y="62" width="88" height="40" fill="${L}"/><path d="M16 62 q11 -6 22 0 t22 0 t22 0 t22 0" fill="${L}"/><rect x="88" y="10" width="26" height="6" fill="${P}"/><rect x="90" y="16" width="6" height="12" fill="${P}"/><path d="M93 34 q-4 6 0 9 q4 -3 0 -9z" fill="${P}"/><text x="60" y="88" text-anchor="middle" font-size="10" fill="${P}" style="${T}">1.25%</text><rect x="14" y="104" width="6" height="6" fill="${P}"/><rect x="100" y="104" width="6" height="6" fill="${P}"/>` },
+    { tag: 'POOL4 furnace', pop: '85% burned', ev: ['onc', 'Contract'], title: 'Trimmed inventory mostly burns',
+      text: 'POOL4 trims inventory and splits it. Most goes toward burning; the rest feeds sIMD stakers and two reserves. The hook owner can still withdraw.',
+      figs: [['85%', 'toward burn', 1], ['4.5%', 'sIMD stakers'], ['6%', 'orchestrator'], ['4.5%', 'NFT nodes']],
+      svg: `<rect x="78" y="6" width="16" height="34" fill="${M}"/><circle cx="90" cy="2" r="4" fill="#e8e8ed"/><rect x="14" y="34" width="92" height="76" fill="${P}"/><path d="M34 110 V74 a26 26 0 0 1 52 0 V110z" fill="#2a1a63"/><path d="M60 108 c-18 0 -20 -16 -10 -28 c0 8 6 10 6 4 c0 -8 6 -14 10 -20 c2 10 14 16 12 30 c-2 10 -8 14 -18 14z" fill="#f59e0b"/><path d="M60 108 c-8 0 -10 -8 -5 -14 c1 5 5 5 5 1 c2 -4 4 -6 6 -9 c3 8 6 10 4 16 c-2 5 -5 6 -10 6z" fill="#e24b4a"/><text x="60" y="52" text-anchor="middle" font-size="9" fill="#fff" style="${T}">POOL4</text>` },
+    { tag: 'Minion hall', pop: '70 of 100?', ev: ['exp', 'Experiment'], title: 'Seats vote on disputes',
+      text: 'In the Minion test, panels of 100 seats re-judged 10 disputed Polymarket questions. A verdict needed 70 matching answers.',
+      figs: [['4', 'disagreed with original'], ['4', 'no quorum'], ['2', 'matched']],
+      svg: Array.from({length:100},(_,i)=>`<rect x="${16+(i%10)*9}" y="${18+Math.floor(i/10)*9}" width="7" height="7" fill="${i<70?P:L}"/>`).join('') + `<rect x="10" y="106" width="100" height="4" fill="${M}"/>` },
+    { tag: 'Seat pie', pop: '8% ÷ seats', ev: ['onc', 'Claims'], title: 'Launch allocations split by seat',
+      text: 'Each launch reserves 10% of supply for the swarm: 2% for wallets with accepted work, 8% split across connected seats. Double the seats, and each slice halves.',
+      figs: [['10%', 'of launch supply', 1], ['90,293 INFER', 'one seat, INFER launch']],
+      svg: `<circle cx="60" cy="56" r="44" fill="${L}"/><path d="M60 56 L60 12 A44 44 0 0 1 85.9 20.4 Z" fill="${P}"/><path d="M60 56 L85.9 20.4 A44 44 0 0 1 89.4 23.3 Z" fill="${M}"/><text x="94" y="14" font-size="9" fill="${P}" style="${T}">8%</text><text x="60" y="70" text-anchor="middle" font-size="8" fill="${P}" style="${T}">SUPPLY</text><rect x="56" y="100" width="8" height="10" fill="${M}"/>` },
+    { tag: 'The fork', pop: '?', ev: ['open', 'Open question'], title: 'Will apps keep paying?',
+      text: 'The cycle runs. What it has not shown yet is independent, repeat demand once incentives fade. That is the catalyst to watch.',
+      figs: [['Watch', 'repeat customers · post-incentive volume · retained IMD', 1]],
+      svg: `<rect x="56" y="20" width="7" height="90" fill="${P}"/><path d="M63 26 H104 L112 34 L104 42 H63z" fill="${P}"/><text x="84" y="37" text-anchor="middle" font-size="8" fill="#fff" style="${T}">REPEAT</text><path d="M56 50 H16 L8 58 L16 66 H56z" fill="${M}"/><text x="34" y="61" text-anchor="middle" font-size="8" fill="#fff" style="${T}">FADE</text><circle cx="100" cy="70" r="16" fill="#eef0f3" opacity=".9"/><circle cx="20" cy="88" r="14" fill="#eef0f3" opacity=".9"/><circle cx="112" cy="92" r="12" fill="#eef0f3" opacity=".9"/><text x="98" y="76" text-anchor="middle" font-size="16" font-weight="700" fill="${P}" font-family="Geist,sans-serif">?</text>` }
+  ];
+
+  const GAP = 240, X0 = 170, STAND = -74;
+  const scene = document.getElementById('scene'), world = document.getElementById('world');
+  const hero = document.getElementById('hero'), side = document.getElementById('side'), pop = document.getElementById('pop');
+  const dots = document.getElementById('dots'), cards = document.getElementById('cards');
+  const prev = document.getElementById('prev'), next = document.getElementById('next');
+  const sx = i => X0 + i * GAP, hx = i => sx(i) + STAND;
+  document.getElementById('road').style.cssText += `left:0;width:${sx(stops.length - 1) + 260}px`;
+
+  const stEls = stops.map((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'st'; el.style.left = sx(i) + 'px';
+    el.innerHTML = `<div class="tag">${s.tag}</div><svg viewBox="0 0 120 110" aria-hidden="true">${s.svg}</svg>`;
+    world.appendChild(el);
+    const n = document.createElement('div');
+    n.className = 'num'; n.style.left = sx(i) + 'px'; n.textContent = String(i + 1).padStart(2, '0');
+    world.appendChild(n);
+    const d = document.createElement('button');
+    d.textContent = i + 1; d.setAttribute('aria-label', `Stop ${i + 1}: ${s.title}`);
+    d.onclick = () => { stopAuto(); go(i); };
+    dots.appendChild(d);
+    const c = document.createElement('div');
+    c.className = 'card';
+    c.innerHTML = `<div class="ch"><span class="step">${String(i + 1).padStart(2, '0')} / ${String(stops.length).padStart(2, '0')}</span><span class="ev ${s.ev[0]}">${s.ev[1]}</span></div><h3>${s.title}</h3><p>${s.text}</p><div class="figs">${s.figs.map(f => `<div class="fig${f[2] ? ' hl' : ''}"><b>${f[0]}</b><span>${f[1]}</span></div>`).join('')}</div>`;
+    cards.appendChild(c);
+    return { el, d, c };
+  });
+
+  let cur = 0, x = hx(0), raf = 0, auto = 0, seen = false;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const place = (bob = 0, tilt = 0, flip = false) => {
+    hero.style.left = x + 'px';
+    hero.style.transform = `translateY(${bob}px)`;
+    side.style.transform = `translateX(-50%) scaleX(${flip ? -1 : 1}) rotate(${tilt}deg)`;
+    const vw = scene.clientWidth, maxX = sx(stops.length - 1) + 150 - vw;
+    const cam = Math.max(0, Math.min(maxX, x - vw * 0.32));
+    world.style.transform = `translateX(${-cam}px)`;
+  };
+
+  const arrive = i => {
+    hero.classList.remove('walk');
+    pop.textContent = stops[i].pop;
+    pop.style.left = (hx(i) + 4) + 'px';
+    pop.classList.remove('show'); void pop.offsetWidth; pop.classList.add('show');
+  };
+
+  function go(i) {
+    i = Math.max(0, Math.min(stops.length - 1, i));
+    cur = i;
+    stEls.forEach((s, k) => { s.el.classList.toggle('on', k === i); s.d.classList.toggle('on', k === i); s.d.classList.toggle('done', k < i); s.c.classList.toggle('on', k === i); });
+    prev.disabled = i === 0;
+    next.textContent = i === stops.length - 1 ? '↺ Restart' : 'Next →';
+    cancelAnimationFrame(raf);
+    const from = x, to = hx(i), dist = Math.abs(to - from);
+    if (reduce || dist < 1) { x = to; place(); arrive(i); return; }
+    const dur = Math.min(2600, 380 + dist * 3.4), t0 = performance.now(), flip = to < from;
+    hero.classList.add('walk');
+    const step = now => {
+      const t = Math.min(1, (now - t0) / dur);
+      const e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      x = from + (to - from) * e;
+      const ph = (now - t0) / 105;
+      place(-Math.abs(Math.sin(ph)) * 4, Math.sin(ph) * 3, flip);
+      if (t < 1) raf = requestAnimationFrame(step); else { place(); arrive(i); }
+    };
+    raf = requestAnimationFrame(step);
+  }
+
+  const stopAuto = () => { clearInterval(auto); auto = 0; };
+  const advance = () => go(cur === stops.length - 1 ? 0 : cur + 1);
+  prev.onclick = () => { stopAuto(); go(cur - 1); };
+  next.onclick = () => { stopAuto(); advance(); };
+  scene.onclick = () => { stopAuto(); advance(); };
+
+  place(); go(0);
+  addEventListener('resize', () => place());
+  if (!reduce && 'IntersectionObserver' in window) {
+    new IntersectionObserver(es => {
+      if (es[0].isIntersecting && !seen) {
+        seen = true;
+        auto = setInterval(() => { if (cur === stops.length - 1) stopAuto(); else go(cur + 1); }, 4200);
+      }
+    }, { threshold: 0.6 }).observe(scene);
+  }
+})();
+</script>
+<script>
+(() => {
+  const root = document.getElementById('imdw');
+  if (!root || window.parent === window) return;
+  const reportHeight = () => {
+    const rootBox = root.getBoundingClientRect();
+    const lastBox = root.lastElementChild?.getBoundingClientRect();
+    const height = Math.max(1, Math.floor((lastBox?.bottom ?? rootBox.bottom) - rootBox.top) - 2);
+    window.parent.postMessage({ type: 'moni-widget:resize', height }, 'https://research.moni.ai');
+  };
+  new ResizeObserver(reportHeight).observe(root);
+  window.addEventListener('load', reportHeight, { once: true });
+  window.addEventListener('resize', reportHeight);
+  window.addEventListener('message', (event) => {
+    if (event.origin === 'https://research.moni.ai' && event.data?.type === 'moni-widget:request-resize') reportHeight();
+  });
+  [0, 100, 500, 1500].forEach((delay) => setTimeout(reportHeight, delay));
+})();
+</script>
+</body></html>
