@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Squeekchain · Who gets paid?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:transparent}
+#sqk-flow{--bg:#fff;--soft:#fafafb;--text:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--accent:#6c42eb;--accent-soft:#6c42eb14;--emerald:#0fa968;--amber:#f59e0b;--slate:#94a3b8;width:100%;max-width:none;overflow:hidden;background:var(--bg);font-family:Geist,system-ui,sans-serif;color:var(--body);line-height:1.5}
+#sqk-flow *{box-sizing:border-box}
+#sqk-flow .inner{padding:22px 24px 16px}
+#sqk-flow .kick{margin:0;color:var(--accent);font:600 10px/1.2 'IBM Plex Mono',monospace;letter-spacing:.13em;text-transform:uppercase}
+#sqk-flow h2{margin:8px 0 7px;color:var(--text);font:700 28px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em}
+#sqk-flow .sub{margin:0;font-size:13px;line-height:1.5;color:var(--body)}
+#sqk-flow .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:17px 0 15px}
+#sqk-flow .tab{padding:10px 7px;border:1px solid var(--line);background:var(--bg);font:600 12px/1.3 Geist,system-ui,sans-serif;color:var(--body);cursor:pointer;text-align:left;transition:background .15s,border-color .15s}
+#sqk-flow .tab span{display:block;margin-top:4px;font:500 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.025em;color:#686d78}
+#sqk-flow .tab:hover{border-color:var(--accent)}
+#sqk-flow .tab[aria-selected=true]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+#sqk-flow .tab[aria-selected=true] span{color:var(--accent)}
+#sqk-flow :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#sqk-flow .scenario-meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:9px}
+#sqk-flow .small-label{font:500 9px/1.3 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.07em;color:#686d78}
+#sqk-flow .status{font:500 9px/1.3 'IBM Plex Mono',monospace;text-align:right;color:var(--accent)}
+#sqk-flow .diagram{display:grid;grid-template-columns:minmax(0,1fr) 31px minmax(0,1fr) 31px minmax(0,1fr);align-items:stretch}
+#sqk-flow .node{padding:12px 11px;border:1px solid var(--line);background:var(--soft);min-width:0}
+#sqk-flow .node .num{color:var(--accent);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.05em}
+#sqk-flow .node strong{display:block;margin:6px 0;color:var(--text);font:700 15px/1.2 Geist,system-ui,sans-serif;letter-spacing:-.025em;overflow-wrap:break-word}
+#sqk-flow .node p{margin:0;font-size:11px;line-height:1.4}
+#sqk-flow .node:last-child{border-color:#6c42eb44;background:var(--accent-soft)}
+#sqk-flow .arrow{position:relative;align-self:center;height:24px;overflow:hidden}
+#sqk-flow .arrow:before{content:'';position:absolute;top:11px;left:0;right:1px;height:1px;background:#b1a0e7}
+#sqk-flow .arrow:after{content:'';position:absolute;top:8px;right:0;border-left:5px solid var(--accent);border-top:3.5px solid transparent;border-bottom:3.5px solid transparent}
+#sqk-flow .particle{position:absolute;top:8px;left:-6px;width:6px;height:6px;background:var(--accent);animation:move 2.5s linear infinite}
+#sqk-flow .arrow.second .particle{animation-delay:1.25s}
+@keyframes move{0%{transform:translateX(0);opacity:0}15%,80%{opacity:1}100%{transform:translateX(37px);opacity:0}}
+#sqk-flow .receipt{display:grid;grid-template-columns:142px minmax(0,1fr);gap:14px;margin-top:12px;padding:13px 14px;border:1px solid var(--line)}
+#sqk-flow .answer{font:700 18px/1.15 Geist,system-ui,sans-serif;color:var(--accent);letter-spacing:-.025em;margin-top:5px}
+#sqk-flow .explain{margin:0;font-size:12px;line-height:1.5}
+#sqk-flow .takeaway{margin:12px 0 0;font-size:12px;line-height:1.5;color:var(--text)}
+#sqk-flow .takeaway b{font-weight:700}
+#sqk-flow .context{margin:11px 0 0;font-size:10px;line-height:1.5;color:#686d78}
+#sqk-flow .context a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+#sqk-flow .ft{padding:9px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;align-items:center}
+#sqk-flow .brand{display:inline-flex;align-items:center;gap:4px;color:var(--accent);font:600 12px/1 Geist,system-ui,sans-serif}
+#sqk-flow .eye{width:15px;height:15px;display:block;flex:0 0 15px}
+#sqk-flow .brand i{color:var(--text);font:600 italic 12px/1 Geist,system-ui,sans-serif}
+@media(max-width:520px){#sqk-flow .inner{padding:18px 16px 14px}#sqk-flow h2{font-size:25px}#sqk-flow .diagram{grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr)}#sqk-flow .node{padding:10px 8px}#sqk-flow .node strong{font-size:13px}#sqk-flow .node p{font-size:10.5px}#sqk-flow .receipt{grid-template-columns:115px minmax(0,1fr);gap:10px;padding:11px}#sqk-flow .answer{font-size:17px}#sqk-flow .tab{font-size:11px}#sqk-flow .tab span{font-size:8px}#sqk-flow .ft{padding-right:16px}}
+@media(max-width:360px){#sqk-flow .receipt{grid-template-columns:1fr}#sqk-flow .scenario-meta{align-items:flex-start}#sqk-flow .tabs{gap:4px}#sqk-flow .node strong{font-size:12px}#sqk-flow .diagram{grid-template-columns:minmax(0,1fr) 14px minmax(0,1fr) 14px minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){#sqk-flow .particle{animation:none;left:40%}#sqk-flow .tab{transition:none}}
+</style>
+</head>
+<body>
+<div id="sqk-flow">
+ <div class="inner">
+  <p class="kick">Squeekchain · follow the money</p>
+  <h2>Who gets paid?</h2>
+  <p class="sub">The same hamster. Three different routes for value.</p>
+  <div class="tabs" role="tablist" aria-label="Choose a value flow">
+   <button class="tab" type="button" role="tab" id="tab-stake" aria-controls="flow-panel" aria-selected="false" tabindex="-1" data-mode="stake">Stake SQK<span>Planned mechanism</span></button>
+   <button class="tab" type="button" role="tab" id="tab-imd" aria-controls="flow-panel" aria-selected="true" tabindex="0" data-mode="imd">Play with IMD<span>App design</span></button>
+   <button class="tab" type="button" role="tab" id="tab-pay" aria-controls="flow-panel" aria-selected="false" tabindex="-1" data-mode="pay">Pay in SQK<span>Hypothetical</span></button>
+  </div>
+  <div id="flow-panel" role="tabpanel" aria-labelledby="tab-imd" tabindex="0">
+   <div class="scenario-meta"><span class="small-label" id="flow-label">Hamster Hour</span><span class="status" id="flow-status">Usage not established</span></div>
+   <div class="diagram" aria-label="Illustrative value flow" id="flow-diagram">
+    <div class="node"><span class="num">01 / SOURCE</span><strong id="n1-title">Player’s IMD</strong><p id="n1-copy">A player brings IMD to place a bet.</p></div>
+    <div class="arrow" aria-hidden="true"><i class="particle"></i></div>
+    <div class="node"><span class="num">02 / ACTION</span><strong id="n2-title">Betting pool</strong><p id="n2-copy">Hamster data informs an IMD oracle result.</p></div>
+    <div class="arrow second" aria-hidden="true"><i class="particle"></i></div>
+    <div class="node"><span class="num">03 / DESTINATION</span><strong id="n3-title">IMD payouts</strong><p id="n3-copy">Winners and fee recipients receive IMD.</p></div>
+   </div>
+   <div class="receipt" aria-live="polite" aria-atomic="true">
+    <div><div class="small-label">SQK purchase needed?</div><div class="answer" id="answer">No</div></div>
+    <p class="explain" id="explain">The game can use the hamster’s data without requiring players to buy SQK. Its payment flow stays in IMD.</p>
+   </div>
+   <p class="takeaway" id="takeaway"><b>App activity ≠ SQK demand.</b> An application needs its own explicit route for value to reach SQK.</p>
+  </div>
+  <p class="context">Illustrative flows · research snapshot: 19 Oct 2026. No prices, returns or payment amounts implied.<br>Sources: <a id="source-link" href="https://github.com/identity-md-launches/launch-1951-workflow-contract-stage-context" target="_blank" rel="noopener noreferrer">Hamster Hour contract design</a> · <a href="https://x.com/squeekchain/status/2111502729893814739" target="_blank" rel="noopener noreferrer">SQK has not launched</a>.</p>
+ </div>
+ <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt=""><span>moni</span><i>research</i></span></footer>
+</div>
+<script>
+(()=>{
+ const root=document.getElementById('sqk-flow');
+ const modes={
+  stake:{label:'Earn → stake → earn',status:'Staking in development',nodes:[['Earned SQK','A holder claims SQK from emissions.'],['Stake to an NFT','Existing SQK backs a Squeek’s active power.'],['Larger share','More power competes for the same emission pool.']],answer:'Not necessarily',explain:'A holder can restake rewards already earned. Buying SQK is optional if they have enough tokens; no fresh purchase is built into this loop.',takeaway:'<b>Recycling rewards changes the split.</b> It does not itself create outside revenue or increase total block rewards.',source:'https://docs.squeekchain.com/rewards/staking/',sourceLabel:'Proposed staking mechanics'},
+  imd:{label:'Hamster Hour',status:'Usage not established',nodes:[['Player’s IMD','A player brings IMD to place a bet.'],['Betting pool','Hamster data informs an IMD oracle result.'],['IMD payouts','Winners and fee recipients receive IMD.']],answer:'No',explain:'The game can use the hamster’s data without requiring players to buy SQK. Its payment flow stays in IMD.',takeaway:'<b>App activity ≠ SQK demand.</b> An application needs its own explicit route for value to reach SQK.',source:'https://github.com/identity-md-launches/launch-1951-workflow-contract-stage-context',sourceLabel:'Hamster Hour contract design'},
+  pay:{label:'A new customer pays for a game',status:'Hypothetical · not announced',nodes:[['Outside funds','Assume a customer has no SQK and buys it.'],['Pay in SQK','Assume an app requires SQK for an activity.'],['App receives SQK','The operator can hold or sell the payment.']],answer:'Yes, in this case',explain:'A new customer buys SQK to use the app. That is demand from a payment need, rather than restaking previously earned rewards.',takeaway:'<b>A purchase is not permanent value capture.</b> The app may sell its receipts. Repeat demand and any holding or burn rules would matter.',source:'https://docs.squeekchain.com/rewards/squeekfi/',sourceLabel:'SqueekFi context; payment route is illustrative'}
+ };
+ const tabs=[...root.querySelectorAll('[role=tab]')];
+ function show(mode){
+  const d=modes[mode];if(!d)return;
+  root.dataset.mode=mode;
+  tabs.forEach(t=>{const selected=t.dataset.mode===mode;t.setAttribute('aria-selected',String(selected));t.tabIndex=selected?0:-1;});
+  root.querySelector('#flow-panel').setAttribute('aria-labelledby','tab-'+mode);
+  root.querySelector('#flow-label').textContent=d.label;root.querySelector('#flow-status').textContent=d.status;
+  d.nodes.forEach((node,i)=>{root.querySelector('#n'+(i+1)+'-title').textContent=node[0];root.querySelector('#n'+(i+1)+'-copy').textContent=node[1];});
+  root.querySelector('#answer').textContent=d.answer;root.querySelector('#explain').textContent=d.explain;root.querySelector('#takeaway').innerHTML=d.takeaway;
+  const source=root.querySelector('#source-link');source.href=d.source;source.textContent=d.sourceLabel;
+ }
+ tabs.forEach((tab,index)=>{
+  tab.addEventListener('click',()=>show(tab.dataset.mode));
+  tab.addEventListener('keydown',e=>{let next;if(e.key==='ArrowRight')next=(index+1)%tabs.length;else if(e.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=tabs.length-1;else return;e.preventDefault();show(tabs[next].dataset.mode);tabs[next].focus();});
+ });
+ show('imd');
+})();
+</script>
+<script>
+(()=>{
+ const root=document.getElementById('sqk-flow');if(!root||window.parent===window)return;
+ const reportHeight=()=>{const rootBox=root.getBoundingClientRect();const lastBox=root.lastElementChild?.getBoundingClientRect();const height=Math.max(1,Math.floor((lastBox?.bottom??rootBox.bottom)-rootBox.top)-2);window.parent.postMessage({type:'moni-widget:resize',height},'https://research.moni.ai');};
+ new ResizeObserver(reportHeight).observe(root);window.addEventListener('load',reportHeight,{once:true});window.addEventListener('resize',reportHeight);
+ window.addEventListener('message',event=>{if(event.origin==='https://research.moni.ai'&&event.data?.type==='moni-widget:request-resize')reportHeight();});
+ [0,100,500,1500].forEach(delay=>setTimeout(reportHeight,delay));
+})();
+</script>
+</body>
+</html>
