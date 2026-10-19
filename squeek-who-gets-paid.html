@@ -79,7 +79,6 @@ html,body{margin:0;padding:0;background:transparent}
    </div>
    <p class="takeaway" id="takeaway"><b>More players can mean more IMD bets.</b> For SQK to benefit, the app would need a reason to use it too.</p>
   </div>
-  <p class="context">How each flow works · 19 Oct 2026. No prices or returns are modelled.<br>Sources: <a id="source-link" href="https://github.com/identity-md-launches/launch-1951-workflow-contract-stage-context" target="_blank" rel="noopener noreferrer">Hamster Hour contract design</a> · <a href="https://x.com/squeekchain/status/2111502729893814739" target="_blank" rel="noopener noreferrer">SQK has not launched</a>.</p>
  </div>
  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt=""><span>moni</span><i>research</i></span></footer>
 </div>
@@ -100,7 +99,6 @@ html,body{margin:0;padding:0;background:transparent}
   root.querySelector('#flow-label').textContent=d.label;root.querySelector('#flow-status').textContent=d.status;
   d.nodes.forEach((node,i)=>{root.querySelector('#n'+(i+1)+'-title').textContent=node[0];root.querySelector('#n'+(i+1)+'-copy').textContent=node[1];});
   root.querySelector('#answer').textContent=d.answer;root.querySelector('#explain').textContent=d.explain;root.querySelector('#takeaway').innerHTML=d.takeaway;
-  const source=root.querySelector('#source-link');source.href=d.source;source.textContent=d.sourceLabel;
  }
  tabs.forEach((tab,index)=>{
   tab.addEventListener('click',()=>show(tab.dataset.mode));
