@@ -58,28 +58,28 @@ html,body{margin:0;padding:0;background:transparent}
  <div class="inner">
   <p class="kick">Squeekchain · follow the money</p>
   <h2>Who gets paid?</h2>
-  <p class="sub">The same hamster. Three different routes for value.</p>
+  <p class="sub">The hamster runs. Where does the money go?</p>
   <div class="tabs" role="tablist" aria-label="Choose a value flow">
-   <button class="tab" type="button" role="tab" id="tab-stake" aria-controls="flow-panel" aria-selected="false" tabindex="-1" data-mode="stake">Stake SQK<span>Planned mechanism</span></button>
+   <button class="tab" type="button" role="tab" id="tab-stake" aria-controls="flow-panel" aria-selected="false" tabindex="-1" data-mode="stake">Stake SQK<span>Planned staking</span></button>
    <button class="tab" type="button" role="tab" id="tab-imd" aria-controls="flow-panel" aria-selected="true" tabindex="0" data-mode="imd">Play with IMD<span>App design</span></button>
    <button class="tab" type="button" role="tab" id="tab-pay" aria-controls="flow-panel" aria-selected="false" tabindex="-1" data-mode="pay">Pay in SQK<span>Hypothetical</span></button>
   </div>
   <div id="flow-panel" role="tabpanel" aria-labelledby="tab-imd" tabindex="0">
-   <div class="scenario-meta"><span class="small-label" id="flow-label">Hamster Hour</span><span class="status" id="flow-status">Usage not established</span></div>
+   <div class="scenario-meta"><span class="small-label" id="flow-label">Hamster Hour</span><span class="status" id="flow-status">Player activity unconfirmed</span></div>
    <div class="diagram" aria-label="Illustrative value flow" id="flow-diagram">
-    <div class="node"><span class="num">01 / SOURCE</span><strong id="n1-title">Player’s IMD</strong><p id="n1-copy">A player brings IMD to place a bet.</p></div>
+    <div class="node"><span class="num">01 / SOURCE</span><strong id="n1-title">Player’s IMD</strong><p id="n1-copy">A player bets IMD on how much the hamster runs.</p></div>
     <div class="arrow" aria-hidden="true"><i class="particle"></i></div>
-    <div class="node"><span class="num">02 / ACTION</span><strong id="n2-title">Betting pool</strong><p id="n2-copy">Hamster data informs an IMD oracle result.</p></div>
+    <div class="node"><span class="num">02 / ACTION</span><strong id="n2-title">Betting pool</strong><p id="n2-copy">The IMD oracle uses the hamster’s running data.</p></div>
     <div class="arrow second" aria-hidden="true"><i class="particle"></i></div>
-    <div class="node"><span class="num">03 / DESTINATION</span><strong id="n3-title">IMD payouts</strong><p id="n3-copy">Winners and fee recipients receive IMD.</p></div>
+    <div class="node"><span class="num">03 / DESTINATION</span><strong id="n3-title">IMD payouts</strong><p id="n3-copy">Winnings and fees are paid in IMD.</p></div>
    </div>
    <div class="receipt" aria-live="polite" aria-atomic="true">
     <div><div class="small-label">SQK purchase needed?</div><div class="answer" id="answer">No</div></div>
-    <p class="explain" id="explain">The game can use the hamster’s data without requiring players to buy SQK. Its payment flow stays in IMD.</p>
+    <p class="explain" id="explain">Players bet and get paid in IMD. They can use the hamster’s data without buying SQK.</p>
    </div>
-   <p class="takeaway" id="takeaway"><b>App activity ≠ SQK demand.</b> An application needs its own explicit route for value to reach SQK.</p>
+   <p class="takeaway" id="takeaway"><b>More players can mean more IMD bets.</b> For SQK to benefit, the app would need a reason to use it too.</p>
   </div>
-  <p class="context">Illustrative flows · research snapshot: 19 Oct 2026. No prices, returns or payment amounts implied.<br>Sources: <a id="source-link" href="https://github.com/identity-md-launches/launch-1951-workflow-contract-stage-context" target="_blank" rel="noopener noreferrer">Hamster Hour contract design</a> · <a href="https://x.com/squeekchain/status/2111502729893814739" target="_blank" rel="noopener noreferrer">SQK has not launched</a>.</p>
+  <p class="context">How each flow works · 19 Oct 2026. No prices or returns are modelled.<br>Sources: <a id="source-link" href="https://github.com/identity-md-launches/launch-1951-workflow-contract-stage-context" target="_blank" rel="noopener noreferrer">Hamster Hour contract design</a> · <a href="https://x.com/squeekchain/status/2111502729893814739" target="_blank" rel="noopener noreferrer">SQK has not launched</a>.</p>
  </div>
  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt=""><span>moni</span><i>research</i></span></footer>
 </div>
@@ -87,9 +87,9 @@ html,body{margin:0;padding:0;background:transparent}
 (()=>{
  const root=document.getElementById('sqk-flow');
  const modes={
-  stake:{label:'Earn → stake → earn',status:'Staking in development',nodes:[['Earned SQK','A holder claims SQK from emissions.'],['Stake to an NFT','Existing SQK backs a Squeek’s active power.'],['Larger share','More power competes for the same emission pool.']],answer:'Not necessarily',explain:'A holder can restake rewards already earned. Buying SQK is optional if they have enough tokens; no fresh purchase is built into this loop.',takeaway:'<b>Recycling rewards changes the split.</b> It does not itself create outside revenue or increase total block rewards.',source:'https://docs.squeekchain.com/rewards/staking/',sourceLabel:'Proposed staking mechanics'},
-  imd:{label:'Hamster Hour',status:'Usage not established',nodes:[['Player’s IMD','A player brings IMD to place a bet.'],['Betting pool','Hamster data informs an IMD oracle result.'],['IMD payouts','Winners and fee recipients receive IMD.']],answer:'No',explain:'The game can use the hamster’s data without requiring players to buy SQK. Its payment flow stays in IMD.',takeaway:'<b>App activity ≠ SQK demand.</b> An application needs its own explicit route for value to reach SQK.',source:'https://github.com/identity-md-launches/launch-1951-workflow-contract-stage-context',sourceLabel:'Hamster Hour contract design'},
-  pay:{label:'A new customer pays for a game',status:'Hypothetical · not announced',nodes:[['Outside funds','Assume a customer has no SQK and buys it.'],['Pay in SQK','Assume an app requires SQK for an activity.'],['App receives SQK','The operator can hold or sell the payment.']],answer:'Yes, in this case',explain:'A new customer buys SQK to use the app. That is demand from a payment need, rather than restaking previously earned rewards.',takeaway:'<b>A purchase is not permanent value capture.</b> The app may sell its receipts. Repeat demand and any holding or burn rules would matter.',source:'https://docs.squeekchain.com/rewards/squeekfi/',sourceLabel:'SqueekFi context; payment route is illustrative'}
+  stake:{label:'Earn → stake → earn',status:'Staking in development',nodes:[['Earned SQK','Claim the SQK your NFT has earned.'],['Stake to an NFT','Stake SQK to increase your Squeek’s active power.'],['Larger share','More power earns a bigger slice of block rewards.']],answer:'Not necessarily',explain:'You can stake SQK you’ve already earned. If you have enough, there’s no need to buy more.',takeaway:'<b>A bigger slice of the same rewards.</b> Restaking changes who earns them, without bringing in outside revenue or increasing the block payout.',source:'https://docs.squeekchain.com/rewards/staking/',sourceLabel:'Proposed staking mechanics'},
+  imd:{label:'Hamster Hour',status:'Player activity unconfirmed',nodes:[['Player’s IMD','A player bets IMD on how much the hamster runs.'],['Betting pool','The IMD oracle uses the hamster’s running data.'],['IMD payouts','Winnings and fees are paid in IMD.']],answer:'No',explain:'Players bet and get paid in IMD. They can use the hamster’s data without buying SQK.',takeaway:'<b>More players can mean more IMD bets.</b> For SQK to benefit, the app would need a reason to use it too.',source:'https://github.com/identity-md-launches/launch-1951-workflow-contract-stage-context',sourceLabel:'Hamster Hour contract design'},
+  pay:{label:'What if a game charged SQK?',status:'An example, not an announced app',nodes:[['Outside funds','A new player buys the SQK they need.'],['Pay in SQK','In this example, the game charges SQK to play.'],['App receives SQK','The operator receives SQK and can hold or sell it.']],answer:'Yes, in this case',explain:'This player needs SQK to play and buys it with outside funds. The game gives them a reason to buy.',takeaway:'<b>One purchase gets the player in.</b> Lasting demand depends on players coming back and what the app does with the SQK it receives.',source:'https://docs.squeekchain.com/rewards/squeekfi/',sourceLabel:'SqueekFi docs; this payment flow is an example'}
  };
  const tabs=[...root.querySelectorAll('[role=tab]')];
  function show(mode){
