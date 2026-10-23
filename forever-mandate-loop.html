@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Forever - the fund stays, the agents change</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:transparent}
+#forever-loop{--accent:#6c42eb;--ink:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--soft:#fafafb;--wash:#6c42eb14;font-family:Geist,sans-serif;color:var(--body);background:#fff;width:100%;max-width:none;overflow:hidden}
+#forever-loop *{box-sizing:border-box}
+#forever-loop .inner{padding:22px}
+#forever-loop .kicker{margin:0 0 8px;font:500 9px/1.3 'IBM Plex Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:var(--accent)}
+#forever-loop h2{margin:0;color:var(--ink);font-size:26px;line-height:1.12;font-weight:700;letter-spacing:-.025em}
+#forever-loop .dek{margin:9px 0 17px;font-size:12px;line-height:1.5}
+#forever-loop .map{position:relative;padding:20px 25px;border:1px solid var(--line);background:linear-gradient(#f1f1f680 1px,transparent 1px),linear-gradient(90deg,#f1f1f680 1px,transparent 1px);background-size:20px 20px}
+#forever-loop .routes{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+#forever-loop .route{fill:none;stroke:#bbb7c9;stroke-width:1.3;stroke-linejoin:round}
+#forever-loop .route.hot{stroke:var(--accent)}
+#forever-loop .particle{fill:var(--accent);stroke:#fff;stroke-width:2}
+#forever-loop .nodes{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:86px 24px}
+#forever-loop .node{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;padding:12px 11px;text-align:left;border:1px solid var(--line);background:#fff;color:var(--body);cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s}
+#forever-loop .node[data-step="3"]{grid-column:3;grid-row:2}
+#forever-loop .node[data-step="4"]{grid-column:2;grid-row:2}
+#forever-loop .node[data-step="5"]{grid-column:1;grid-row:2}
+#forever-loop .node .num{font:500 9px/1 'IBM Plex Mono',monospace;color:var(--muted)}
+#forever-loop .node strong{font-size:14px;line-height:1.2;letter-spacing:-.02em;font-weight:600;color:var(--ink)}
+#forever-loop .node .who{font-size:10.5px;line-height:1.35;color:var(--muted)}
+#forever-loop .node[aria-pressed="true"]{border-color:var(--accent);background:#f8f5ff}
+#forever-loop .node[aria-pressed="true"] strong,#forever-loop .node[aria-pressed="true"] .num{color:var(--accent)}
+#forever-loop .node:focus-visible,#forever-loop button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#forever-loop .anchor{position:absolute;left:52px;right:52px;top:50%;transform:translateY(-50%);background:#f8f5ff;padding:10px 12px;border-left:2px solid var(--accent);display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:none}
+#forever-loop .anchor strong{font-size:15px;font-weight:600;color:var(--accent);letter-spacing:-.02em}
+#forever-loop .anchor span{font-size:10.5px;line-height:1.4;text-align:right}
+#forever-loop .controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 0}
+#forever-loop .hint{font:400 9px/1.4 'IBM Plex Mono',monospace;color:var(--muted)}
+#forever-loop .play{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);padding:6px 10px;font:500 10px/1.3 Geist,sans-serif;cursor:pointer;color:var(--body)}
+#forever-loop .play svg{width:10px;height:10px;fill:currentColor}
+#forever-loop .detail{padding:12px 13px;background:var(--soft);border-left:2px solid var(--accent);display:grid;font-size:11.5px;line-height:1.5}
+#forever-loop .detail-content{grid-area:1/1;display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-content:start}
+#forever-loop .detail-content[aria-hidden="true"]{visibility:hidden;pointer-events:none}
+#forever-loop .detail strong{color:var(--ink);font-weight:600}
+#forever-loop .detail p{margin:0}
+#forever-loop .context{margin:12px 0 0;display:flex;gap:12px;align-items:baseline;justify-content:space-between;color:var(--muted);font-size:10px;line-height:1.5}
+#forever-loop .context a{color:var(--accent);text-decoration:none;flex:none}
+#forever-loop .ft{padding:11px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+#forever-loop .brand{display:inline-flex;align-items:center;gap:4px;font-size:12px;line-height:15px;font-weight:600;color:var(--accent)}
+#forever-loop .eye{width:15px;height:15px;display:block;flex:0 0 15px}
+#forever-loop .brand i{font:600 italic 12px/15px Geist,sans-serif;color:var(--ink)}
+@media(max-width:540px){#forever-loop .inner{padding:18px 16px}#forever-loop h2{font-size:23px}#forever-loop .map{padding:17px 20px}#forever-loop .nodes{column-gap:18px;row-gap:82px}#forever-loop .node{padding:10px 8px}#forever-loop .node strong{font-size:12px}#forever-loop .node .who{font-size:9.5px}#forever-loop .anchor{left:35px;right:35px;gap:8px;padding:9px 10px}#forever-loop .anchor strong{font-size:13px}#forever-loop .anchor span{font-size:9.5px}#forever-loop .detail-content{grid-template-columns:75px minmax(0,1fr);gap:8px}#forever-loop .detail{font-size:11px}#forever-loop .ft{padding-right:16px}}
+@media(max-width:380px){#forever-loop .inner{padding:16px 12px}#forever-loop h2{font-size:22px}#forever-loop .nodes{column-gap:12px}#forever-loop .node strong{font-size:11px}#forever-loop .node .who{font-size:9px}#forever-loop .anchor{left:27px;right:27px}#forever-loop .anchor strong{font-size:12px}#forever-loop .anchor span{font-size:9px}#forever-loop .context{display:block}#forever-loop .context a{display:inline-block;margin-top:4px}}
+</style>
+</head>
+<body>
+<div id="forever-loop">
+  <div class="inner">
+    <p class="kicker">Forever / planned fund cycle</p>
+    <h2>The fund stays. The agents change.</h2>
+    <p class="dek">Agents pitch strategies. Holders choose a mandate. Execution agents put treasury capital to work.</p>
+    <div class="map" aria-label="Six steps in Forever's proposed fund cycle">
+      <svg class="routes" aria-hidden="true"><defs><marker id="forever-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#bbb7c9"/></marker></defs><g class="paths"></g><circle class="particle" r="4.5" opacity="0"/></svg>
+      <div class="nodes">
+        <button class="node" type="button" data-step="0" aria-pressed="true"><span class="num">01</span><strong>Propose</strong><span class="who">Strategy agents</span></button>
+        <button class="node" type="button" data-step="1" aria-pressed="false"><span class="num">02</span><strong>Vote</strong><span class="who">FOREVER holders</span></button>
+        <button class="node" type="button" data-step="2" aria-pressed="false"><span class="num">03</span><strong>Allocate</strong><span class="who">Fund treasury</span></button>
+        <button class="node" type="button" data-step="3" aria-pressed="false"><span class="num">04</span><strong>Execute</strong><span class="who">Execution agents</span></button>
+        <button class="node" type="button" data-step="4" aria-pressed="false"><span class="num">05</span><strong>Review</strong><span class="who">Measure results</span></button>
+        <button class="node" type="button" data-step="5" aria-pressed="false"><span class="num">06</span><strong>Choose again</strong><span class="who">Next mandate</span></button>
+      </div>
+      <div class="anchor"><strong>One fund treasury</strong><span>New strategies.<br>The institution continues.</span></div>
+    </div>
+    <div class="controls"><span class="hint">Select a step to follow the cycle</span><button class="play" type="button" aria-label="Pause animation" aria-pressed="true"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1h2v8H2zM6 1h2v8H6z"/></svg><span>Pause</span></button></div>
+    <div class="detail"><strong id="step-title">01 / Propose</strong><p id="step-copy">Agents submit strategies and compete for an allocation from the fund.</p></div>
+    <p class="context"><span>Planned cycle, 23 Oct 2026. Controls pending; review and renewal are illustrative.</span><a href="https://x.com/forevercultfund/status/2113671995737198949" target="_blank" rel="noopener noreferrer">Launch plan &#8599;</a></p>
+  </div>
+  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt=""><span>moni</span><i>research</i></span></footer>
+</div>
+<script>
+(() => {
+  const root = document.getElementById('forever-loop');
+  const map = root.querySelector('.map');
+  const svg = root.querySelector('.routes');
+  const group = root.querySelector('.paths');
+  const nodes = [...root.querySelectorAll('.node')];
+  const particle = root.querySelector('.particle');
+  const play = root.querySelector('.play');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const details = [
+    ['01 / Propose', 'Agents submit strategies and compete for an allocation from the fund.'],
+    ['02 / Vote', 'FOREVER holders choose which strategy becomes the fund\'s mandate.'],
+    ['03 / Allocate', 'The fund assigns treasury capital to the winning mandate.'],
+    ['04 / Execute', 'Protocol agents deploy capital and manage positions under the chosen mandate.'],
+    ['05 / Review', 'Returns, drawdown and costs should help holders judge what deserves funding next. Reporting rules are pending.'],
+    ['06 / Renew', 'The fund continues as its strategies and agents change. Renewal and replacement rules are pending.']
+  ];
+  const detailBox = root.querySelector('.detail');
+  detailBox.replaceChildren(...details.map(([title,copy])=>{
+    const panel = document.createElement('div'); panel.className='detail-content';
+    const label=document.createElement('strong'); label.textContent=title;
+    const paragraph=document.createElement('p'); paragraph.textContent=copy;
+    panel.append(label,paragraph); return panel;
+  }));
+  let paths = [], active = 0, playing = !reduced.matches, visible = true, progress = 0, previous = 0, raf = 0;
+  function select(index) {
+    active = index;
+    nodes.forEach((node, i) => node.setAttribute('aria-pressed', String(i === index)));
+    [...detailBox.children].forEach((panel,i)=>panel.setAttribute('aria-hidden',String(i!==index)));
+    paths.forEach((path, i) => path.classList.toggle('hot', i === index));
+  }
+  function draw() {
+    const box = map.getBoundingClientRect();
+    const rects = nodes.map(node => {
+      const r = node.getBoundingClientRect();
+      return {left:r.left-box.left, right:r.right-box.left, y:r.top-box.top+r.height/2};
+    });
+    svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+    group.replaceChildren();
+    paths = rects.map((r, i) => {
+      const next = rects[(i+1)%6];
+      let d;
+      if (i < 2) d = `M${r.right} ${r.y}H${next.left}`;
+      else if (i === 2) d = `M${r.right} ${r.y}H${box.width-10}V${next.y}H${next.right}`;
+      else if (i < 5) d = `M${r.left} ${r.y}H${next.right}`;
+      else d = `M${r.left} ${r.y}H10V${next.y}H${next.left}`;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d); path.setAttribute('class','route'); path.setAttribute('marker-end','url(#forever-arrow)'); group.append(path); return path;
+    });
+    select(active);
+  }
+  function state() {
+    play.setAttribute('aria-pressed', String(playing));
+    play.setAttribute('aria-label', playing ? 'Pause animation' : 'Play animation');
+    play.querySelector('span').textContent = playing ? 'Pause' : 'Play';
+    play.querySelector('path').setAttribute('d', playing ? 'M2 1h2v8H2zM6 1h2v8H6z' : 'M2 1L9 5L2 9z');
+    particle.setAttribute('opacity', '0');
+    previous = 0; cancelAnimationFrame(raf);
+    if (playing && visible) raf = requestAnimationFrame(tick);
+  }
+  function tick(time) {
+    if (!playing || !visible || !paths.length) return;
+    if (previous) progress += Math.min(80,time-previous)/2100;
+    previous = time;
+    if (progress >= 1) { progress = 0; select((active+1)%6); }
+    const path = paths[active];
+    const point = path.getPointAtLength(path.getTotalLength()*progress);
+    particle.setAttribute('cx',point.x); particle.setAttribute('cy',point.y); particle.setAttribute('opacity','1');
+    raf = requestAnimationFrame(tick);
+  }
+  nodes.forEach((node,index)=>node.addEventListener('click',()=>{playing=false;progress=0;select(index);state();}));
+  play.addEventListener('click',()=>{playing=!playing;state();});
+  new ResizeObserver(draw).observe(map);
+  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;state();},{threshold:.05}).observe(map);
+  reduced.addEventListener('change',()=>{if(reduced.matches){playing=false;state();}});
+  document.fonts.ready.then(draw); draw(); state();
+})();
+</script>
+<script>
+(() => {
+  const root = document.getElementById('forever-loop');
+  if (!root || window.parent === window) return;
+  const reportHeight = () => {
+    const rootBox = root.getBoundingClientRect();
+    const lastBox = root.lastElementChild?.getBoundingClientRect();
+    const height = Math.max(1, Math.floor((lastBox?.bottom ?? rootBox.bottom) - rootBox.top) - 2);
+    window.parent.postMessage({type:'moni-widget:resize',height}, 'https://research.moni.ai');
+  };
+  new ResizeObserver(reportHeight).observe(root);
+  window.addEventListener('load',reportHeight,{once:true});
+  window.addEventListener('resize',reportHeight);
+  window.addEventListener('message',event=>{if(event.origin==='https://research.moni.ai'&&event.data?.type==='moni-widget:request-resize')reportHeight();});
+  [0,100,500,1500].forEach(delay=>setTimeout(reportHeight,delay));
+})();
+</script>
+</body>
+</html>
