@@ -67,28 +67,28 @@ html,body{margin:0;padding:0;background:transparent}
   <div class="inner">
     <p class="kicker">Forever / announced token plan</p>
     <h2>One billion. Then the treasury buys.</h2>
-    <p class="dek">The launch fixes supply. Future rewards are planned to come from tokens the treasury buys in the market.</p>
+    <p class="dek">Supply is fixed at launch. Future rewards use tokens bought by the treasury.</p>
     <div class="supply-head"><strong>1B<span>FOREVER</span></strong><span class="cap">Minted once<br>No further issuance planned</span></div>
     <div class="allocation" role="group" aria-label="Supply distribution">
       <button type="button" class="segment" data-slice="0" aria-label="Founding NFT holders: 40 percent" aria-pressed="true">40%</button>
       <button type="button" class="segment" data-slice="1" aria-label="Protocol treasury: 10 percent" aria-pressed="false">10%</button>
-      <button type="button" class="segment" data-slice="2" aria-label="Remaining market supply: 50 percent" aria-pressed="false">50%</button>
+      <button type="button" class="segment" data-slice="2" aria-label="Remaining pool inventory: 50 percent" aria-pressed="false">50%</button>
     </div>
     <div class="slices" role="group" aria-label="Explore the allocations">
       <button type="button" class="slice" data-slice="0" aria-pressed="true"><span class="label"><i class="swatch"></i>Founding NFTs</span><strong>400M</strong><small>500 founding allocations</small></button>
       <button type="button" class="slice" data-slice="1" aria-pressed="false"><span class="label"><i class="swatch"></i>Treasury</span><strong>100M</strong><small>Incentives and rewards</small></button>
-      <button type="button" class="slice" data-slice="2" aria-pressed="false"><span class="label"><i class="swatch"></i>Market supply</span><strong>500M</strong><small>Remains after initial buys</small></button>
+      <button type="button" class="slice" data-slice="2" aria-pressed="false"><span class="label"><i class="swatch"></i>Pool inventory</span><strong>500M</strong><small>Remains after initial buys</small></button>
     </div>
-    <p class="selection" id="allocation-copy">Each Founding NFT claims 800,000 FOREVER once liquidity is deployed. Together, the 500 allocations account for 40% of supply.</p>
+    <p class="selection" id="allocation-copy">Each NFT claims 800,000 FOREVER once liquidity is deployed. The 500 allocations cover 40% of supply, not necessarily 500 independent voters.</p>
     <div class="nft" aria-label="A full founding mint raises 22.5 ETH before costs">
       <div><b>500 NFTs</b><small>Founding mint</small></div><span class="op">&#215;</span><div><b>0.045 ETH</b><small>Price per NFT</small></div><span class="op">=</span><div><b>22.5 ETH</b><small>Full mint, before costs</small></div>
     </div>
     <p class="after">Future rewards<span>Announced funding path</span></p>
     <div class="buy-flow" aria-label="Treasury assets fund market purchases for rewards and allocations">
-      <div class="flow-node">Treasury assets<small>Funding source to be detailed</small></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-node buy">Market purchases<small>Buy existing FOREVER</small></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-node">Rewards + allocations<small>Distribute purchased tokens</small></div>
+      <div class="flow-node">Treasury funding<small>Income and protocol share pending</small></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-node buy">Market purchases<small>Purchase rules pending</small></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-node">Rewards + allocations<small>Recipient rules pending</small></div>
     </div>
-    <p class="note">The treasury still has to fund those purchases. Revenue sources and purchase rules have not yet been published.</p>
-    <p class="context"><span>Announced terms, 23 Oct 2026. Market allocation represents tokens held in the pool.</span><a href="https://x.com/forevercultfund/status/2113671995737198949" target="_blank" rel="noopener noreferrer">Launch terms &#8599;</a></p>
+    <p class="note">How mint proceeds fund trading, and who can withdraw profits, is still undisclosed. Rewards do not establish a claim on fund earnings.</p>
+    <p class="context"><span>Reviewed 24 Oct 2026. Terms announced; contracts and lockups still need verification.</span><a href="https://x.com/forevercultfund/status/2113671995737198949" target="_blank" rel="noopener noreferrer">Launch terms &#8599;</a></p>
   </div>
   <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt=""><span>moni</span><i>research</i></span></footer>
 </div>
@@ -96,9 +96,9 @@ html,body{margin:0;padding:0;background:transparent}
 (() => {
   const root = document.getElementById('forever-supply');
   const copies = [
-    'Each Founding NFT claims 800,000 FOREVER once liquidity is deployed. Together, the 500 allocations account for 40% of supply.',
+    'Each NFT claims 800,000 FOREVER once liquidity is deployed. The 500 allocations cover 40% of supply, not necessarily 500 independent voters.',
     'The treasury keeps 100 million FOREVER for incentives, rewards and bootstrapping. This is token inventory; it does not disclose the fund\'s investable capital.',
-    'The protocol buys 50% through the curve for founders and treasury. The other half stays in the market. Public trading is planned to start at $200,000 FDV.'
+    'Half the supply stays in the pool after the initial buys. It is not all circulating in public hands. Claims, lockups and sales will shape the float.'
   ];
   const detailBox = document.getElementById('allocation-copy');
   detailBox.replaceChildren(...copies.map((copy,index)=>{

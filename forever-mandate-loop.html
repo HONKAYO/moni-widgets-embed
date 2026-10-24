@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Forever - the fund stays, the agents change</title>
+<title>Forever - one fund, new mandates</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -57,7 +57,7 @@ html,body{margin:0;padding:0;background:transparent}
 <div id="forever-loop">
   <div class="inner">
     <p class="kicker">Forever / planned fund cycle</p>
-    <h2>The fund stays. The agents change.</h2>
+    <h2>One fund. New mandates.</h2>
     <p class="dek">Agents pitch strategies. Holders choose a mandate. Execution agents put treasury capital to work.</p>
     <div class="map" aria-label="Six steps in Forever's proposed fund cycle">
       <svg class="routes" aria-hidden="true"><defs><marker id="forever-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#bbb7c9"/></marker></defs><g class="paths"></g><circle class="particle" r="4.5" opacity="0"/></svg>
@@ -69,11 +69,11 @@ html,body{margin:0;padding:0;background:transparent}
         <button class="node" type="button" data-step="4" aria-pressed="false"><span class="num">05</span><strong>Review</strong><span class="who">Measure results</span></button>
         <button class="node" type="button" data-step="5" aria-pressed="false"><span class="num">06</span><strong>Choose again</strong><span class="who">Next mandate</span></button>
       </div>
-      <div class="anchor"><strong>One fund treasury</strong><span>New strategies.<br>The institution continues.</span></div>
+      <div class="anchor"><strong>One fund treasury</strong><span>New mandates.<br>Control rules still pending.</span></div>
     </div>
     <div class="controls"><span class="hint">Select a step to follow the cycle</span><button class="play" type="button" aria-label="Pause animation" aria-pressed="true"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1h2v8H2zM6 1h2v8H6z"/></svg><span>Pause</span></button></div>
     <div class="detail"><strong id="step-title">01 / Propose</strong><p id="step-copy">Agents submit strategies and compete for an allocation from the fund.</p></div>
-    <p class="context"><span>Planned cycle, 23 Oct 2026. Controls pending; review and renewal are illustrative.</span><a href="https://x.com/forevercultfund/status/2113671995737198949" target="_blank" rel="noopener noreferrer">Launch plan &#8599;</a></p>
+    <p class="context"><span>Reviewed 24 Oct 2026. Fund control is undisclosed; review and renewal are illustrative.</span><a href="https://x.com/forevercultfund/status/2113671995737198949" target="_blank" rel="noopener noreferrer">Launch plan &#8599;</a></p>
   </div>
   <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt=""><span>moni</span><i>research</i></span></footer>
 </div>
@@ -90,10 +90,10 @@ html,body{margin:0;padding:0;background:transparent}
   const details = [
     ['01 / Propose', 'Agents submit strategies and compete for an allocation from the fund.'],
     ['02 / Vote', 'FOREVER holders choose which strategy becomes the fund\'s mandate.'],
-    ['03 / Allocate', 'The fund assigns treasury capital to the winning mandate.'],
-    ['04 / Execute', 'Protocol agents deploy capital and manage positions under the chosen mandate.'],
+    ['03 / Allocate', 'The treasury funds a mandate. Its investable capital and the use of NFT proceeds are still undisclosed.'],
+    ['04 / Execute', 'Agents manage capital. Who controls their keys, contract upgrades and emergency stops is still undisclosed.'],
     ['05 / Review', 'Returns, drawdown and costs should help holders judge what deserves funding next. Reporting rules are pending.'],
-    ['06 / Renew', 'The fund continues as its strategies and agents change. Renewal and replacement rules are pending.']
+    ['06 / Renew', 'A new mandate can change the strategy. Replacing the people with ultimate control is a separate question.']
   ];
   const detailBox = root.querySelector('.detail');
   detailBox.replaceChildren(...details.map(([title,copy])=>{
