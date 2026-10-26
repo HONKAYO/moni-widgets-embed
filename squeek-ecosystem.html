@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Squeekchain · Built around the wheel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:transparent}
+#sqk-eco{--bg:#fff;--soft:#fafafb;--text:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--accent:#6c42eb;--accent-soft:#6c42eb14;--emerald:#0fa968;--amber:#f59e0b;width:100%;max-width:none;background:var(--bg);color:var(--body);font:400 13px/1.5 Geist,system-ui,sans-serif;overflow:hidden}
+#sqk-eco *{box-sizing:border-box}
+#sqk-eco [hidden]{display:none!important}
+#sqk-eco .hd{padding:22px 24px 0}
+#sqk-eco .eyebrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+#sqk-eco .kick,#sqk-eco .date{margin:0;font:500 9px/1.3 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+#sqk-eco .kick{color:var(--accent)}
+#sqk-eco .date{color:#686d78;letter-spacing:.025em;white-space:nowrap}
+#sqk-eco h2{margin:10px 0 7px;color:var(--text);font:700 27px/1.12 Geist,system-ui,sans-serif;letter-spacing:-.025em}
+#sqk-eco .sub{margin:0;font-size:13px}
+#sqk-eco .filters{display:flex;flex-wrap:wrap;gap:6px;padding:17px 24px 14px}
+#sqk-eco .filter{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--bg);color:var(--body);padding:7px 10px;font:500 11px/1.3 Geist,system-ui,sans-serif;cursor:pointer}
+#sqk-eco .filter span{font-size:10px;opacity:.65}
+#sqk-eco .filter[aria-pressed=true]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+#sqk-eco .filter:hover{border-color:var(--accent)}
+#sqk-eco :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#sqk-eco .list{padding:0 24px}
+#sqk-eco .project{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;padding:15px 0 14px;border-top:1px solid var(--line)}
+#sqk-eco .mark{display:grid;place-items:center;align-self:start;width:34px;height:34px;background:var(--accent-soft);color:var(--accent);border:1px solid #6c42eb24;font:700 13px/1 Geist,system-ui,sans-serif;letter-spacing:-.06em}
+#sqk-eco .mark.quad{background:#0fa9680d;border-color:#0fa96826;color:#078752}
+#sqk-eco .mark.wheel{background:#f59e0b0c;border-color:#f59e0b32;color:#9a6209}
+#sqk-eco .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+#sqk-eco h3{margin:0;color:var(--text);font:700 17px/1.2 Geist,system-ui,sans-serif;letter-spacing:-.025em}
+#sqk-eco .stage{color:#686d78;font:500 9px/1.4 'IBM Plex Mono',monospace;white-space:nowrap}
+#sqk-eco .stage.deployed{color:#078752}
+#sqk-eco .description{margin:6px 0 9px;font-size:12px;line-height:1.5}
+#sqk-eco .actions{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+#sqk-eco a{color:var(--accent);text-decoration:none;text-underline-offset:3px}
+#sqk-eco a:hover{text-decoration:underline}
+#sqk-eco .actions a{font-size:11px;font-weight:500}
+#sqk-eco details{margin:0}
+#sqk-eco .project details{margin-top:8px}
+#sqk-eco summary{width:fit-content;color:#686d78;font:500 11px/1.4 Geist,system-ui,sans-serif;cursor:pointer;list-style:none}
+#sqk-eco summary::-webkit-details-marker{display:none}
+#sqk-eco summary:before{content:'+';display:inline-block;width:14px;color:var(--accent);font-size:13px}
+#sqk-eco details[open]>summary:before{content:'−'}
+#sqk-eco .detail{margin-top:10px;padding:11px 13px;background:var(--soft);border-left:2px solid #6c42eb55;font-size:11px;line-height:1.55}
+#sqk-eco .detail p{margin:0 0 7px}
+#sqk-eco .detail p:last-child{margin-bottom:0}
+#sqk-eco .detail a{overflow-wrap:anywhere}
+#sqk-eco .contract-links{display:flex;flex-wrap:wrap;gap:5px 13px}
+#sqk-eco .proposal{margin:3px 24px 18px;padding:13px 14px;background:var(--accent-soft);border:1px solid #6c42eb28}
+#sqk-eco .proposal .kick{font-size:8px;letter-spacing:.1em}
+#sqk-eco .proposal h3{font-size:15px;margin:5px 0 5px}
+#sqk-eco .proposal p{margin:0 0 8px;font-size:11px;line-height:1.5}
+#sqk-eco .proposal summary{color:var(--accent)}
+#sqk-eco .proposal .detail{background:var(--bg);margin-top:10px}
+#sqk-eco .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 10px;padding:0;list-style:none}
+#sqk-eco .steps li{font-size:11px;line-height:1.5;min-width:0}
+#sqk-eco .steps b{display:block;color:var(--accent);font:600 9px/1.2 'IBM Plex Mono',monospace;margin-bottom:5px}
+#sqk-eco .ft{padding:9px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;align-items:center}
+#sqk-eco .brand{display:inline-flex;align-items:center;gap:4px;color:var(--accent);font:600 12px/1 Geist,system-ui,sans-serif}
+#sqk-eco .eye{width:15px;height:15px;display:block;flex:0 0 15px}
+#sqk-eco .brand i{color:var(--text);font:600 italic 12px/1 Geist,system-ui,sans-serif}
+#sqk-eco .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:520px){#sqk-eco .hd{padding:18px 16px 0}#sqk-eco h2{font-size:25px}#sqk-eco .filters{padding:15px 16px 12px;gap:5px}#sqk-eco .filter{padding:7px 8px;gap:7px}#sqk-eco .list{padding:0 16px}#sqk-eco .project{gap:10px;grid-template-columns:30px minmax(0,1fr);padding:13px 0}#sqk-eco .mark{width:30px;height:30px;font-size:12px}#sqk-eco .row{flex-wrap:wrap;gap:4px 10px}#sqk-eco h3{font-size:16px}#sqk-eco .stage{font-size:8px}#sqk-eco .description{font-size:11.5px}#sqk-eco .proposal{margin:3px 16px 16px;padding:12px}#sqk-eco .ft{padding-right:16px}#sqk-eco .steps{grid-template-columns:1fr;gap:8px}#sqk-eco .steps b{display:inline;margin-right:8px}}
+@media(max-width:360px){#sqk-eco .eyebrow{align-items:flex-start;flex-direction:column;gap:5px}#sqk-eco .filter{gap:5px;padding:7px}#sqk-eco .project{grid-template-columns:minmax(0,1fr)}#sqk-eco .mark{display:none}}
+</style>
+</head>
+<body>
+<section id="sqk-eco" aria-label="Squeekchain ecosystem directory">
+ <header class="hd">
+  <div class="eyebrow"><p class="kick">The Squeekchain ecosystem</p><p class="date">Checked 26 Oct 2026</p></div>
+  <h2>Built around the wheel</h2>
+  <p class="sub">Games, a vault and a launchpad. Same hamster.</p>
+ </header>
+ <nav class="filters" aria-label="Filter projects">
+  <button class="filter" type="button" data-filter="all" aria-pressed="true">All <span>4</span></button>
+  <button class="filter" type="button" data-filter="games" aria-pressed="false">Games <span>2</span></button>
+  <button class="filter" type="button" data-filter="vaults" aria-pressed="false">Vaults <span>1</span></button>
+  <button class="filter" type="button" data-filter="launchpads" aria-pressed="false">Launchpads <span>1</span></button>
+ </nav>
+ <p class="sr-only" id="eco-result" role="status" aria-live="polite">Showing all 4 projects.</p>
+ <div class="list">
+  <article class="project" data-category="games" id="hamster-hour">
+   <div class="mark" aria-hidden="true">HH</div>
+   <div>
+    <div class="row"><h3>Hamster Hour</h3><span class="stage deployed">Contracts deployed</span></div>
+    <p class="description">Bet IMD on how much the hamster runs. V2 has its own HAMSTER token and a lose-to-earn design.</p>
+    <div class="actions"><a href="https://hamsterhour.fun" target="_blank" rel="noopener noreferrer">Website ↗</a><a href="https://x.com/hamsterhourgame" target="_blank" rel="noopener noreferrer">X ↗</a><a href="https://github.com/identity-md-launches/launch-2260-build-hamster-hour-v2" target="_blank" rel="noopener noreferrer">Code ↗</a></div>
+    <details><summary aria-label="Details for Hamster Hour">What we checked</summary><div class="detail">
+     <p>Contract code is present for the V2 game and HAMSTER on Ethereum mainnet. Bets use IMD; SQK is not required to play.</p>
+     <p>The project <a href="https://x.com/hamsterhourgame/status/2112635699077747150" target="_blank" rel="noopener noreferrer">announced HAMSTER on 20 Oct</a>. The token belongs to this app, separate from SQK. Repeat player activity and the full betting flow have not been verified.</p>
+     <div class="contract-links"><a href="https://etherscan.io/address/0xe33ab493249a2df0d8c4a71ac54f46d1f7778367" target="_blank" rel="noopener noreferrer">V2 game contract ↗</a><a href="https://etherscan.io/address/0x8e7c7936b4f2d4475dc4bacd174dc228d4d24e86" target="_blank" rel="noopener noreferrer">HAMSTER contract ↗</a></div>
+    </div></details>
+   </div>
+  </article>
+  <article class="project" data-category="games" id="exsqueektion">
+   <div class="mark" aria-hidden="true">EX</div>
+   <div>
+    <div class="row"><h3>Exsqueektion</h3><span class="stage">Announced</span></div>
+    <p class="description">Enter, grab loot, get out. The hamster keeps the portal open. If he stops, anyone still inside dies.</p>
+    <div class="actions"><a href="https://x.com/pillheadddd/status/2111848910368972864" target="_blank" rel="noopener noreferrer">Announcement ↗</a></div>
+    <details><summary aria-label="Details for Exsqueektion">What we checked</summary><div class="detail">
+     <p>Pillhead described the multiplayer extraction game on 18 Oct. A playable release or deployed game contract has not yet been independently verified.</p>
+     <p>The link to Squeekchain is the wheel-controlled portal: the hamster's running sets the window for escape.</p>
+    </div></details>
+   </div>
+  </article>
+  <article class="project" data-category="vaults" id="quadconnect">
+   <div class="mark quad" aria-hidden="true">QC</div>
+   <div>
+    <div class="row"><h3>quadConnect</h3><span class="stage">Paper demo</span></div>
+    <p class="description">A vault built around Squeek mining, hourly long/short strategies and compounding. Try the paper-money interface.</p>
+    <div class="actions"><a href="https://quad.cx" target="_blank" rel="noopener noreferrer">Website ↗</a><a href="https://x.com/CelerityCodes" target="_blank" rel="noopener noreferrer">Builder ↗</a><a href="https://x.com/CelerityCodes/status/2114465198518198354" target="_blank" rel="noopener noreferrer">Update ↗</a></div>
+    <details><summary aria-label="Details for quadConnect">What we checked</summary><div class="detail">
+     <p>CelerityCodes <a href="https://x.com/CelerityCodes/status/2112654209430827034" target="_blank" rel="noopener noreferrer">announced the testnet on 20 Oct</a>. Pillhead <a href="https://x.com/pillheadddd/status/2114473150587298120" target="_blank" rel="noopener noreferrer">shared a testing invitation on 25 Oct</a>.</p>
+     <p>The website opens in paper-money mode and labels its returns as simulated. The interface is accessible; live deposits, contracts and financial performance have not been independently confirmed.</p>
+    </div></details>
+   </div>
+  </article>
+  <article class="project" data-category="launchpads" id="wheelpad">
+   <div class="mark wheel" aria-hidden="true">WP</div>
+   <div>
+    <div class="row"><h3>WheelPad</h3><span class="stage">Early signal</span></div>
+    <p class="description">Memecoins whose supply unlocks as Squeektoshi runs, according to the project's profile.</p>
+    <div class="actions"><a href="https://x.com/wheelpadfun" target="_blank" rel="noopener noreferrer">X ↗</a></div>
+    <details><summary aria-label="Details for WheelPad">What we checked</summary><div class="detail">
+     <p>The project's own bio says it is live on Sepolia. A connected public website, repository or contract has not yet been independently identified.</p>
+     <p>Included as an early project signal. Its claimed testnet deployment still needs verification.</p>
+    </div></details>
+   </div>
+  </article>
+ </div>
+ <aside class="proposal" aria-label="Protocol proposal">
+  <p class="kick">On the drawing board</p>
+  <h3>SQK ↔ IMD Build Vault</h3>
+  <p>A proposal to fund builders and route a share of app fees to SQK buy-and-burn.</p>
+  <details><summary aria-label="Details for Build Vault">How it could work</summary><div class="detail">
+   <ol class="steps"><li><b>01 / BACK</b>SQK stakers pledge tokens to a project.</li><li><b>02 / BUILD</b>Vested bonds bring in IMD to pay the swarm.</li><li><b>03 / RECYCLE</b>Fees pay builders, buy and burn SQK, and refill the IMD vault.</li></ol>
+   <p>Pillhead <a href="https://x.com/pillheadddd/status/2112969134762074600" target="_blank" rel="noopener noreferrer">outlined the idea on 21 Oct</a>. A deployed vault, funded projects and fee-driven burns have not been verified.</p>
+  </div></details>
+ </aside>
+ <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt=""><span>moni</span><i>research</i></span></footer>
+</section>
+<script>
+(()=>{
+ const root=document.getElementById('sqk-eco');
+ const projects=[...root.querySelectorAll('.project')];
+ const filters=[...root.querySelectorAll('[data-filter]')];
+ const details=[...root.querySelectorAll('details')];
+ filters.forEach(button=>button.addEventListener('click',()=>{
+  const filter=button.dataset.filter;
+  filters.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+  projects.forEach(project=>{const visible=filter==='all'||project.dataset.category===filter;project.hidden=!visible;if(!visible)project.querySelector('details').open=false;});
+  const count=projects.filter(p=>!p.hidden).length;
+  root.querySelector('#eco-result').textContent='Showing '+count+' '+(count===1?'project.':'projects.');
+ }));
+ // One expanded item keeps the article readable without an inner scrollbar.
+ details.forEach(detail=>detail.addEventListener('toggle',()=>{
+  if(detail.open)details.forEach(other=>{if(other!==detail)other.open=false;});
+ }));
+})();
+</script>
+<script>
+(()=>{
+ const root=document.getElementById('sqk-eco');if(!root||window.parent===window)return;
+ const reportHeight=()=>{const box=root.getBoundingClientRect();const last=root.lastElementChild?.getBoundingClientRect();const height=Math.max(1,Math.floor((last?.bottom??box.bottom)-box.top)-2);window.parent.postMessage({type:'moni-widget:resize',height},'https://research.moni.ai');};
+ new ResizeObserver(reportHeight).observe(root);
+ window.addEventListener('load',reportHeight,{once:true});window.addEventListener('resize',reportHeight);
+ window.addEventListener('message',event=>{if(event.origin==='https://research.moni.ai'&&event.data?.type==='moni-widget:request-resize')reportHeight();});
+ [0,100,500,1500].forEach(delay=>setTimeout(reportHeight,delay));
+})();
+</script>
+</body>
+</html>
