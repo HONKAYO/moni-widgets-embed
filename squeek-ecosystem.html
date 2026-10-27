@@ -74,6 +74,14 @@ html,body{margin:0;padding:0;background:transparent}
 #sqk-eco .mark{overflow:hidden;letter-spacing:0}#sqk-eco .mark img{object-position:center}
 #sqk-eco .empty{padding:20px 0;font-size:12px}#sqk-eco .stage{white-space:normal;text-align:right;max-width:145px}
 @media(max-width:520px){#sqk-eco .feed-credit{margin-left:16px;margin-right:16px}#sqk-eco .pages{padding-left:16px;padding-right:16px}#sqk-eco .stage{text-align:left;max-width:none}}
+
+/* Four equal card slots remain reserved on every page, including short pages. */
+#sqk-eco{position:relative;overflow-anchor:none}
+#sqk-eco .project{min-height:var(--card-slot,0px);align-content:start}
+#sqk-eco .description{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+#sqk-eco .list{overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable}
+#sqk-eco .measure{position:absolute;left:0;top:0;width:100%;visibility:hidden;pointer-events:none;height:auto!important;min-height:0!important}
+#sqk-eco .measure .project{min-height:0}
 </style>
 </head>
 <body>
@@ -106,7 +114,7 @@ html,body{margin:0;padding:0;background:transparent}
  const root=document.getElementById('sqk-eco');
  const FEED='https://garum01.github.io/squeek-radar-widget/projects.json';
  const BASE='https://garum01.github.io/squeek-radar-widget/';
- const PAGE_SIZE=3, INTERVAL=60000;
+ const PAGE_SIZE=4, INTERVAL=60000;
  const list=root.querySelector('.list'), filters=root.querySelector('.filters'), pages=root.querySelector('.pages');
  const status=root.querySelector('#feed-state'), result=root.querySelector('#eco-result');
  const labels={game:'Games',games:'Games',defi:'DeFi',vault:'Vaults',vaults:'Vaults',memecoin:'Memecoins',launchpad:'Launchpads',tools:'Tools',other:'Other'};
@@ -138,6 +146,7 @@ html,body{margin:0;padding:0;background:transparent}
   for(const key of Object.keys(linkNames)){const a=link(p.links?.[key],linkNames[key]+' ↗');if(a)actions.append(a);}body.append(actions);
   const details=node('details'),summary=node('summary','','Details & sources');summary.setAttribute('aria-label','Details for '+p.name);
   const content=node('div','detail');
+  if(typeof p.description_en==='string')paragraph(content,p.description_en);
   if(p.curated_text?.version===1&&Array.isArray(p.curated_text.paragraphs)){
    p.curated_text.paragraphs.slice(0,8).forEach(parts=>{if(!Array.isArray(parts))return;const para=node('p');parts.slice(0,30).forEach(part=>{if(typeof part?.text!=='string')return;const a=part.url&&link(part.url,part.text);para.append(a||document.createTextNode(part.text));});content.append(para);});
   }
@@ -157,6 +166,17 @@ html,body{margin:0;padding:0;background:transparent}
   if(!content.childElementCount)paragraph(content,'This entry comes from the Squeek Radar feed. See the project links above.');
   details.append(summary,content);body.append(details);article.append(mark,body);return article;
  }
+ let reservedWidth=0;
+ function reserveSlots(){
+  const width=list.getBoundingClientRect().width;
+  const measuring=node('div','list measure');measuring.setAttribute('aria-hidden','true');
+  measuring.inert=true;measuring.append(...data.projects.map(card));root.append(measuring);
+  const slot=Math.ceil(Math.max(0,...[...measuring.children].map(e=>e.getBoundingClientRect().height)));
+  measuring.remove();root.style.setProperty('--card-slot',slot+'px');
+  const base=slot*PAGE_SIZE;
+  list.style.height=base+'px';
+  reservedWidth=width;
+ }
  function render(){
   const openId=list.querySelector('details[open]')?.closest('article')?.dataset.projectId;
   const counts=new Map();data.projects.forEach(p=>counts.set(category(p),(counts.get(category(p))||0)+1));
@@ -167,16 +187,17 @@ html,body{margin:0;padding:0;background:transparent}
    b.addEventListener('click',()=>{filter=key;page=0;render();[...filters.children].find(e=>e.dataset.filter===key)?.focus();});filters.append(b);
   }
   const visible=ordered().filter(p=>filter==='all'||category(p)===filter),total=Math.max(1,Math.ceil(visible.length/PAGE_SIZE));page=Math.min(page,total-1);
-  list.replaceChildren(...visible.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE).map(card));
+  list.replaceChildren(...visible.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE).map(card));list.scrollTop=0;
   if(!visible.length)list.append(node('p','empty','No projects in this category yet.'));
   list.querySelectorAll('article').forEach(a=>{if(a.dataset.projectId===openId)a.querySelector('details').open=true;});
-  pages.hidden=total<=1;pages.querySelector('[data-page="prev"]').disabled=page===0;pages.querySelector('[data-page="next"]').disabled=page>=total-1;
+  reserveSlots();
+  pages.hidden=false;pages.querySelector('[data-page="prev"]').disabled=page===0;pages.querySelector('[data-page="next"]').disabled=page>=total-1;
   root.querySelector('#page-state').textContent=(page+1)+' / '+total;
   result.textContent='Showing '+Math.min(PAGE_SIZE,Math.max(0,visible.length-page*PAGE_SIZE))+' of '+visible.length+' projects.';
  }
  pages.querySelector('[data-page="prev"]').addEventListener('click',()=>{page--;render();});
  pages.querySelector('[data-page="next"]').addEventListener('click',()=>{page++;render();});
- root.addEventListener('toggle',event=>{if(event.target.tagName==='DETAILS'&&event.target.open)root.querySelectorAll('details[open]').forEach(d=>{if(d!==event.target)d.open=false;});},true);
+ root.addEventListener('toggle',event=>{if(event.target.tagName==='DETAILS'&&event.target.open){root.querySelectorAll('details[open]').forEach(d=>{if(d!==event.target)d.open=false;});}},true);
  async function refresh(){
   if(busy)return;busy=true;
   try{
@@ -189,7 +210,10 @@ html,body{margin:0;padding:0;background:transparent}
    status.textContent=lastSuccess?'Connection paused · saved list':'Saved list · 27 Oct 2026';status.title='The feed could not be reached. Existing cards remain available; the next check is automatic.';
   }finally{busy=false;}
  }
- data=validated(data);render();refresh();setInterval(()=>{if(!document.hidden)refresh();},INTERVAL);
+ data=validated(data);render();
+ new ResizeObserver(()=>{if(Math.abs(list.getBoundingClientRect().width-reservedWidth)>.5)reserveSlots();}).observe(list);
+ document.fonts?.ready.then(reserveSlots);
+ refresh();setInterval(()=>{if(!document.hidden)refresh();},INTERVAL);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});
 })();
 </script>
