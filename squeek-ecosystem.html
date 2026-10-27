@@ -191,6 +191,22 @@ html,body{margin:0;padding:0;background:transparent}
   img.addEventListener('error',()=>{if(++index<candidates.length){img.style.opacity='0';img.src=candidates[index];}else{mark.replaceChildren(document.createTextNode(initials));delete mark.dataset.avatarSource;}});
   mark.append(img);img.src=candidates[0];return mark;
  }
+ function projectLinks(p){
+  const links={...p.links};
+  const profile=safeURL(links.x);
+  if(profile){const u=new URL(profile);if(/^(www\.)?(x|twitter)\.com$/.test(u.hostname)&&/^\/[^/]+\/status\/\d+\/?$/.test(u.pathname)){links.announcement ||= links.x;delete links.x;}}
+  return links;
+ }
+ function projectDocs(p){
+  const docs=safeURL(p.links?.docs);if(!docs)return null;
+  const target=new URL(docs),host=target.hostname.toLowerCase();
+  if(host==='squeekchain.com'||host.endsWith('.squeekchain.com'))return null;
+  const website=safeURL(p.links?.website);
+  if(website){const own=new URL(website).hostname.toLowerCase().replace(/^www\./,'');if(host===own||host.endsWith('.'+own))return docs;}
+  const github=safeURL(p.links?.github);
+  if(github){const repo=new URL(github),parts=repo.pathname.split('/').filter(Boolean).slice(0,2);if(repo.hostname==='github.com'&&parts.length===2){const prefix='/'+parts.join('/');if(host==='github.com'&&(target.pathname===prefix||target.pathname.startsWith(prefix+'/')))return docs;if(host===parts[0].toLowerCase()+'.github.io'&&(target.pathname==='/'+parts[1]||target.pathname.startsWith('/'+parts[1]+'/')))return docs;}}
+  return null;
+ }
  function card(p,index){
   const article=node('article','project');article.dataset.projectId=p.id;article.dataset.category=category(p);
   const mark=projectAvatar(p);
@@ -201,9 +217,11 @@ html,body{margin:0;padding:0;background:transparent}
   row.append(stageTag);body.append(row);
   body.append(node('p','description',typeof p.description_en==='string'?p.description_en:'Details are being reviewed by Squeek Radar.'));
   const actions=node('div','actions');
-  for(const key of Object.keys(linkNames)){const a=link(p.links?.[key],linkNames[key]+' ↗');if(a)actions.append(a);}body.append(actions);
+  const links=projectLinks(p);
+  for(const key of ['website','x','announcement','github','docs','telegram']){const a=link(key==='docs'?projectDocs(p):links[key],linkNames[key]+' ↗');if(a)actions.append(a);}body.append(actions);
   const details=node('details'),summary=node('summary','','What we checked');summary.setAttribute('aria-label','Details for '+p.name);
   const content=node('div','detail');
+  for(const [url,label] of [[!projectDocs(p)&&safeURL(links.docs),'Documentation reference ↗'],[safeURL(links.explorer),'Explorer reference ↗']]){if(!url)continue;const para=node('p'),a=link(url,label);if(a){para.append(a);content.append(para);}}
   if(typeof p.description_en==='string')paragraph(content,p.description_en);
   if(p.curated_text?.version===1&&Array.isArray(p.curated_text.paragraphs)){
    p.curated_text.paragraphs.slice(0,8).forEach(parts=>{if(!Array.isArray(parts))return;const para=node('p');parts.slice(0,30).forEach(part=>{if(typeof part?.text!=='string')return;const a=part.url&&link(part.url,part.text);para.append(a||document.createTextNode(part.text));});content.append(para);});
