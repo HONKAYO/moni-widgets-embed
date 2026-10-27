@@ -212,8 +212,12 @@ html,body{margin:0;padding:0;background:transparent}
   const mark=projectAvatar(p);
   const body=node('div'),row=node('div','row');row.append(node('h3','',p.name));
   const stage=p.stage||p.lifecycle_stage||'unknown';
-  const stageTag=node('span','stage',stages[stage]||'Testnet');
-  if(stage==='unknown'||!stages[stage])stageTag.title='Squeekchain testnet · project deployment not independently confirmed';
+  // A dated editorial verification fills an unknown feed stage only.
+  // Explicit future stage changes from Radar continue to take precedence.
+  const verifiedMainnet=p.id==='82c3c3c9cd2c39a7'&&stage==='unknown'&&(!p.lifecycle_stage||p.lifecycle_stage==='unknown');
+  const stageTag=node('span','stage',verifiedMainnet?'Mainnet contract':stages[stage]||'Testnet');
+  if(verifiedMainnet)stageTag.title='Hamster Hour v2 game contract on Ethereum mainnet; checked 27 Oct 2026. Player activity unconfirmed.';
+  else if(stage==='unknown'||!stages[stage])stageTag.title='Squeekchain testnet · project deployment not independently confirmed';
   row.append(stageTag);body.append(row);
   body.append(node('p','description',typeof p.description_en==='string'?p.description_en:'Details are being reviewed by Squeek Radar.'));
   const actions=node('div','actions');
@@ -221,6 +225,11 @@ html,body{margin:0;padding:0;background:transparent}
   for(const key of ['website','x','announcement','github','docs','telegram']){const a=link(key==='docs'?projectDocs(p):links[key],linkNames[key]+' ↗');if(a)actions.append(a);}body.append(actions);
   const details=node('details'),summary=node('summary','','What we checked');summary.setAttribute('aria-label','Details for '+p.name);
   const content=node('div','detail');
+  if(p.id==='82c3c3c9cd2c39a7'){
+   const checked=node('p');checked.append(document.createTextNode('The v2 game contract has code on Ethereum mainnet, checked 27 Oct 2026. '),link('https://etherscan.io/address/0xe33ab493249a2df0d8c4a71ac54f46d1f7778367','Game contract ↗'));content.append(checked);
+   const repo=node('p');repo.append(link('https://github.com/identity-md-launches/launch-2260-build-hamster-hour-v2','V2 source ↗'));content.append(repo);
+   paragraph(content,'Contract deployment does not establish sustained player activity.');
+  }
   for(const [url,label] of [[!projectDocs(p)&&safeURL(links.docs),'Documentation reference ↗'],[safeURL(links.explorer),'Explorer reference ↗']]){if(!url)continue;const para=node('p'),a=link(url,label);if(a){para.append(a);content.append(para);}}
   if(typeof p.description_en==='string')paragraph(content,p.description_en);
   if(p.curated_text?.version===1&&Array.isArray(p.curated_text.paragraphs)){
