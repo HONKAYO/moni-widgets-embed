@@ -111,13 +111,8 @@ html,body{margin:0;padding:0;background:transparent}
  #sqk-eco .project h3{font-size:16px}
  #sqk-eco .project .description{display:-webkit-box;-webkit-line-clamp:2;overflow:hidden}
 }
-/* Project evidence opens above the grid, never inside a clipped card slot. */
-#sqk-eco .project-dialog{inset:18px 18px auto;width:calc(100% - 36px);max-width:560px;max-height:calc(100dvh - 36px);box-sizing:border-box;margin:0 auto;padding:20px;border:1px solid #c3aff7;background:#fff;color:var(--body);overflow:auto;overscroll-behavior:contain}
-#sqk-eco .project-dialog::backdrop{background:#20133555}
-#sqk-eco .dialog-head{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:14px}
-#sqk-eco .dialog-head h3{font-size:19px;line-height:1.3}
-#sqk-eco .dialog-close{flex:none;padding:6px 10px;border:1px solid #c3aff7;background:var(--accent-soft);color:var(--accent);font:500 12px Geist,system-ui,sans-serif;cursor:pointer}
-#sqk-eco .project-dialog .detail{margin:0;background:#fcfbff;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+#sqk-eco .list{overflow:visible}
+#sqk-eco .project{align-content:start}
 </style>
 </head>
 <body>
@@ -154,7 +149,7 @@ html,body{margin:0;padding:0;background:transparent}
  const list=root.querySelector('.list'), filters=root.querySelector('.filters'), pages=root.querySelector('.pages');
  const status=root.querySelector('#feed-state'), result=root.querySelector('#eco-result');
  const labels={nft:'NFTs',game:'Games',games:'Games',defi:'DeFi',vault:'Vaults',vaults:'Vaults',memecoin:'Memecoins',launchpad:'Launchpads',tools:'Tools',other:'Other'};
- const stages={unknown:'Stage unconfirmed',research:'Early signal',development:'In development',testnet_announced:'Testnet announced',launch_announced:'Launch announced',live_confirmed:'Live activity confirmed',announced:'Announced'};
+ const stages={unknown:'Testnet',research:'Early signal',development:'In development',testnet_announced:'Testnet announced',launch_announced:'Launch announced',live_confirmed:'Live activity confirmed',announced:'Announced'};
  const linkNames={website:'Website',x:'X',announcement:'Announcement',github:'Code',docs:'Docs',telegram:'Telegram',explorer:'Explorer'};
  let data=JSON.parse(document.getElementById('radar-fallback').textContent), filter='all', page=0, busy=false, signature='', lastSuccess=0;
  const node=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
@@ -200,7 +195,10 @@ html,body{margin:0;padding:0;background:transparent}
   const article=node('article','project');article.dataset.projectId=p.id;article.dataset.category=category(p);
   const mark=projectAvatar(p);
   const body=node('div'),row=node('div','row');row.append(node('h3','',p.name));
-  row.append(node('span','stage',stages[p.stage||p.lifecycle_stage]||'Stage unconfirmed'));body.append(row);
+  const stage=p.stage||p.lifecycle_stage||'unknown';
+  const stageTag=node('span','stage',stages[stage]||'Testnet');
+  if(stage==='unknown'||!stages[stage])stageTag.title='Squeekchain testnet · project deployment not independently confirmed';
+  row.append(stageTag);body.append(row);
   body.append(node('p','description',typeof p.description_en==='string'?p.description_en:'Details are being reviewed by Squeek Radar.'));
   const actions=node('div','actions');
   for(const key of Object.keys(linkNames)){const a=link(p.links?.[key],linkNames[key]+' ↗');if(a)actions.append(a);}body.append(actions);
@@ -236,7 +234,7 @@ html,body{margin:0;padding:0;background:transparent}
   const columns=matchMedia('(max-width:560px)').matches?1:2;
   const rows=Math.ceil(PAGE_SIZE/columns),gap=parseFloat(getComputedStyle(list).rowGap)||0;
   const base=slot*rows+gap*(rows-1);
-  list.style.height=base+'px';
+  list.style.height='auto';list.style.minHeight=base+'px';
   reservedWidth=width;
  }
  function render(){
@@ -259,18 +257,7 @@ html,body{margin:0;padding:0;background:transparent}
  }
  pages.querySelector('[data-page="prev"]').addEventListener('click',()=>{page--;render();});
  pages.querySelector('[data-page="next"]').addEventListener('click',()=>{page++;render();});
- const evidenceDialog=node('dialog','project-dialog');
- evidenceDialog.setAttribute('aria-labelledby','project-evidence-title');
- const dialogHead=node('div','dialog-head'),dialogTitle=node('h3','');dialogTitle.id='project-evidence-title';
- const dialogClose=node('button','dialog-close','Close');dialogClose.type='button';dialogClose.addEventListener('click',()=>evidenceDialog.close());
- const dialogBody=node('div','dialog-body');dialogHead.append(dialogTitle,dialogClose);evidenceDialog.append(dialogHead,dialogBody);root.insertBefore(evidenceDialog,root.querySelector('.ft'));
- root.addEventListener('toggle',event=>{
-  const details=event.target;if(details.tagName!=='DETAILS'||!details.open)return;
-  const project=details.closest('.project');if(!project)return;
-  details.open=false;dialogTitle.textContent=project.querySelector('h3').textContent+' · What we checked';
-  dialogBody.replaceChildren(details.querySelector('.detail').cloneNode(true));
-  if(!evidenceDialog.open)evidenceDialog.showModal();
- },true);
+ root.addEventListener('toggle',event=>{if(event.target.tagName==='DETAILS'&&event.target.open){root.querySelectorAll('.project details[open]').forEach(d=>{if(d!==event.target)d.open=false;});}},true);
  async function refresh(){
   if(busy)return;busy=true;
   try{
