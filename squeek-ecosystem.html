@@ -84,9 +84,6 @@ html,body{margin:0;padding:0;background:transparent}
 #sqk-eco .measure .project{min-height:0}
 #sqk-eco .mark{position:relative}#sqk-eco .mark img{position:absolute;inset:0}
 
-/* Reserve the fully expanded proposal, including in editors with fixed iframe heights. */
-#sqk-eco .proposal{min-height:var(--proposal-slot,0px)}
-#sqk-eco .proposal-measure{position:absolute;left:0;right:0;top:0;visibility:hidden;pointer-events:none;min-height:0!important}
 @media(max-width:520px){#sqk-eco .steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}#sqk-eco .steps b{display:block;margin-right:0}}
 </style>
 </head>
@@ -106,10 +103,10 @@ html,body{margin:0;padding:0;background:transparent}
   <p class="kick">On the drawing board</p>
   <h3>SQK ↔ IMD Build Vault</h3>
   <p>A proposal to fund builders and route a share of app fees to SQK buy-and-burn.</p>
-  <details><summary aria-label="Details for Build Vault">How it could work</summary><div class="detail">
+  <div class="detail">
    <ol class="steps"><li><b>01 / BACK</b>SQK stakers pledge tokens to a project.</li><li><b>02 / BUILD</b>Vested bonds bring in IMD to pay the swarm.</li><li><b>03 / RECYCLE</b>Fees pay builders, buy and burn SQK, and refill the IMD vault.</li></ol>
    <p>Pillhead <a href="https://x.com/pillheadddd/status/2112969134762074600" target="_blank" rel="noopener noreferrer">outlined the proposal on 21 Oct</a>. No deployed vault, funded projects or fee-driven burns verified.</p>
-  </div></details>
+  </div>
  </aside>
  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt=""><span>moni</span><i>research</i></span></footer>
 </section>
@@ -196,13 +193,6 @@ html,body{margin:0;padding:0;background:transparent}
   if(!content.childElementCount)paragraph(content,'This entry comes from the Squeek Radar feed. See the project links above.');
   details.append(summary,content);body.append(details);article.append(mark,body);return article;
  }
- function reserveProposal(){
-  const proposal=root.querySelector('.proposal:not(.proposal-measure)');
-  const measuring=proposal.cloneNode(true);measuring.classList.add('proposal-measure');
-  measuring.setAttribute('aria-hidden','true');measuring.inert=true;measuring.querySelector('details').open=true;
-  root.append(measuring);const height=Math.ceil(measuring.getBoundingClientRect().height);measuring.remove();
-  root.style.setProperty('--proposal-slot',height+'px');
- }
  let reservedWidth=0;
  function reserveSlots(){
   const width=list.getBoundingClientRect().width;
@@ -212,7 +202,7 @@ html,body{margin:0;padding:0;background:transparent}
   measuring.remove();root.style.setProperty('--card-slot',slot+'px');
   const base=slot*PAGE_SIZE;
   list.style.height=base+'px';
-  reservedWidth=width;reserveProposal();
+  reservedWidth=width;
  }
  function render(){
   const openId=list.querySelector('details[open]')?.closest('article')?.dataset.projectId;
