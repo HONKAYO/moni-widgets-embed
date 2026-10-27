@@ -111,6 +111,13 @@ html,body{margin:0;padding:0;background:transparent}
  #sqk-eco .project h3{font-size:16px}
  #sqk-eco .project .description{display:-webkit-box;-webkit-line-clamp:2;overflow:hidden}
 }
+/* Project evidence opens above the grid, never inside a clipped card slot. */
+#sqk-eco .project-dialog{inset:18px 18px auto;width:calc(100% - 36px);max-width:560px;max-height:calc(100dvh - 36px);box-sizing:border-box;margin:0 auto;padding:20px;border:1px solid #c3aff7;background:#fff;color:var(--body);overflow:auto;overscroll-behavior:contain}
+#sqk-eco .project-dialog::backdrop{background:#20133555}
+#sqk-eco .dialog-head{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:14px}
+#sqk-eco .dialog-head h3{font-size:19px;line-height:1.3}
+#sqk-eco .dialog-close{flex:none;padding:6px 10px;border:1px solid #c3aff7;background:var(--accent-soft);color:var(--accent);font:500 12px Geist,system-ui,sans-serif;cursor:pointer}
+#sqk-eco .project-dialog .detail{margin:0;background:#fcfbff;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
 </style>
 </head>
 <body>
@@ -252,7 +259,18 @@ html,body{margin:0;padding:0;background:transparent}
  }
  pages.querySelector('[data-page="prev"]').addEventListener('click',()=>{page--;render();});
  pages.querySelector('[data-page="next"]').addEventListener('click',()=>{page++;render();});
- root.addEventListener('toggle',event=>{if(event.target.tagName==='DETAILS'&&event.target.open){root.querySelectorAll('details[open]').forEach(d=>{if(d!==event.target)d.open=false;});}},true);
+ const evidenceDialog=node('dialog','project-dialog');
+ evidenceDialog.setAttribute('aria-labelledby','project-evidence-title');
+ const dialogHead=node('div','dialog-head'),dialogTitle=node('h3','');dialogTitle.id='project-evidence-title';
+ const dialogClose=node('button','dialog-close','Close');dialogClose.type='button';dialogClose.addEventListener('click',()=>evidenceDialog.close());
+ const dialogBody=node('div','dialog-body');dialogHead.append(dialogTitle,dialogClose);evidenceDialog.append(dialogHead,dialogBody);root.insertBefore(evidenceDialog,root.querySelector('.ft'));
+ root.addEventListener('toggle',event=>{
+  const details=event.target;if(details.tagName!=='DETAILS'||!details.open)return;
+  const project=details.closest('.project');if(!project)return;
+  details.open=false;dialogTitle.textContent=project.querySelector('h3').textContent+' · What we checked';
+  dialogBody.replaceChildren(details.querySelector('.detail').cloneNode(true));
+  if(!evidenceDialog.open)evidenceDialog.showModal();
+ },true);
  async function refresh(){
   if(busy)return;busy=true;
   try{
