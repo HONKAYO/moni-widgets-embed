@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Metric - why transaction order matters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:transparent}
+#metric-order{--accent:#6c42eb;--wash:#6c42eb14;--ink:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--soft:#fafafb;--red:#e24b4a;--green:#0fa968;font:12px/1.5 Geist,sans-serif;color:var(--body);background:#fff;width:100%;max-width:none;overflow:hidden}
+#metric-order *{box-sizing:border-box}
+#metric-order .inner{padding:22px}
+#metric-order .kicker{margin:0 0 8px;font:500 9px/1.3 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+#metric-order h2{margin:0;color:var(--ink);font-size:26px;font-weight:700;line-height:1.12;letter-spacing:-.025em}
+#metric-order .dek{margin:9px 0 16px;font-size:12px}
+#metric-order .event{display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--soft);border:1px solid var(--line);margin-bottom:12px}
+#metric-order .icon{width:21px;height:21px;fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;flex:none}
+#metric-order .event strong{font-size:12px;font-weight:600;color:var(--ink)}
+#metric-order .event small{display:block;font-size:10px;color:var(--muted)}
+#metric-order .lane{border:1px solid var(--line);padding:13px 13px 11px;margin-top:9px}
+#metric-order .lane-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:18px}
+#metric-order .lane-head strong{font-size:12px;color:var(--ink);font-weight:600}
+#metric-order .lane-head span{font:400 9px/1.4 'IBM Plex Mono',monospace;color:var(--muted)}
+#metric-order .sequence{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;padding-top:10px}
+#metric-order .rail{position:absolute;left:8px;right:8px;top:0;height:1px;background:var(--line)}
+#metric-order .cursor{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--accent);top:-3px;left:100%;transform:translateX(-50%);transition:left .7s ease;box-shadow:0 0 0 3px #fff}
+#metric-order .stale .cursor{background:var(--red)}
+#metric-order .step{position:relative;padding:9px;background:var(--soft);border:1px solid var(--line);min-width:0;transition:border-color .2s,background .2s}
+#metric-order .step .num{font:400 8px/1.4 'IBM Plex Mono',monospace;color:var(--muted)}
+#metric-order .step b{display:block;font-weight:600;font-size:12px;line-height:1.35;color:var(--ink);margin-top:5px}
+#metric-order .step small{font-size:10px;line-height:1.4;display:block;margin-top:4px;color:var(--body)}
+#metric-order .step.active{background:var(--wash);border-color:var(--accent)}
+#metric-order .stale .step.active{background:#e24b4a08;border-color:#e24b4a80}
+#metric-order .outcome{display:flex;gap:8px;align-items:center;margin:10px 0 0;font-size:10px;line-height:1.5}
+#metric-order .outcome i{height:6px;width:6px;border-radius:50%;background:var(--accent);flex:none}
+#metric-order .stale .outcome i{background:var(--red)}
+#metric-order .outcome strong{font-weight:600;color:var(--ink)}
+#metric-order .controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:13px}
+#metric-order .controls span{font-size:10px;color:var(--muted)}
+#metric-order button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--accent);background:var(--wash);color:var(--accent);font:500 11px/1.4 Geist,sans-serif;padding:7px 11px;cursor:pointer;flex:none}
+#metric-order button svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#metric-order button:focus-visible,#metric-order a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#metric-order .context{display:flex;justify-content:space-between;gap:12px;margin:12px 0 0;color:var(--muted);font-size:9px;line-height:1.5}
+#metric-order a{color:var(--accent);text-decoration:none}
+#metric-order .context a{flex:none}
+#metric-order .ft{padding:10px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+#metric-order .brand{display:inline-flex;align-items:center;gap:4px;color:var(--accent);font-size:12px;font-weight:600;line-height:15px}
+#metric-order .eye{width:15px;height:15px;display:block;flex:0 0 15px}
+#metric-order .brand i{font:600 italic 12px/15px Geist,sans-serif;color:var(--ink)}
+@media(prefers-reduced-motion:reduce){#metric-order .cursor,#metric-order .step{transition:none}}
+@media(max-width:540px){#metric-order .inner{padding:18px 16px}#metric-order h2{font-size:23px}#metric-order .lane{padding:11px 10px}#metric-order .sequence{gap:8px}#metric-order .step{padding:8px 7px}#metric-order .step b{font-size:11px}#metric-order .lane-head{display:block}#metric-order .lane-head span{display:block;margin-top:3px}#metric-order .ft{padding-right:16px}}
+@media(max-width:380px){#metric-order .step b{font-size:10px}#metric-order .step small{font-size:9px}#metric-order .context{display:block}}
+</style>
+</head>
+<body>
+<div id="metric-order">
+  <div class="inner">
+    <p class="kicker">Metric / quote delivery</p>
+    <h2>Why transaction order matters</h2>
+    <p class="dek">A builder can put a signed price update before the swap that uses it. The order changes the fill.</p>
+    <div class="event"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18l6-6 4 3 8-11M15 4h6v6"/></svg><div><strong>External price moves from $100 to $110</strong><small>Same buy order: 1 token, maximum price $112. Illustrative quotes.</small></div></div>
+    <div class="lane stale">
+      <div class="lane-head"><strong>Trade before update</strong><span>The old quote is still available</span></div>
+      <div class="sequence"><div class="rail"><i class="cursor"></i></div><div class="step" data-step="0"><span class="num">01 / ORDER</span><b>Buyer arrives</b><small>Buy 1 token</small></div><div class="step" data-step="1"><span class="num">02 / SWAP</span><b>Fill at $101</b><small>Old ask executes</small></div><div class="step active" data-step="2"><span class="num">03 / UPDATE</span><b>Reference: $110</b><small>Too late for this fill</small></div></div>
+      <p class="outcome"><i></i><span><strong>$9 below the new reference.</strong> The pool sold at a stale quote.</span></p>
+    </div>
+    <div class="lane fresh">
+      <div class="lane-head"><strong>Update before trade</strong><span>Conditional update path</span></div>
+      <div class="sequence"><div class="rail"><i class="cursor"></i></div><div class="step" data-step="0"><span class="num">01 / SIGN</span><b>Fresh quote sent</b><small>Maker signs update</small></div><div class="step" data-step="1"><span class="num">02 / INCLUDE</span><b>Update first</b><small>Builder orders it before swap</small></div><div class="step active" data-step="2"><span class="num">03 / SWAP</span><b>Fill at $111</b><small>New ask executes</small></div></div>
+      <p class="outcome"><i></i><span><strong>$1 above the new reference.</strong> This fill uses the updated quote.</span></p>
+    </div>
+    <div class="controls"><span id="mo-status" aria-live="polite">Illustrated sequence; not a latency benchmark.</span><button id="mo-replay" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7a6 6 0 1 1 0 6M4 3v4h4"/></svg>Replay</button></div>
+    <p class="context"><span>Ordering depends on the update pipeline and builder policy. It is not guaranteed. Fees omitted.</span><a href="https://docs.metric.xyz/how-pools-work/freshness-and-ordering.md" target="_blank" rel="noopener noreferrer">Execution mechanics ↗</a></p>
+  </div>
+  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
+</div>
+<script>
+(() => {
+  const root=document.getElementById('metric-order');
+  let timers=[];
+  const status=root.querySelector('#mo-status');
+  const step=n=>{root.querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('active',Number(el.dataset.step)===n));root.querySelectorAll('.cursor').forEach(el=>el.style.left=(n*50)+'%');};
+  const stop=()=>{timers.forEach(clearTimeout);timers=[];};
+  root.querySelector('#mo-replay').addEventListener('click',()=>{
+    stop();
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){step(2);status.textContent='Sequence complete. Reduced motion is enabled.';return;}
+    status.textContent='Follow the dot: the same event, two execution orders.';
+    root.querySelectorAll('.cursor').forEach(el=>el.style.transition='none');
+    step(0);
+    void root.offsetWidth;
+    root.querySelectorAll('.cursor').forEach(el=>el.style.removeProperty('transition'));
+    timers.push(setTimeout(()=>step(1),850),setTimeout(()=>step(2),1700),setTimeout(()=>{status.textContent='Illustrated sequence; not a latency benchmark.';},2550));
+  });
+  window.addEventListener('pagehide',stop);
+})();
+</script>
+<script>
+(() => {
+  const root=document.getElementById('metric-order');
+  if(!root||window.parent===window)return;
+  const reportHeight=()=>{const a=root.getBoundingClientRect(),b=root.lastElementChild?.getBoundingClientRect();const height=Math.max(1,Math.floor((b?.bottom??a.bottom)-a.top)-2);window.parent.postMessage({type:'moni-widget:resize',height},'https://research.moni.ai');};
+  new ResizeObserver(reportHeight).observe(root);
+  window.addEventListener('load',reportHeight,{once:true});
+  window.addEventListener('resize',reportHeight);
+  window.addEventListener('message',event=>{if(event.origin==='https://research.moni.ai'&&event.data?.type==='moni-widget:request-resize')reportHeight();});
+  [0,100,500,1500].forEach(delay=>setTimeout(reportHeight,delay));
+})();
+</script>
+</body>
+</html>

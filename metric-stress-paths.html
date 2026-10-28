@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Metric - how the pool responds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:transparent}
+#metric-stress{--accent:#6c42eb;--wash:#6c42eb14;--ink:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--soft:#fafafb;--amber:#f59e0b;font:12px/1.5 Geist,sans-serif;color:var(--body);background:#fff;width:100%;max-width:none;overflow:hidden}
+#metric-stress *{box-sizing:border-box}
+#metric-stress .inner{padding:22px}
+#metric-stress .kicker{margin:0 0 8px;font:500 9px/1.3 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+#metric-stress h2{margin:0;color:var(--ink);font-size:26px;font-weight:700;line-height:1.12;letter-spacing:-.025em}
+#metric-stress .dek{margin:9px 0 16px;font-size:12px}
+#metric-stress .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
+#metric-stress button{display:inline-flex;align-items:center;gap:6px;font:500 11px/1.4 Geist,sans-serif;padding:8px 11px;background:#fff;color:var(--body);border:1px solid var(--line);cursor:pointer}
+#metric-stress button[aria-pressed=true]{border-color:var(--accent);background:var(--wash);color:var(--accent)}
+#metric-stress button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+#metric-stress button:focus-visible,#metric-stress a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#metric-stress .path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line)}
+#metric-stress .step{min-width:0;padding:14px 12px}
+#metric-stress .step+.step{border-left:1px solid var(--line)}
+#metric-stress .step:nth-child(2){background:#f9f7ff}
+#metric-stress .step .label{display:flex;justify-content:space-between;align-items:center;gap:5px;font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+#metric-stress .step .label svg{width:15px;height:15px;fill:none;stroke:#a6abb5;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#metric-stress .step h3{font-size:15px;line-height:1.25;font-weight:600;letter-spacing:-.025em;color:var(--ink);margin:12px 0 7px}
+#metric-stress .step p{margin:0;font-size:11px;line-height:1.55}
+#metric-stress .summary{display:flex;gap:9px;align-items:flex-start;background:var(--soft);padding:12px;margin-top:12px;border-left:2px solid var(--accent)}
+#metric-stress .summary svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+#metric-stress .summary p{margin:0;font-size:11px;line-height:1.5}
+#metric-stress .limits{margin:11px 0 0;font-size:10px;line-height:1.5;color:var(--body)}
+#metric-stress .limits strong{font-weight:600;color:var(--ink)}
+#metric-stress .context{margin:12px 0 0;color:var(--muted);font-size:9px;line-height:1.5;display:flex;gap:12px;justify-content:space-between}
+#metric-stress a{color:var(--accent);text-decoration:none}
+#metric-stress .context a{flex:none}
+#metric-stress .ft{padding:10px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+#metric-stress .brand{display:inline-flex;align-items:center;gap:4px;color:var(--accent);font-size:12px;font-weight:600;line-height:15px}
+#metric-stress .eye{width:15px;height:15px;display:block;flex:0 0 15px}
+#metric-stress .brand i{font:600 italic 12px/15px Geist,sans-serif;color:var(--ink)}
+@media(max-width:540px){#metric-stress .inner{padding:18px 16px}#metric-stress h2{font-size:23px}#metric-stress button{font-size:10px;padding:7px 9px}#metric-stress .step{padding:12px 9px}#metric-stress .step h3{font-size:13px}#metric-stress .step p{font-size:10.5px}#metric-stress .step .label{font-size:8px}#metric-stress .ft{padding-right:16px}}
+@media(max-width:400px){#metric-stress .path{grid-template-columns:1fr}#metric-stress .step+.step{border-left:0;border-top:1px solid var(--line)}#metric-stress .step h3{margin-top:7px}#metric-stress .context{display:block}}
+</style>
+</head>
+<body>
+<div id="metric-stress">
+  <div class="inner">
+    <p class="kicker">Metric / stress paths</p>
+    <h2>How the pool responds</h2>
+    <p class="dek">A price gap, missing quote, and one-sided flow create different problems. The response depends on the pool's setup.</p>
+    <div class="tabs" role="group" aria-label="Choose a pool stress scenario">
+      <button type="button" data-scenario="gap" aria-pressed="true"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 15h5l3-10h8M14 2l4 3-4 3"/></svg>Market gap</button>
+      <button type="button" data-scenario="feed" aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M6 9v3m4-7v3m4 3v5M2 17h16"/></svg>Feed unavailable</button>
+      <button type="button" data-scenario="flow" aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 10h15l-4-4m4 4-4 4"/></svg>One-sided buying</button>
+    </div>
+    <div class="path" aria-live="polite">
+      <div class="step"><div class="label">01 / Event<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13l-4-4m4 4-4 4"/></svg></div><h3 id="ms-event-title">Market reopens higher</h3><p id="ms-event">The underlying stock jumps. The old quote may no longer reflect its price.</p></div>
+      <div class="step"><div class="label">02 / Pool response<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13l-4-4m4 4-4 4"/></svg></div><h3 id="ms-response-title">Update or reject</h3><p id="ms-response">Quotes follow valid updates. Configured guards may reject affected swaps.</p></div>
+      <div class="step"><div class="label">03 / LP position</div><h3 id="ms-lp-title">Exposure remains</h3><p id="ms-lp">A new reference leaves token balances unchanged. Their dollar value can move.</p></div>
+    </div>
+    <div class="summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM8 12l3 3 5-6"/></svg><p id="ms-summary">A gap does not automatically stop trading. Valid quotes and the configured safeguards determine which swaps can execute.</p></div>
+    <p class="limits"><strong>Safeguards do not insure your deposit.</strong> StopLoss can reject certain swaps; it does not guarantee a sale price. Withdrawal conditions depend on pool extensions.</p>
+    <p class="context"><span>Mechanism examples, not a live stress test. Check the specific provider, extensions, and permissions.</span><a href="https://docs.metric.xyz/use-metric/risks-and-safeguards.md" target="_blank" rel="noopener noreferrer">Risks and safeguards ↗</a></p>
+  </div>
+  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
+</div>
+<script>
+(() => {
+  const root=document.getElementById('metric-stress');
+  const scenarios={
+    gap:{eventTitle:'Market reopens higher',event:'The underlying stock jumps. The old quote may no longer reflect its price.',responseTitle:'Update or reject',response:'Quotes follow valid updates. Configured guards may reject affected swaps.',lpTitle:'Exposure remains',lp:'A new reference leaves token balances unchanged. Their dollar value can move.',summary:'A gap does not automatically stop trading. Valid quotes and the configured safeguards determine which swaps can execute.'},
+    feed:{eventTitle:'No valid quote',event:'The Price Provider reverts or cannot return a valid price.',responseTitle:'Swaps stop',response:'The pool rejects swaps until the provider returns a valid quote.',lpTitle:'Inventory stays',lp:'A missing quote does not liquidate tokens. Deposit and withdrawal access depends on extensions.',summary:'Rejecting a swap with no valid price can protect inventory. Recovery depends on the provider returning a usable quote.'},
+    flow:{eventTitle:'Buyers take ETH',event:'Repeated ETH purchases leave the pool with less ETH and more USDC.',responseTitle:'Depth changes',response:'Swaps consume bins and move deviation. Fills depend on remaining inventory and settings.',lpTitle:'Less ETH exposure',lp:'The token mix changes. Spread income does not guarantee that it beats simply holding.',summary:'This is inventory risk, even with fresh quotes. Updating the reference does not restore the ETH already sold.'}
+  };
+  root.querySelectorAll('[data-scenario]').forEach(button=>button.addEventListener('click',()=>{
+    const s=scenarios[button.dataset.scenario];
+    for(const [key,id] of Object.entries({eventTitle:'ms-event-title',event:'ms-event',responseTitle:'ms-response-title',response:'ms-response',lpTitle:'ms-lp-title',lp:'ms-lp',summary:'ms-summary'}))root.querySelector('#'+id).textContent=s[key];
+    root.querySelectorAll('[data-scenario]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+  }));
+})();
+</script>
+<script>
+(() => {
+  const root=document.getElementById('metric-stress');
+  if(!root||window.parent===window)return;
+  const reportHeight=()=>{const a=root.getBoundingClientRect(),b=root.lastElementChild?.getBoundingClientRect();const height=Math.max(1,Math.floor((b?.bottom??a.bottom)-a.top)-2);window.parent.postMessage({type:'moni-widget:resize',height},'https://research.moni.ai');};
+  new ResizeObserver(reportHeight).observe(root);
+  window.addEventListener('load',reportHeight,{once:true});
+  window.addEventListener('resize',reportHeight);
+  window.addEventListener('message',event=>{if(event.origin==='https://research.moni.ai'&&event.data?.type==='moni-widget:request-resize')reportHeight();});
+  [0,100,500,1500].forEach(delay=>setTimeout(reportHeight,delay));
+})();
+</script>
+</body>
+</html>

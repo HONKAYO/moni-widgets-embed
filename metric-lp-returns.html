@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Metric - what the LP actually earns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:transparent}
+#metric-returns{--accent:#6c42eb;--wash:#6c42eb14;--ink:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--soft:#fafafb;--green:#0fa968;--red:#e24b4a;font:12px/1.5 Geist,sans-serif;color:var(--body);background:#fff;width:100%;max-width:none;overflow:hidden}
+#metric-returns *{box-sizing:border-box}
+#metric-returns .inner{padding:22px}
+#metric-returns .kicker{margin:0 0 8px;font:500 9px/1.3 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+#metric-returns h2{margin:0;color:var(--ink);font-size:26px;font-weight:700;line-height:1.12;letter-spacing:-.025em}
+#metric-returns .dek{margin:9px 0 16px;font-size:12px}
+#metric-returns .journey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);background:var(--soft)}
+#metric-returns .step{padding:12px;min-width:0}
+#metric-returns .step+.step{border-left:1px solid var(--line)}
+#metric-returns .tag{font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+#metric-returns .step strong{display:block;font-size:13px;line-height:1.4;color:var(--ink);margin-top:8px;font-weight:600}
+#metric-returns .step small{display:block;font-size:10px;line-height:1.5;color:var(--muted);margin-top:4px}
+#metric-returns .controls{margin:16px 0 12px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+#metric-returns .controls>span{font-size:11px;color:var(--body)}
+#metric-returns .buttons{display:flex;gap:6px}
+#metric-returns button{font:500 11px/1.4 Geist,sans-serif;padding:7px 12px;border:1px solid var(--line);background:#fff;color:var(--body);cursor:pointer}
+#metric-returns button[aria-pressed=true]{border-color:var(--accent);background:var(--wash);color:var(--accent)}
+#metric-returns button:focus-visible,#metric-returns a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#metric-returns .results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#metric-returns .metric{border:1px solid var(--line);padding:13px 12px;min-width:0}
+#metric-returns .metric.hero{border-color:#6c42eb55;background:var(--wash)}
+#metric-returns .metric .label{font-size:10px;color:var(--body);display:block}
+#metric-returns .metric strong{display:block;font-size:27px;line-height:1.2;letter-spacing:-.035em;font-weight:700;color:var(--ink);margin:8px 0 5px;font-variant-numeric:tabular-nums}
+#metric-returns .metric small{font-size:9px;line-height:1.5;color:var(--muted);display:block}
+#metric-returns .metric .edge{color:var(--accent)}
+#metric-returns .metric strong.positive{color:var(--green)}
+#metric-returns .metric strong.negative{color:var(--red)}
+#metric-returns .compare{margin-top:12px;display:grid;gap:8px}
+#metric-returns .bar-row{display:grid;grid-template-columns:98px minmax(0,1fr) 66px;align-items:center;gap:10px;font-size:10px}
+#metric-returns .track{height:6px;background:#f0f0f4;overflow:hidden}
+#metric-returns .fill{height:100%;background:var(--accent);transition:width .25s}
+#metric-returns .fill.hold{background:#a8adba}
+#metric-returns .bar-value{text-align:right;color:var(--ink);font-size:11px;font-weight:500;font-variant-numeric:tabular-nums}
+#metric-returns .verdict{margin:13px 0 0;padding:11px 12px;border-left:2px solid var(--accent);background:#f9f7ff;font-size:11px;line-height:1.5}
+#metric-returns .context{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:9px;line-height:1.5;margin:12px 0 0}
+#metric-returns a{color:var(--accent);text-decoration:none}
+#metric-returns .context a{flex:none}
+#metric-returns .ft{padding:10px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+#metric-returns .brand{display:inline-flex;align-items:center;gap:4px;color:var(--accent);font-size:12px;font-weight:600;line-height:15px}
+#metric-returns .eye{width:15px;height:15px;display:block;flex:0 0 15px}
+#metric-returns .brand i{font:600 italic 12px/15px Geist,sans-serif;color:var(--ink)}
+@media(prefers-reduced-motion:reduce){#metric-returns .fill{transition:none}}
+@media(max-width:540px){#metric-returns .inner{padding:18px 16px}#metric-returns h2{font-size:23px}#metric-returns .step{padding:10px 9px}#metric-returns .step strong{font-size:12px}#metric-returns .metric{padding:11px 9px}#metric-returns .metric strong{font-size:23px}#metric-returns button{padding:7px 9px}#metric-returns .ft{padding-right:16px}}
+@media(max-width:400px){#metric-returns .controls{display:block}#metric-returns .buttons{margin-top:7px}#metric-returns .results{gap:5px}#metric-returns .metric{padding:10px 7px}#metric-returns .metric strong{font-size:21px}#metric-returns .bar-row{grid-template-columns:82px minmax(0,1fr) 61px;gap:7px}#metric-returns .context{display:block}}
+</style>
+</head>
+<body>
+<div id="metric-returns">
+  <div class="inner">
+    <p class="kicker">Metric / one LP position</p>
+    <h2>What the LP actually earns</h2>
+    <p class="dek">A profitable fill changes the tokens you hold. Where their prices go next changes the result.</p>
+    <div class="journey">
+      <div class="step"><span class="tag">01 / Deposit</span><strong>10 ETH +<br>20,000 USDC</strong><small>ETH at $2,000<br>Starting value: $40,000</small></div>
+      <div class="step"><span class="tag">02 / Trade</span><strong>Sell 5 ETH<br>at $2,010</strong><small>$10 above reference<br>on each ETH sold</small></div>
+      <div class="step"><span class="tag">03 / Remaining</span><strong>5 ETH +<br>30,050 USDC</strong><small>$50 of spread income<br>stays in the position</small></div>
+    </div>
+    <div class="controls"><span>Where does ETH go next?</span><div class="buttons" role="group" aria-label="ETH price after the trade"><button type="button" data-price="1800" aria-pressed="false">$1,800</button><button type="button" data-price="2000" aria-pressed="false">$2,000</button><button type="button" data-price="2200" aria-pressed="true">$2,200</button></div></div>
+    <div class="results" aria-live="polite">
+      <div class="metric"><span class="label">Spread earned</span><strong class="edge">+$50</strong><small>Edge on this fill;<br>already included in PnL</small></div>
+      <div class="metric"><span class="label">Position value</span><strong id="mr-value">$41,050</strong><small id="mr-dollar">+$1,050 vs. initial deposit</small></div>
+      <div class="metric hero"><span class="label">Compared with holding</span><strong id="mr-pnl" class="negative">-$950</strong><small>Trading PnL;<br>same tokens, current marks</small></div>
+    </div>
+    <div class="compare" aria-label="Position value compared with holding the original tokens"><div class="bar-row"><span>LP position</span><div class="track"><div id="mr-position-bar" class="fill" style="width:97.7381%"></div></div><span id="mr-position-label" class="bar-value">$41,050</span></div><div class="bar-row"><span>Simply holding</span><div class="track"><div id="mr-hold-bar" class="fill hold" style="width:100%"></div></div><span id="mr-hold-label" class="bar-value">$42,000</span></div></div>
+    <p id="mr-verdict" class="verdict">The position is up in dollars, but selling ETH before it rose left it $950 behind holding.</p>
+    <p class="context"><span>Illustrative example. Protocol/curator deductions and gas omitted. USDC assumed at $1.</span><a href="https://docs.metric.xyz/use-metric/provide-and-manage-liquidity/understanding-your-returns.md" target="_blank" rel="noopener noreferrer">Return definitions ↗</a></p>
+  </div>
+  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
+</div>
+<script>
+(() => {
+  const root=document.getElementById('metric-returns');
+  const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
+  const signed=n=>(n>=0?'+':'-')+money(Math.abs(n));
+  const render=price=>{
+    const value=5*price+30050,hold=10*price+20000,pnl=value-hold,scale=Math.max(value,hold);
+    root.querySelector('#mr-value').textContent=money(value);
+    root.querySelector('#mr-dollar').textContent=signed(value-40000)+' vs. initial deposit';
+    const p=root.querySelector('#mr-pnl');p.textContent=signed(pnl);p.className=pnl>=0?'positive':'negative';
+    root.querySelector('#mr-position-label').textContent=money(value);
+    root.querySelector('#mr-hold-label').textContent=money(hold);
+    root.querySelector('#mr-position-bar').style.width=(100*value/scale)+'%';
+    root.querySelector('#mr-hold-bar').style.width=(100*hold/scale)+'%';
+    root.querySelector('#mr-verdict').textContent=price===2200?'The position is up in dollars, but selling ETH before it rose left it $950 behind holding.':price===1800?'Selling ETH before it fell puts the position $1,050 ahead of holding, despite a $950 dollar loss.':'With ETH unchanged, the position is $50 ahead of holding. The difference is the spread earned.';
+    root.querySelectorAll('[data-price]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.price)===price)));
+  };
+  root.querySelectorAll('[data-price]').forEach(b=>b.addEventListener('click',()=>render(Number(b.dataset.price))));
+})();
+</script>
+<script>
+(() => {
+  const root=document.getElementById('metric-returns');
+  if(!root||window.parent===window)return;
+  const reportHeight=()=>{const a=root.getBoundingClientRect(),b=root.lastElementChild?.getBoundingClientRect();const height=Math.max(1,Math.floor((b?.bottom??a.bottom)-a.top)-2);window.parent.postMessage({type:'moni-widget:resize',height},'https://research.moni.ai');};
+  new ResizeObserver(reportHeight).observe(root);
+  window.addEventListener('load',reportHeight,{once:true});
+  window.addEventListener('resize',reportHeight);
+  window.addEventListener('message',event=>{if(event.origin==='https://research.moni.ai'&&event.data?.type==='moni-widget:request-resize')reportHeight();});
+  [0,100,500,1500].forEach(delay=>setTimeout(reportHeight,delay));
+})();
+</script>
+</body>
+</html>
