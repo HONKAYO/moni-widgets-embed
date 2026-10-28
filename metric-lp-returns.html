@@ -59,8 +59,8 @@ html,body{margin:0;padding:0;background:transparent}
 <div id="metric-returns">
   <div class="inner">
     <p class="kicker">Metric / one LP position</p>
-    <h2>What the LP actually earns</h2>
-    <p class="dek">A profitable fill changes the tokens you hold. Where their prices go next changes the result.</p>
+    <h2>What the LP earns</h2>
+    <p class="dek">This trade earns a spread and changes your token mix. The next price move can outweigh that spread.</p>
     <div class="journey">
       <div class="step"><span class="tag">01 / Deposit</span><strong>10 ETH +<br>20,000 USDC</strong><small>ETH at $2,000<br>Starting value: $40,000</small></div>
       <div class="step"><span class="tag">02 / Trade</span><strong>Sell 5 ETH<br>at $2,010</strong><small>$10 above reference<br>on each ETH sold</small></div>
@@ -68,13 +68,13 @@ html,body{margin:0;padding:0;background:transparent}
     </div>
     <div class="controls"><span>Where does ETH go next?</span><div class="buttons" role="group" aria-label="ETH price after the trade"><button type="button" data-price="1800" aria-pressed="false">$1,800</button><button type="button" data-price="2000" aria-pressed="false">$2,000</button><button type="button" data-price="2200" aria-pressed="true">$2,200</button></div></div>
     <div class="results" aria-live="polite">
-      <div class="metric"><span class="label">Spread earned</span><strong class="edge">+$50</strong><small>Edge on this fill;<br>already included in PnL</small></div>
+      <div class="metric"><span class="label">Spread earned</span><strong class="edge">+$50</strong><small>Edge from this fill;<br>included in Trading PnL</small></div>
       <div class="metric"><span class="label">Position value</span><strong id="mr-value">$41,050</strong><small id="mr-dollar">+$1,050 vs. initial deposit</small></div>
-      <div class="metric hero"><span class="label">Compared with holding</span><strong id="mr-pnl" class="negative">-$950</strong><small>Trading PnL;<br>same tokens, current marks</small></div>
+      <div class="metric hero"><span class="label">Compared with holding</span><strong id="mr-pnl" class="negative">-$950</strong><small>Trading PnL;<br>original tokens at the selected price</small></div>
     </div>
     <div class="compare" aria-label="Position value compared with holding the original tokens"><div class="bar-row"><span>LP position</span><div class="track"><div id="mr-position-bar" class="fill" style="width:97.7381%"></div></div><span id="mr-position-label" class="bar-value">$41,050</span></div><div class="bar-row"><span>Simply holding</span><div class="track"><div id="mr-hold-bar" class="fill hold" style="width:100%"></div></div><span id="mr-hold-label" class="bar-value">$42,000</span></div></div>
-    <p id="mr-verdict" class="verdict">The position is up in dollars, but selling ETH before it rose left it $950 behind holding.</p>
-    <p class="context"><span>Illustrative example. Protocol/curator deductions and gas omitted. USDC assumed at $1.</span><a href="https://docs.metric.xyz/use-metric/provide-and-manage-liquidity/understanding-your-returns.md" target="_blank" rel="noopener noreferrer">Return definitions ↗</a></p>
+    <p id="mr-verdict" class="verdict">The position gained dollars, but holding the original tokens would be worth $950 more.</p>
+    <p class="context"><span>Example only. Protocol/curator shares and gas are excluded; USDC is assumed at $1.</span><a href="https://docs.metric.xyz/use-metric/provide-and-manage-liquidity/understanding-your-returns.md" target="_blank" rel="noopener noreferrer">Return definitions ↗</a></p>
   </div>
   <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
 </div>
@@ -92,7 +92,7 @@ html,body{margin:0;padding:0;background:transparent}
     root.querySelector('#mr-hold-label').textContent=money(hold);
     root.querySelector('#mr-position-bar').style.width=(100*value/scale)+'%';
     root.querySelector('#mr-hold-bar').style.width=(100*hold/scale)+'%';
-    root.querySelector('#mr-verdict').textContent=price===2200?'The position is up in dollars, but selling ETH before it rose left it $950 behind holding.':price===1800?'Selling ETH before it fell puts the position $1,050 ahead of holding, despite a $950 dollar loss.':'With ETH unchanged, the position is $50 ahead of holding. The difference is the spread earned.';
+    root.querySelector('#mr-verdict').textContent=price===2200?'The position gained dollars, but holding the original tokens would be worth $950 more.':price===1800?'Selling ETH before it fell puts the position $1,050 ahead of holding, even though it lost $950 in dollar terms.':'With ETH unchanged, the position is $50 ahead of holding. That gain comes from the spread.';
     root.querySelectorAll('[data-price]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.price)===price)));
   };
   root.querySelectorAll('[data-price]').forEach(b=>b.addEventListener('click',()=>render(Number(b.dataset.price))));

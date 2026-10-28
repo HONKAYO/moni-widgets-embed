@@ -49,7 +49,7 @@ html,body{margin:0;padding:0;background:transparent}
   <div class="inner">
     <p class="kicker">Metric / stress paths</p>
     <h2>How the pool responds</h2>
-    <p class="dek">A price gap, missing quote, and one-sided flow create different problems. The response depends on the pool's setup.</p>
+    <p class="dek">A price gap, a missing quote, and heavy buying affect LPs differently. Pool settings determine the response.</p>
     <div class="tabs" role="group" aria-label="Choose a pool stress scenario">
       <button type="button" data-scenario="gap" aria-pressed="true"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 15h5l3-10h8M14 2l4 3-4 3"/></svg>Market gap</button>
       <button type="button" data-scenario="feed" aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M6 9v3m4-7v3m4 3v5M2 17h16"/></svg>Feed unavailable</button>
@@ -57,12 +57,12 @@ html,body{margin:0;padding:0;background:transparent}
     </div>
     <div class="path" aria-live="polite">
       <div class="step"><div class="label">01 / Event<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13l-4-4m4 4-4 4"/></svg></div><h3 id="ms-event-title">Market reopens higher</h3><p id="ms-event">The underlying stock jumps. The old quote may no longer reflect its price.</p></div>
-      <div class="step"><div class="label">02 / Pool response<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13l-4-4m4 4-4 4"/></svg></div><h3 id="ms-response-title">Update or reject</h3><p id="ms-response">Quotes follow valid updates. Configured guards may reject affected swaps.</p></div>
-      <div class="step"><div class="label">03 / LP position</div><h3 id="ms-lp-title">Exposure remains</h3><p id="ms-lp">A new reference leaves token balances unchanged. Their dollar value can move.</p></div>
+      <div class="step"><div class="label">02 / Pool response<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13l-4-4m4 4-4 4"/></svg></div><h3 id="ms-response-title">Update or reject</h3><p id="ms-response">Valid updates refresh quotes. Configured guards may reject affected swaps.</p></div>
+      <div class="step"><div class="label">03 / LP position</div><h3 id="ms-lp-title">Exposure remains</h3><p id="ms-lp">Updating the reference does not change token balances. Their dollar value can still move.</p></div>
     </div>
-    <div class="summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM8 12l3 3 5-6"/></svg><p id="ms-summary">A gap does not automatically stop trading. Valid quotes and the configured safeguards determine which swaps can execute.</p></div>
-    <p class="limits"><strong>Safeguards do not insure your deposit.</strong> StopLoss can reject certain swaps; it does not guarantee a sale price. Withdrawal conditions depend on pool extensions.</p>
-    <p class="context"><span>Mechanism examples, not a live stress test. Check the specific provider, extensions, and permissions.</span><a href="https://docs.metric.xyz/use-metric/risks-and-safeguards.md" target="_blank" rel="noopener noreferrer">Risks and safeguards ↗</a></p>
+    <div class="summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM8 12l3 3 5-6"/></svg><p id="ms-summary">A gap alone does not stop trading. Execution depends on a valid quote and the pool's safeguards.</p></div>
+    <p class="limits"><strong>Safeguards do not insure your deposit.</strong> StopLoss can reject certain swaps; it does not guarantee a sale price. Withdrawals depend on pool extensions.</p>
+    <p class="context"><span>Examples of the mechanics, not live tests. Check the pool's provider, extensions, and permissions.</span><a href="https://docs.metric.xyz/use-metric/risks-and-safeguards.md" target="_blank" rel="noopener noreferrer">Risks and safeguards ↗</a></p>
   </div>
   <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
 </div>
@@ -70,9 +70,9 @@ html,body{margin:0;padding:0;background:transparent}
 (() => {
   const root=document.getElementById('metric-stress');
   const scenarios={
-    gap:{eventTitle:'Market reopens higher',event:'The underlying stock jumps. The old quote may no longer reflect its price.',responseTitle:'Update or reject',response:'Quotes follow valid updates. Configured guards may reject affected swaps.',lpTitle:'Exposure remains',lp:'A new reference leaves token balances unchanged. Their dollar value can move.',summary:'A gap does not automatically stop trading. Valid quotes and the configured safeguards determine which swaps can execute.'},
-    feed:{eventTitle:'No valid quote',event:'The Price Provider reverts or cannot return a valid price.',responseTitle:'Swaps stop',response:'The pool rejects swaps until the provider returns a valid quote.',lpTitle:'Inventory stays',lp:'A missing quote does not liquidate tokens. Deposit and withdrawal access depends on extensions.',summary:'Rejecting a swap with no valid price can protect inventory. Recovery depends on the provider returning a usable quote.'},
-    flow:{eventTitle:'Buyers take ETH',event:'Repeated ETH purchases leave the pool with less ETH and more USDC.',responseTitle:'Depth changes',response:'Swaps consume bins and move deviation. Fills depend on remaining inventory and settings.',lpTitle:'Less ETH exposure',lp:'The token mix changes. Spread income does not guarantee that it beats simply holding.',summary:'This is inventory risk, even with fresh quotes. Updating the reference does not restore the ETH already sold.'}
+    gap:{eventTitle:'Market reopens higher',event:'The underlying stock jumps. The old quote may no longer reflect its price.',responseTitle:'Update or reject',response:'Valid updates refresh quotes. Configured guards may reject affected swaps.',lpTitle:'Exposure remains',lp:'Updating the reference does not change token balances. Their dollar value can still move.',summary:"A gap alone does not stop trading. Execution depends on a valid quote and the pool's safeguards."},
+    feed:{eventTitle:'No valid quote',event:'The Price Provider reverts or cannot supply a valid quote.',responseTitle:'Swaps stop',response:'The pool rejects swaps while the provider has no valid quote.',lpTitle:'Inventory stays',lp:'The missing quote does not liquidate tokens. Extensions can affect deposits and withdrawals.',summary:'Blocking swaps with no valid price can protect inventory. A usable quote is needed before trading can resume.'},
+    flow:{eventTitle:'Buyers take ETH',event:'Repeated ETH purchases leave the pool with less ETH and more USDC.',responseTitle:'Depth changes',response:'Trades use liquidity in the bins and move the price relative to the reference. Fills depend on available tokens and settings.',lpTitle:'Less ETH exposure',lp:'The token mix changes. Earning a spread does not guarantee a better result than holding.',summary:'Fresh quotes do not remove inventory risk. Updating the reference cannot replace ETH that buyers already took.'}
   };
   root.querySelectorAll('[data-scenario]').forEach(button=>button.addEventListener('click',()=>{
     const s=scenarios[button.dataset.scenario];

@@ -74,22 +74,22 @@ html,body{margin:0;padding:0;background:transparent}
   <div class="inner">
     <p class="kicker">Metric / the capital path</p>
     <h2>From capital to execution</h2>
-    <p class="dek">LPs supply the tokens. A curator sets pricing and safeguards. Traders use the pool's inventory.</p>
+    <p class="dek">LPs fund the pool. A curator sets its quotes and safeguards. Traders swap against the available tokens.</p>
     <div class="stage" aria-label="LP assets enter a pool; a curator supplies quotes; traders swap; spread income is shared">
       <svg class="wires" aria-hidden="true"><defs><marker id="mm-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M0 0L6 3L0 6" fill="#a6abb5"/></marker><marker id="mm-data" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#6c42eb"/></marker><marker id="mm-fee" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#0fa968"/></marker></defs><path id="mm-capital" class="wire" marker-start="url(#mm-arrow)" marker-end="url(#mm-arrow)"/><path id="mm-swap" class="wire" marker-start="url(#mm-arrow)" marker-end="url(#mm-arrow)"/><path id="mm-quote" class="wire data" marker-end="url(#mm-data)"/><path id="mm-income" class="wire fee" marker-end="url(#mm-fee)"/></svg>
       <div class="nodes">
-        <div class="node curator"><div class="label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6m8 4v6"/></svg>Curator</div><h3>Pricing + rules</h3><p>Chooses inputs and safeguards.</p><div class="provider">Price Provider<br>bid / ask / reference</div></div>
-        <div class="node lp"><div class="label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h15v14H3zM3 6l12-3v3M14 11h6v5h-6z"/></svg>LPs</div><h3>Supply assets</h3><p>Deposit tokens.<br>Receive bin shares.</p></div>
-        <div class="node pool"><div class="label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9h4v11m2 0V4h4v16m2 0V12h4v8"/></svg>Pool</div><h3>ETH / USDC</h3><p>LP-owned inventory in relative price ranges.</p><div class="bins" aria-hidden="true"><i></i><i></i><i></i></div><div class="bin-label">ranges around reference</div></div>
-        <div class="node trader"><div class="label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h17l-4-4m4 4-4 4M21 17H4l4-4m-4 4 4 4"/></svg>Traders</div><h3>Swap tokens</h3><p>Directly or through trading routes.</p></div>
+        <div class="node curator"><div class="label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6m8 4v6"/></svg>Curator</div><h3>Set quotes + limits</h3><p>Chooses pricing inputs and guards.</p><div class="provider">Price Provider<br>bid / ask / reference</div></div>
+        <div class="node lp"><div class="label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h15v14H3zM3 6l12-3v3M14 11h6v5h-6z"/></svg>LPs</div><h3>Supply assets</h3><p>Deposit tokens.<br>Own shares of bins.</p></div>
+        <div class="node pool"><div class="label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9h4v11m2 0V4h4v16m2 0V12h4v8"/></svg>Pool</div><h3>ETH / USDC</h3><p>LP-owned tokens in ranges around the reference.</p><div class="bins" aria-hidden="true"><i></i><i></i><i></i></div><div class="bin-label">relative price ranges</div></div>
+        <div class="node trader"><div class="label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h17l-4-4m4 4-4 4M21 17H4l4-4m-4 4 4 4"/></svg>Traders</div><h3>Swap tokens</h3><p>Trade here or through an aggregator.</p></div>
         <div class="split"><div class="split-title">Spread income is shared</div><div class="recipients"><span>LPs</span><span>Curator</span><span>Protocol</span></div></div>
       </div>
     </div>
     <div class="legend"><span><i></i>Assets / shares</span><span><i class="data"></i>Quotes / rules</span><span><i class="fee"></i>Spread income</span></div>
     <div class="switches" role="group" aria-label="Compare a quote update with a trade"><button type="button" data-mode="quote" aria-pressed="true">Price update</button><button type="button" data-mode="trade" aria-pressed="false">Trade</button></div>
     <div class="readout" aria-live="polite"><div><small>Reference price</small><strong id="mm-reference">$2,000 to $2,200</strong></div><div><small>Pool inventory after the event</small><strong id="mm-inventory">10 ETH + 20,000 USDC</strong></div></div>
-    <p class="explain" id="mm-explain">Quoted ranges move with the reference. Token balances and LP ownership stay the same.</p>
-    <p class="context"><span>Illustrative amounts; fees omitted. Income shares vary by pool.</span><a href="https://docs.metric.xyz/how-pools-work/liquidity-and-bins.md" target="_blank" rel="noopener noreferrer">How bins work ↗</a></p>
+    <p class="explain" id="mm-explain">Ranges follow the new reference. Token balances and LP ownership stay unchanged.</p>
+    <p class="context"><span>Example amounts; fees omitted. Income shares vary by pool.</span><a href="https://docs.metric.xyz/how-pools-work/liquidity-and-bins.md" target="_blank" rel="noopener noreferrer">How bins work ↗</a></p>
   </div>
   <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
 </div>
@@ -110,7 +110,7 @@ html,body{margin:0;padding:0;background:transparent}
     root.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
     root.querySelector('#mm-reference').textContent=quote?'$2,000 to $2,200':'$2,000 (unchanged)';
     root.querySelector('#mm-inventory').textContent=quote?'10 ETH + 20,000 USDC':'5 ETH + 30,050 USDC';
-    root.querySelector('#mm-explain').textContent=quote?'Quoted ranges move with the reference. Token balances and LP ownership stay the same.':'A buyer takes 5 ETH at an average $2,010. Balances change and the trade moves through the ranges.';
+    root.querySelector('#mm-explain').textContent=quote?'Ranges follow the new reference. Token balances and LP ownership stay unchanged.':'A buyer takes 5 ETH at an average $2,010. The trade changes balances and moves through the ranges.';
     draw();
   }));
   new ResizeObserver(draw).observe(stage);

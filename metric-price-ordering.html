@@ -59,20 +59,20 @@ html,body{margin:0;padding:0;background:transparent}
   <div class="inner">
     <p class="kicker">Metric / quote delivery</p>
     <h2>Why transaction order matters</h2>
-    <p class="dek">A builder can put a signed price update before the swap that uses it. The order changes the fill.</p>
+    <p class="dek">A builder can place a signed update before the swap that needs it. Compare the two fills.</p>
     <div class="event"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18l6-6 4 3 8-11M15 4h6v6"/></svg><div><strong>External price moves from $100 to $110</strong><small>Same buy order: 1 token, maximum price $112. Illustrative quotes.</small></div></div>
     <div class="lane stale">
       <div class="lane-head"><strong>Trade before update</strong><span>The old quote is still available</span></div>
-      <div class="sequence"><div class="rail"><i class="cursor"></i></div><div class="step" data-step="0"><span class="num">01 / ORDER</span><b>Buyer arrives</b><small>Buy 1 token</small></div><div class="step" data-step="1"><span class="num">02 / SWAP</span><b>Fill at $101</b><small>Old ask executes</small></div><div class="step active" data-step="2"><span class="num">03 / UPDATE</span><b>Reference: $110</b><small>Too late for this fill</small></div></div>
+      <div class="sequence"><div class="rail"><i class="cursor"></i></div><div class="step" data-step="0"><span class="num">01 / ORDER</span><b>Buyer arrives</b><small>Buy 1 token</small></div><div class="step" data-step="1"><span class="num">02 / SWAP</span><b>Fill at $101</b><small>Uses the old ask</small></div><div class="step active" data-step="2"><span class="num">03 / UPDATE</span><b>Reference: $110</b><small>Too late for this fill</small></div></div>
       <p class="outcome"><i></i><span><strong>$9 below the new reference.</strong> The pool sold at a stale quote.</span></p>
     </div>
     <div class="lane fresh">
-      <div class="lane-head"><strong>Update before trade</strong><span>Conditional update path</span></div>
-      <div class="sequence"><div class="rail"><i class="cursor"></i></div><div class="step" data-step="0"><span class="num">01 / SIGN</span><b>Fresh quote sent</b><small>Maker signs update</small></div><div class="step" data-step="1"><span class="num">02 / INCLUDE</span><b>Update first</b><small>Builder orders it before swap</small></div><div class="step active" data-step="2"><span class="num">03 / SWAP</span><b>Fill at $111</b><small>New ask executes</small></div></div>
-      <p class="outcome"><i></i><span><strong>$1 above the new reference.</strong> This fill uses the updated quote.</span></p>
+      <div class="lane-head"><strong>Update before trade</strong><span>Update included with the swap</span></div>
+      <div class="sequence"><div class="rail"><i class="cursor"></i></div><div class="step" data-step="0"><span class="num">01 / SIGN</span><b>Fresh quote sent</b><small>Maker signs the update</small></div><div class="step" data-step="1"><span class="num">02 / INCLUDE</span><b>Update first</b><small>Builder places it before swap</small></div><div class="step active" data-step="2"><span class="num">03 / SWAP</span><b>Fill at $111</b><small>Uses the new ask</small></div></div>
+      <p class="outcome"><i></i><span><strong>$1 above the new reference.</strong> The buyer pays the updated ask.</span></p>
     </div>
-    <div class="controls"><span id="mo-status" aria-live="polite">Illustrated sequence; not a latency benchmark.</span><button id="mo-replay" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7a6 6 0 1 1 0 6M4 3v4h4"/></svg>Replay</button></div>
-    <p class="context"><span>Ordering depends on the update pipeline and builder policy. It is not guaranteed. Fees omitted.</span><a href="https://docs.metric.xyz/how-pools-work/freshness-and-ordering.md" target="_blank" rel="noopener noreferrer">Execution mechanics ↗</a></p>
+    <div class="controls"><span id="mo-status" aria-live="polite">Example sequence. No measured latency shown.</span><button id="mo-replay" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7a6 6 0 1 1 0 6M4 3v4h4"/></svg>Replay</button></div>
+    <p class="context"><span>Actual ordering depends on update delivery and builder policy. Priority is not guaranteed. Fees omitted.</span><a href="https://docs.metric.xyz/how-pools-work/freshness-and-ordering.md" target="_blank" rel="noopener noreferrer">Execution mechanics ↗</a></p>
   </div>
   <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
 </div>
@@ -86,12 +86,12 @@ html,body{margin:0;padding:0;background:transparent}
   root.querySelector('#mo-replay').addEventListener('click',()=>{
     stop();
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){step(2);status.textContent='Sequence complete. Reduced motion is enabled.';return;}
-    status.textContent='Follow the dot: the same event, two execution orders.';
+    status.textContent='Follow each dot through the two execution orders.';
     root.querySelectorAll('.cursor').forEach(el=>el.style.transition='none');
     step(0);
     void root.offsetWidth;
     root.querySelectorAll('.cursor').forEach(el=>el.style.removeProperty('transition'));
-    timers.push(setTimeout(()=>step(1),850),setTimeout(()=>step(2),1700),setTimeout(()=>{status.textContent='Illustrated sequence; not a latency benchmark.';},2550));
+    timers.push(setTimeout(()=>step(1),850),setTimeout(()=>step(2),1700),setTimeout(()=>{status.textContent='Example sequence. No measured latency shown.';},2550));
   });
   window.addEventListener('pagehide',stop);
 })();
