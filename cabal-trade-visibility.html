@@ -14,11 +14,8 @@ html,body{margin:0;padding:0;background:transparent}
 #cabal-visibility .kicker{margin:0 0 4px;font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--accent)}
 #cabal-visibility h2{margin:0;font-size:22px;line-height:1.15;letter-spacing:-.025em;font-weight:700;color:var(--ink)}
 #cabal-visibility .rules{font-size:10px;color:var(--muted);text-decoration:none;white-space:nowrap;margin-top:2px}
-#cabal-visibility button{padding:4px 10px;border:1px solid var(--line);background:#fff;color:var(--body);font:500 11px/1.4 Geist,sans-serif;cursor:pointer}
-#cabal-visibility button[aria-pressed=true]{border-color:var(--accent);background:var(--wash);color:var(--accent)}
-#cabal-visibility button:focus-visible,#cabal-visibility a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-#cabal-visibility .controls{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
-#cabal-visibility .example{font:400 9px/1.4 'IBM Plex Mono',monospace;color:var(--muted)}
+#cabal-visibility a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#cabal-visibility .example{margin:0 0 10px;font-size:11px;color:var(--body)}
 #cabal-visibility .board{position:relative;padding:10px;background:linear-gradient(#f0f0f580 1px,transparent 1px),linear-gradient(90deg,#f0f0f580 1px,transparent 1px);background-size:20px 20px;border:1px solid var(--line)}
 #cabal-visibility .wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 #cabal-visibility .wire{fill:none;stroke:#b6afcd;stroke-width:1.4;stroke-linejoin:round}
@@ -55,17 +52,17 @@ html,body{margin:0;padding:0;background:transparent}
 <div id="cabal-visibility">
  <div class="inner">
   <header class="head"><div><p class="kicker">CABAL / PRIVACY</p><h2>Who sees your trade?</h2></div><a class="rules" href="https://cabal.cooking/protocol/privacy" target="_blank" rel="noopener noreferrer">Rules &#8599;</a></header>
-  <div class="controls"><div role="group" aria-label="Example trade side"><button type="button" data-side="buy" aria-pressed="true">Buy</button><button type="button" data-side="sell" aria-pressed="false">Sell</button></div><span class="example">Example trade</span></div>
+  <p class="example">Your cabals see the exit as well as the entry.</p>
   <div class="board">
    <svg class="wires" aria-hidden="true"><defs><marker id="cv-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#b6afcd"/></marker><marker id="cv-purple" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#6c42eb"/></marker></defs><path class="wire send" id="cv-send" marker-end="url(#cv-purple)"/><path class="wire" id="cv-crew" marker-end="url(#cv-arrow)"/><path class="wire" id="cv-public" marker-end="url(#cv-arrow)"/><path class="wire" id="cv-team" marker-end="url(#cv-arrow)"/></svg>
    <div class="top">
-    <div class="node you"><span class="eyebrow">Your device</span><h3 data-action>Buy $1,000</h3><p>TOKEN</p></div>
+    <div class="node you"><span class="eyebrow">Your device</span><h3>Buy, then sell</h3><p>Example: $1,000 in / $500 out</p></div>
     <div class="step">Sign + prove</div>
     <div class="node pool"><span class="eyebrow">Onchain</span><h3>Shared pool</h3><p>Runs the swap</p></div>
    </div>
-   <div class="views" aria-live="polite">
-    <section class="view crew"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M17 5a3 3 0 0 1 0 6m1 3a6 6 0 0 1 3 5v2"/></svg><h3>Your cabals</h3><div class="detail"><p class="who">You</p><p class="trade" data-receipt>Bought $1,000 TOKEN</p></div><div class="tag">Full trades + positions</div></section>
-    <section class="view public"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18"/></svg><h3>The public</h3><div class="detail"><p class="who">Pool</p><p class="trade" data-receipt>Bought $1,000 TOKEN</p></div><div class="tag">Wallet link hidden</div></section>
+   <div class="views">
+    <section class="view crew"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M17 5a3 3 0 0 1 0 6m1 3a6 6 0 0 1 3 5v2"/></svg><h3>Your cabals</h3><div class="detail"><p class="who">You</p><p class="trade">Bought $1,000; sold $500</p></div><div class="tag">Full trades + positions</div></section>
+    <section class="view public"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18"/></svg><h3>The public</h3><div class="detail"><p class="who">Pool</p><p class="trade">A $1,000 buy; a $500 sell</p></div><div class="tag">Swaps visible; wallet link hidden</div></section>
     <section class="view operator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="4"/><path d="m11 12 9 9m-3-3 3-3m-6 0 3-3"/></svg><h3>Cabal team</h3><div class="detail"><p class="who">Wallet &#8594; trade</p><p class="trade">Via viewing key</p></div><div class="tag">Wallet link visible</div></section>
    </div>
   </div>
@@ -78,7 +75,6 @@ html,body{margin:0;padding:0;background:transparent}
  const root=document.getElementById('cabal-visibility'),board=root.querySelector('.board');
  const box=s=>{const a=root.querySelector(s).getBoundingClientRect(),b=board.getBoundingClientRect();return{x:a.left-b.left,y:a.top-b.top,w:a.width,h:a.height}};
  const draw=()=>{const a=box('.you'),p=box('.pool'),targets=['.crew','.public','.operator'].map(box);root.querySelector('#cv-send').setAttribute('d',`M${a.x+a.w+1},${a.y+a.h/2}H${p.x-4}`);targets.forEach((t,i)=>{const x=p.x+p.w/2,y=p.y+p.h+1,end=t.x+t.w/2;let d;if(innerWidth<=460){const rail=5;d=`M${x},${y}V${y+14}H${rail}V${t.y+t.h/2}H${t.x-3}`}else{d=`M${x},${y}V${y+10}H${end}V${t.y-4}`}root.querySelector(['#cv-crew','#cv-public','#cv-team'][i]).setAttribute('d',d)})};
- root.querySelectorAll('[data-side]').forEach(button=>button.addEventListener('click',()=>{root.querySelectorAll('[data-side]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));const buy=button.dataset.side==='buy';root.querySelector('[data-action]').textContent=(buy?'Buy':'Sell')+' $1,000';root.querySelectorAll('[data-receipt]').forEach(n=>n.textContent=(buy?'Bought':'Sold')+' $1,000 TOKEN')}));
  new ResizeObserver(draw).observe(board);document.fonts.ready.then(draw);draw();
 })();
 (()=>{const root=document.getElementById('cabal-visibility');if(!root||parent===window)return;const reportHeight=()=>{const a=root.getBoundingClientRect(),b=root.lastElementChild?.getBoundingClientRect();parent.postMessage({type:'moni-widget:resize',height:Math.max(1,Math.floor((b?.bottom??a.bottom)-a.top)-2)},'https://research.moni.ai')};new ResizeObserver(reportHeight).observe(root);addEventListener('load',reportHeight,{once:true});addEventListener('resize',reportHeight);addEventListener('message',e=>{if(e.origin==='https://research.moni.ai'&&e.data?.type==='moni-widget:request-resize')reportHeight()});document.fonts.ready.then(reportHeight);[0,100,500,1500].forEach(d=>setTimeout(reportHeight,d))})();
