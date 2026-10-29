@@ -9,70 +9,71 @@
 html,body{margin:0;padding:0;background:transparent}
 #cabal-fees{--accent:#6c42eb;--wash:#6c42eb14;--ink:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--green:#0fa968;--slate:#8395b4;font:12px/1.45 Geist,sans-serif;color:var(--body);background:#fff;width:100%;max-width:none;overflow:hidden}
 #cabal-fees *{box-sizing:border-box}
-#cabal-fees .inner{padding:22px}
-#cabal-fees .head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}
-#cabal-fees .kicker{margin:0 0 7px;font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;color:var(--accent)}
-#cabal-fees h2{margin:0;font-size:25px;line-height:1.15;letter-spacing:-.025em;font-weight:700;color:var(--ink)}
+#cabal-fees .inner{padding:16px}
+#cabal-fees .head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+#cabal-fees .kicker{margin:0 0 4px;font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--accent)}
+#cabal-fees h2{margin:0;font-size:22px;line-height:1.15;letter-spacing:-.025em;font-weight:700;color:var(--ink)}
 #cabal-fees .rules{font-size:10px;color:var(--muted);text-decoration:none;white-space:nowrap;margin-top:2px}
-#cabal-fees .switches{display:flex;gap:6px;margin-bottom:18px}
-#cabal-fees button{padding:7px 12px;border:1px solid var(--line);background:#fff;color:var(--body);font:500 11px/1.4 Geist,sans-serif;cursor:pointer}
+#cabal-fees .switches{display:flex;gap:6px;margin-bottom:10px}
+#cabal-fees button{padding:4px 10px;border:1px solid var(--line);background:#fff;color:var(--body);font:500 11px/1.4 Geist,sans-serif;cursor:pointer}
 #cabal-fees button[aria-pressed=true]{border-color:var(--accent);background:var(--wash);color:var(--accent)}
 #cabal-fees button:focus-visible,#cabal-fees a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-#cabal-fees .receipt{display:grid;grid-template-columns:minmax(0,1fr) 85px minmax(0,1fr);align-items:center;border:1px solid var(--line);background:#fafafb;padding:16px 20px}
+#cabal-fees .receipt{display:grid;grid-template-columns:minmax(0,1fr) 85px minmax(0,1fr);align-items:center;border:1px solid var(--line);background:#fafafb;padding:9px 12px}
+#cabal-fees .receipt>div{display:flex;align-items:center;gap:10px}
 #cabal-fees .lab{display:block;font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-#cabal-fees .number{display:block;font-size:33px;line-height:1.15;font-weight:700;letter-spacing:-.04em;color:var(--ink);margin-top:5px}
-#cabal-fees .total{text-align:right}
+#cabal-fees .number{display:block;font-size:26px;line-height:1.15;font-weight:700;letter-spacing:-.04em;color:var(--ink);margin:0}
+#cabal-fees .total{text-align:right;justify-content:flex-end}
 #cabal-fees .total .number{color:var(--accent)}
-#cabal-fees .rate{text-align:center;color:var(--accent);font-size:12px}
-#cabal-fees .rate svg{width:65px;height:18px;display:block;margin-top:2px;stroke:var(--accent);fill:none;stroke-width:1.4}
-#cabal-fees .distribution{position:relative;padding-top:34px}
+#cabal-fees .receipt .rate{display:flex;justify-content:center;gap:3px;text-align:center;color:var(--accent);font-size:11px}
+#cabal-fees .rate svg{width:32px;height:18px;display:block;stroke:var(--accent);fill:none;stroke-width:1.4}
+#cabal-fees .distribution{position:relative;padding-top:22px}
 #cabal-fees .wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 #cabal-fees .wires path{fill:none;stroke:#c2b5ec;stroke-width:1.3}
-#cabal-fees .recipients{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-#cabal-fees .recipient{min-width:0;border:1px solid var(--line);padding:12px;background:#fff;display:flex;flex-direction:column;align-items:flex-start;--color:var(--accent)}
+#cabal-fees .recipients{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#cabal-fees .recipient{min-width:0;border:1px solid var(--line);padding:10px;background:#fff;--color:var(--accent)}
 #cabal-fees .owner{--color:var(--green)}#cabal-fees .author{--color:var(--slate)}
-#cabal-fees .symbol{width:24px;height:24px;fill:none;stroke:var(--color);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;display:block;margin-bottom:9px}
-#cabal-fees .recipient h3{margin:0 0 8px;font-size:13px;color:var(--ink);font-weight:600}
-#cabal-fees .amount{font-size:27px;line-height:1.2;font-weight:700;letter-spacing:-.035em;color:var(--color)}
-#cabal-fees .share{font:400 10px/1.4 'IBM Plex Mono',monospace;color:var(--muted);margin-top:4px}
-#cabal-fees .caption{font-size:10px;line-height:1.4;margin:11px 0 0;padding-top:8px;border-top:1px solid var(--line);width:100%}
-#cabal-fees .bar{display:flex;height:24px;gap:2px;margin-top:12px}
+#cabal-fees .symbol{width:17px;height:17px;fill:none;stroke:var(--color);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;float:left;margin:0 6px 0 0}
+#cabal-fees .recipient h3{margin:0 0 7px;font-size:12px;line-height:17px;color:var(--ink);font-weight:600}
+#cabal-fees .amount{font-size:25px;line-height:1.2;font-weight:700;letter-spacing:-.035em;color:var(--color);display:inline-block}
+#cabal-fees .share{font:400 10px/1.4 'IBM Plex Mono',monospace;color:var(--muted);margin-left:6px;white-space:nowrap}
+#cabal-fees .caption{font-size:10px;line-height:1.4;margin:5px 0 0}
+#cabal-fees .bar{display:flex;height:6px;gap:2px;margin-top:8px}
 #cabal-fees .segment{display:flex;justify-content:center;align-items:center;font:500 10px/1.4 'IBM Plex Mono',monospace;color:white;transition:width .3s ease;min-width:0;overflow:hidden}
 #cabal-fees .team-seg{background:var(--accent);width:50%}#cabal-fees .owner-seg{background:var(--green);width:30%}#cabal-fees .author-seg{background:var(--slate);width:20%}
-#cabal-fees .payout{display:flex;justify-content:center;align-items:center;gap:10px;padding:12px 8px;margin:13px 0 0;background:#f7f4ff;font-size:11px;color:var(--accent)}
+#cabal-fees .payout{display:flex;justify-content:center;align-items:center;gap:9px;padding:7px 8px;margin:9px 0 0;background:#f7f4ff;font-size:11px;color:var(--accent)}
 #cabal-fees .payout b{font-size:13px;color:var(--ink)}
-#cabal-fees .fine{font-size:10px;color:var(--muted);margin:11px 0 0}
-#cabal-fees .ft{padding:10px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+#cabal-fees .fine{font-size:10px;color:var(--muted);margin:8px 0 0}
+#cabal-fees .ft{padding:7px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
 #cabal-fees .brand{display:inline-flex;align-items:center;gap:4px;font:600 12px/15px Geist,sans-serif;color:var(--accent)}
 #cabal-fees .eye{width:15px;height:15px;display:block;flex:0 0 15px}
 #cabal-fees .brand i{font:600 italic 12px/15px Geist,sans-serif;color:var(--ink)}
-@media(max-width:540px){#cabal-fees .inner{padding:18px 16px}#cabal-fees h2{font-size:23px}#cabal-fees .receipt{padding:14px}#cabal-fees .recipients{gap:8px}#cabal-fees .recipient{padding:11px 9px}#cabal-fees .amount{font-size:24px}#cabal-fees .payout{gap:7px;font-size:10px}#cabal-fees .ft{padding-right:16px}}
-@media(max-width:380px){#cabal-fees .number{font-size:29px}#cabal-fees .receipt{grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr)}#cabal-fees .payout{flex-wrap:wrap}#cabal-fees .recipient h3{font-size:12px}#cabal-fees .amount{font-size:22px}}
+@media(max-width:540px){#cabal-fees .inner{padding:14px}#cabal-fees h2{font-size:21px}#cabal-fees .receipt>div{gap:5px}#cabal-fees .receipt .lab{font-size:8px}#cabal-fees .number{font-size:23px}#cabal-fees .recipient{padding:9px 8px}#cabal-fees .amount{font-size:23px}#cabal-fees .share{margin-left:4px}#cabal-fees .payout{gap:7px;font-size:10px}}
+@media(max-width:400px){#cabal-fees .receipt{grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr)}#cabal-fees .receipt>div{flex-direction:column;align-items:flex-start;gap:2px}#cabal-fees .receipt .total{align-items:flex-end}#cabal-fees .receipt .rate{flex-direction:row;align-items:center}#cabal-fees .payout{flex-wrap:wrap}#cabal-fees .recipient h3{font-size:11px}#cabal-fees .symbol{margin-right:4px;width:15px;height:15px}#cabal-fees .amount{font-size:22px}#cabal-fees .share{margin-left:0;display:block}}
 @media(prefers-reduced-motion:reduce){#cabal-fees .segment{transition:none}}
 </style>
 </head>
 <body>
 <div id="cabal-fees">
  <div class="inner">
-  <header class="head"><div><p class="kicker">CABAL / TRADING FEES</p><h2>Where the $3 goes</h2></div><a class="rules" href="https://cabal.cooking/protocol/parameters" target="_blank" rel="noopener noreferrer">Rules &#8599;</a></header>
-  <div class="switches" role="group" aria-label="Call attribution"><button type="button" data-call="yes" aria-pressed="true">Through a call</button><button type="button" data-call="no" aria-pressed="false">Without a call</button></div>
+  <header class="head"><div><p class="kicker">CABAL / TRADING FEES</p><h2>Split a $3 fee</h2></div><a class="rules" href="https://cabal.cooking/protocol/parameters" target="_blank" rel="noopener noreferrer">Rules &#8599;</a></header>
+  <div class="switches" role="group" aria-label="Call attribution"><button type="button" data-call="yes" aria-pressed="true">From a call</button><button type="button" data-call="no" aria-pressed="false">No call</button></div>
   <div class="receipt"><div><span class="lab">Example buy</span><strong class="number">$1,000</strong></div><div class="rate">0.3%<svg viewBox="0 0 65 18" aria-hidden="true"><path d="M2 9h59m-6-5 6 5-6 5"/></svg></div><div class="total"><span class="lab">App fee</span><strong class="number">$3.00</strong></div></div>
   <div class="distribution">
    <svg class="wires" aria-hidden="true"><path id="cf-branch-1"/><path id="cf-branch-2"/><path id="cf-branch-3"/></svg>
    <div class="recipients" aria-live="polite">
-    <section class="recipient team"><svg class="symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V7l8-4 8 4v13zM9 20v-5h6v5M8 9h1m6 0h1M8 12h1m6 0h1"/></svg><h3>Team</h3><strong class="amount" id="cf-team">$1.50</strong><span class="share" id="cf-team-share">50% of fee</span><p class="caption">Protocol revenue</p></section>
-    <section class="recipient owner"><svg class="symbol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M2 21v-3a6 6 0 0 1 12 0v3m1-7a5 5 0 0 1 7 5v2"/></svg><h3>Owners</h3><strong class="amount">$0.90</strong><span class="share">30% of fee</span><p class="caption">Split across your cabals</p></section>
-    <section class="recipient author"><svg class="symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 20 1-5L17 3l4 4L9 19zM14 6l4 4M4 20l5-1"/></svg><h3>Call author</h3><strong class="amount" id="cf-author">$0.60</strong><span class="share" id="cf-author-share">20% of fee</span><p class="caption" id="cf-author-caption">Eligible buys only</p></section>
+    <section class="recipient team"><svg class="symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V7l8-4 8 4v13zM9 20v-5h6v5M8 9h1m6 0h1M8 12h1m6 0h1"/></svg><h3>Team</h3><strong class="amount" id="cf-team">$1.50</strong><span class="share" id="cf-team-share">50%</span></section>
+    <section class="recipient owner"><svg class="symbol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M2 21v-3a6 6 0 0 1 12 0v3m1-7a5 5 0 0 1 7 5v2"/></svg><h3>Owners</h3><strong class="amount">$0.90</strong><span class="share">30%</span><p class="caption">Shared across your groups</p></section>
+    <section class="recipient author"><svg class="symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 20 1-5L17 3l4 4L9 19zM14 6l4 4M4 20l5-1"/></svg><h3>Call author</h3><strong class="amount" id="cf-author">$0.60</strong><span class="share" id="cf-author-share">20%</span><p class="caption" id="cf-author-caption">Eligible buys only</p></section>
    </div>
   </div>
-  <div class="bar" role="img" aria-label="50 percent team, 30 percent owners, 20 percent call author"><div class="segment team-seg">50%</div><div class="segment owner-seg">30%</div><div class="segment author-seg">20%</div></div>
-  <div class="payout"><span>Owners + authors</span><span aria-hidden="true">&#8594;</span><b>CABAL</b><span aria-hidden="true">&#8594;</span><span>Weekly payout</span></div>
-  <p class="fine">App fee only. Venue fees + gas extra; positive slippage retained by Cabal.</p>
+  <div class="bar" role="img" aria-label="50 percent team, 30 percent owners, 20 percent call author"><div class="segment team-seg"></div><div class="segment owner-seg"></div><div class="segment author-seg"></div></div>
+  <div class="payout"><span>Owners + authors</span><span aria-hidden="true">&#8592;</span><b>CABAL weekly</b></div>
+  <p class="fine">Venue fees + gas extra. Cabal keeps positive slippage.</p>
  </div>
  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
 </div>
 <script>
-(()=>{const root=document.getElementById('cabal-fees'),area=root.querySelector('.distribution');const draw=()=>{const a=area.getBoundingClientRect(),x=a.width/2;root.querySelectorAll('.recipient').forEach((n,i)=>{const b=n.getBoundingClientRect();root.querySelector('#cf-branch-'+(i+1)).setAttribute('d',`M${x},0V16H${b.left-a.left+b.width/2}V${b.top-a.top}`)})};root.querySelectorAll('[data-call]').forEach(button=>button.addEventListener('click',()=>{const yes=button.dataset.call==='yes';root.querySelectorAll('[data-call]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));root.querySelector('#cf-team').textContent=yes?'$1.50':'$2.10';root.querySelector('#cf-author').textContent=yes?'$0.60':'$0.00';root.querySelector('#cf-team-share').textContent=yes?'50% of fee':'70% of fee';root.querySelector('#cf-author-share').textContent=yes?'20% of fee':'0% of fee';root.querySelector('#cf-author-caption').textContent=yes?'Eligible buys only':'No attributed call';const t=root.querySelector('.team-seg'),u=root.querySelector('.author-seg');t.style.width=yes?'50%':'70%';t.textContent=yes?'50%':'70%';u.style.width=yes?'20%':'0%';root.querySelector('.bar').setAttribute('aria-label',yes?'50 percent team, 30 percent owners, 20 percent call author':'70 percent team, 30 percent owners, zero to call author')}));new ResizeObserver(draw).observe(area);document.fonts.ready.then(draw);draw()})();
+(()=>{const root=document.getElementById('cabal-fees'),area=root.querySelector('.distribution');const draw=()=>{const a=area.getBoundingClientRect(),x=a.width/2;root.querySelectorAll('.recipient').forEach((n,i)=>{const b=n.getBoundingClientRect();root.querySelector('#cf-branch-'+(i+1)).setAttribute('d',`M${x},0V10H${b.left-a.left+b.width/2}V${b.top-a.top}`)})};root.querySelectorAll('[data-call]').forEach(button=>button.addEventListener('click',()=>{const yes=button.dataset.call==='yes';root.querySelectorAll('[data-call]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));root.querySelector('#cf-team').textContent=yes?'$1.50':'$2.10';root.querySelector('#cf-author').textContent=yes?'$0.60':'$0.00';root.querySelector('#cf-team-share').textContent=yes?'50%':'70%';root.querySelector('#cf-author-share').textContent=yes?'20%':'0%';root.querySelector('#cf-author-caption').textContent=yes?'Eligible buys only':'No call reward';const t=root.querySelector('.team-seg'),u=root.querySelector('.author-seg');t.style.width=yes?'50%':'70%';u.style.width=yes?'20%':'0%';root.querySelector('.bar').setAttribute('aria-label',yes?'50 percent team, 30 percent owners, 20 percent call author':'70 percent team, 30 percent owners, zero to call author')}));new ResizeObserver(draw).observe(area);document.fonts.ready.then(draw);draw()})();
 (()=>{const root=document.getElementById('cabal-fees');if(!root||parent===window)return;const reportHeight=()=>{const a=root.getBoundingClientRect(),b=root.lastElementChild?.getBoundingClientRect();parent.postMessage({type:'moni-widget:resize',height:Math.max(1,Math.floor((b?.bottom??a.bottom)-a.top)-2)},'https://research.moni.ai')};new ResizeObserver(reportHeight).observe(root);addEventListener('load',reportHeight,{once:true});addEventListener('resize',reportHeight);addEventListener('message',e=>{if(e.origin==='https://research.moni.ai'&&e.data?.type==='moni-widget:request-resize')reportHeight()});document.fonts.ready.then(reportHeight);[0,100,500,1500].forEach(d=>setTimeout(reportHeight,d))})();
 </script>
 </body></html>

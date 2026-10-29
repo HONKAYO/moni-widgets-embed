@@ -9,96 +9,89 @@
 html,body{margin:0;padding:0;background:transparent}
 #cabal-flywheel{--accent:#6c42eb;--wash:#6c42eb14;--ink:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--green:#0fa968;--red:#e24b4a;--amber:#b68129;font:12px/1.45 Geist,sans-serif;color:var(--body);background:#fff;width:100%;max-width:none;overflow:hidden}
 #cabal-flywheel *{box-sizing:border-box}
-#cabal-flywheel .inner{padding:22px}
-#cabal-flywheel .head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
-#cabal-flywheel .kicker{margin:0 0 7px;font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;color:var(--accent)}
-#cabal-flywheel h2{margin:0;font-size:25px;line-height:1.15;letter-spacing:-.025em;font-weight:700;color:var(--ink)}
+#cabal-flywheel .inner{padding:16px}
+#cabal-flywheel .head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+#cabal-flywheel .kicker{margin:0 0 4px;font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--accent)}
+#cabal-flywheel h2{margin:0;font-size:22px;line-height:1.15;letter-spacing:-.025em;font-weight:700;color:var(--ink)}
 #cabal-flywheel .rules{font-size:10px;color:var(--muted);text-decoration:none;white-space:nowrap;margin-top:2px}
-#cabal-flywheel .supply{display:grid;grid-template-columns:94px 1fr;gap:16px;align-items:center;margin-bottom:15px}
-#cabal-flywheel .supply strong{display:block;color:var(--ink);font-size:30px;font-weight:700;line-height:1.1;letter-spacing:-.04em}
+#cabal-flywheel .supply{display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:center;margin-bottom:9px}
+#cabal-flywheel .supply>div:first-child{display:flex;align-items:center;gap:7px}
+#cabal-flywheel .supply strong{display:block;color:var(--ink);font-size:27px;font-weight:700;line-height:1.1;letter-spacing:-.04em}
 #cabal-flywheel .lab{font:400 9px/1.4 'IBM Plex Mono',monospace;color:var(--muted)}
-#cabal-flywheel .allocation{display:flex;gap:2px;height:10px;background:#f4f0ff}
+#cabal-flywheel .allocation{display:flex;gap:2px;height:7px;background:#f4f0ff}
 #cabal-flywheel .lp-share{width:10%;background:var(--accent)}#cabal-flywheel .reserve-share{width:90%;background:#cbbaf7}
-#cabal-flywheel .allocation-labels{display:flex;justify-content:space-between;gap:10px;margin-top:7px;font-size:10px}
+#cabal-flywheel .allocation-labels{display:flex;justify-content:space-between;gap:10px;margin-top:4px;font-size:10px}
 #cabal-flywheel .allocation-labels b{color:var(--ink);font-weight:600}
-#cabal-flywheel .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-#cabal-flywheel button{padding:6px 10px;border:1px solid var(--line);background:#fff;color:var(--body);font:500 10px/1.4 Geist,sans-serif;cursor:pointer}
+#cabal-flywheel .filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+#cabal-flywheel button{padding:4px 9px;border:1px solid var(--line);background:#fff;color:var(--body);font:500 10px/1.4 Geist,sans-serif;cursor:pointer}
 #cabal-flywheel button[aria-pressed=true]{border-color:var(--accent);background:var(--wash);color:var(--accent)}
 #cabal-flywheel button:focus-visible,#cabal-flywheel a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-#cabal-flywheel .board{position:relative;padding:18px 34px;background:linear-gradient(#f0f0f570 1px,transparent 1px),linear-gradient(90deg,#f0f0f570 1px,transparent 1px);background-size:20px 20px;border:1px solid var(--line)}
+#cabal-flywheel .board{position:relative;padding:10px 10px 28px;background:linear-gradient(#f0f0f570 1px,transparent 1px),linear-gradient(90deg,#f0f0f570 1px,transparent 1px);background-size:20px 20px;border:1px solid var(--line)}
 #cabal-flywheel .wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 #cabal-flywheel .wire{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linejoin:round}
 #cabal-flywheel .growth{stroke:#9aa5ad;stroke-dasharray:4 4}
-#cabal-flywheel .loop{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:62px 94px;align-items:stretch}
-#cabal-flywheel .node{min-width:0;padding:12px;background:#fff;border:1px solid var(--line);position:relative}
-#cabal-flywheel .node h3{font-size:15px;line-height:1.2;letter-spacing:-.025em;margin:8px 0 5px;color:var(--ink)}
-#cabal-flywheel .node p{font-size:10px;line-height:1.45;margin:0;color:var(--muted)}
-#cabal-flywheel .node .icon{display:block;width:22px;height:22px;fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#cabal-flywheel .loop{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;align-items:stretch}
+#cabal-flywheel .node{min-width:0;padding:9px 8px;background:#fff;border:1px solid var(--line);position:relative;display:grid;grid-template-columns:16px minmax(0,1fr);column-gap:5px;align-items:start}
+#cabal-flywheel .node h3{font-size:12px;line-height:16px;letter-spacing:-.02em;margin:0;color:var(--ink)}
+#cabal-flywheel .node p{font-size:10px;line-height:1.4;margin:5px 0 0;color:var(--muted);grid-column:1/-1}
+#cabal-flywheel .node .icon{display:block;width:16px;height:16px;fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 #cabal-flywheel .fee,#cabal-flywheel .payout{background:#f8f5ff;border-color:#c5b1f7}
-#cabal-flywheel .payees{grid-column:1;grid-row:2}#cabal-flywheel .payout{grid-column:2;grid-row:2}
-#cabal-flywheel .edge{position:absolute;font:400 9px/1.4 'IBM Plex Mono',monospace;background:#fff;color:var(--accent);padding:2px 5px;text-align:center;pointer-events:none;white-space:nowrap}
-#cabal-flywheel .edge-top{top:53px;left:50%;transform:translate(-50%,-50%)}
-#cabal-flywheel .edge-bottom{bottom:62px;left:50%;transform:translate(-50%,50%)}
-#cabal-flywheel .edge-right{right:38px;top:50%;transform:translate(0,-50%)}
-#cabal-flywheel .loop-key{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:10px;margin:9px 0 14px}
+#cabal-flywheel .payees{grid-column:4;grid-row:1}#cabal-flywheel .payout{grid-column:3;grid-row:1}
+#cabal-flywheel .loop-key{display:flex;gap:7px;align-items:center;color:var(--muted);font-size:10px;margin:6px 0 9px}
 #cabal-flywheel .loop-key i{width:20px;border-top:1px dashed #9aa5ad;flex:none}
-#cabal-flywheel .routes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-#cabal-flywheel .route{border:1px solid var(--line);padding:11px 12px;min-width:0;display:flex;flex-direction:column;align-items:stretch;transition:opacity .18s}
-#cabal-flywheel .route h3{font:500 9px/1.4 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 8px}
-#cabal-flywheel .route-flow{display:flex;align-items:center;gap:8px;justify-content:space-between}
-#cabal-flywheel .route-flow strong{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.025em;line-height:1.15}
-#cabal-flywheel .route-flow .arrow{color:#aaa3b8;font-size:18px}
-#cabal-flywheel .route-flow .dest{font-size:11px;text-align:right;color:var(--body)}
-#cabal-flywheel .route p{font-size:10px;color:var(--muted);margin:7px 0 0}
+#cabal-flywheel .routes{border:1px solid var(--line)}
+#cabal-flywheel .route{padding:8px 10px;min-width:0;display:grid;grid-template-columns:115px minmax(0,1fr) 130px;align-items:center;gap:10px;transition:opacity .18s}
+#cabal-flywheel .route+.route{border-top:1px solid var(--line)}
+#cabal-flywheel .route h3{font:500 9px/1.4 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.02em;color:var(--muted);margin:0}
+#cabal-flywheel .route-flow{display:flex;align-items:center;gap:9px;justify-content:space-between;min-width:0}
+#cabal-flywheel .route-flow strong{font-size:13px;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.3}
+#cabal-flywheel .route-flow .arrow{color:#aaa3b8;font-size:15px}
+#cabal-flywheel .route-flow .dest{font-size:10px;text-align:right;color:var(--body)}
+#cabal-flywheel .route p{font-size:9px;line-height:1.4;color:var(--muted);margin:0;text-align:right}
 #cabal-flywheel .route .red{color:var(--red)}#cabal-flywheel .route .green{color:var(--green)}
-#cabal-flywheel .route-bar{height:5px;display:flex;gap:2px;margin-top:10px;background:#f7f4fc}
-#cabal-flywheel .route-bar i{display:block;background:var(--accent)}#cabal-flywheel .route-bar .burn{background:var(--red)}
-#cabal-flywheel .asset-tags{display:flex;gap:6px;margin-top:9px;font:400 8px/1.4 'IBM Plex Mono',monospace;color:var(--muted)}
-#cabal-flywheel .asset-tags span{padding:2px 6px;border:1px solid var(--line)}
-#cabal-flywheel .genesis{display:flex;justify-content:center;align-items:center;gap:9px;padding:11px 8px;background:#fafafb;border:1px solid var(--line);margin-top:11px;font-size:10px;flex-wrap:wrap}
+#cabal-flywheel .genesis{display:flex;justify-content:center;align-items:center;gap:7px;padding:6px 8px;background:#fafafb;border:1px solid var(--line);margin-top:8px;font-size:10px;flex-wrap:wrap}
 #cabal-flywheel .genesis b{font-weight:600;color:var(--ink)}
-#cabal-flywheel .note{margin:10px 0 0;font-size:10px;color:var(--muted)}
+#cabal-flywheel .note{margin:7px 0 0;font-size:10px;color:var(--muted)}
 #cabal-flywheel [data-flow]{transition:opacity .18s}
 #cabal-flywheel [data-dim=true]{opacity:.32}
-#cabal-flywheel .ft{padding:10px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+#cabal-flywheel .ft{padding:7px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
 #cabal-flywheel .brand{display:inline-flex;align-items:center;gap:4px;font:600 12px/15px Geist,sans-serif;color:var(--accent)}
 #cabal-flywheel .eye{width:15px;height:15px;display:block;flex:0 0 15px}
 #cabal-flywheel .brand i{font:600 italic 12px/15px Geist,sans-serif;color:var(--ink)}
-@media(max-width:540px){#cabal-flywheel .inner{padding:18px 16px}#cabal-flywheel h2{font-size:23px}#cabal-flywheel .board{padding:16px 22px}#cabal-flywheel .loop{gap:62px 70px}#cabal-flywheel .node{padding:11px 10px}#cabal-flywheel .node h3{font-size:14px}#cabal-flywheel .edge{font-size:8px}#cabal-flywheel .edge-right{right:24px}#cabal-flywheel .route{padding:10px}#cabal-flywheel .route-flow{gap:5px}#cabal-flywheel .route-flow strong{font-size:15px}#cabal-flywheel .ft{padding-right:16px}}
-@media(max-width:400px){#cabal-flywheel .loop{column-gap:34px}#cabal-flywheel .edge-top,#cabal-flywheel .edge-bottom{font-size:7px;padding:2px}#cabal-flywheel .routes{grid-template-columns:1fr}#cabal-flywheel .supply{grid-template-columns:72px 1fr;gap:10px}#cabal-flywheel .allocation-labels{font-size:9px}#cabal-flywheel .node h3{font-size:12px}}
+@media(max-width:580px){#cabal-flywheel .inner{padding:14px}#cabal-flywheel h2{font-size:21px}#cabal-flywheel .board{padding:10px}#cabal-flywheel .loop{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 35px}#cabal-flywheel .payees{grid-column:1;grid-row:2}#cabal-flywheel .payout{grid-column:2;grid-row:2}#cabal-flywheel .node{padding:9px}#cabal-flywheel .node h3{font-size:13px}#cabal-flywheel .route{grid-template-columns:95px minmax(0,1fr);gap:2px 10px;padding:7px 9px}#cabal-flywheel .route h3{grid-row:1/3}#cabal-flywheel .route p{grid-column:2;text-align:left}#cabal-flywheel .route-flow{gap:6px}#cabal-flywheel .supply{grid-template-columns:105px 1fr}}
+@media(max-width:380px){#cabal-flywheel .supply{grid-template-columns:92px 1fr;gap:8px}#cabal-flywheel .supply>div:first-child{gap:4px}#cabal-flywheel .lab{font-size:8px}#cabal-flywheel .loop{column-gap:24px}#cabal-flywheel .node h3{font-size:12px}#cabal-flywheel .node{padding:8px 7px}#cabal-flywheel .route{grid-template-columns:88px minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){#cabal-flywheel [data-flow],#cabal-flywheel .route{transition:none}}
 </style>
 </head>
 <body>
 <div id="cabal-flywheel">
  <div class="inner">
-  <header class="head"><div><p class="kicker">CABAL / TOKEN ECONOMY</p><h2>Fees feed the trading room</h2></div><a class="rules" href="https://cabal.cooking/token" target="_blank" rel="noopener noreferrer">Rules &#8599;</a></header>
+  <header class="head"><div><p class="kicker">CABAL / TOKEN ECONOMY</p><h2>How CABAL moves</h2></div><a class="rules" href="https://cabal.cooking/token" target="_blank" rel="noopener noreferrer">Rules &#8599;</a></header>
   <div class="supply"><div><strong>1B</strong><span class="lab">Fixed supply</span></div><div><div class="allocation" role="img" aria-label="10 percent genesis liquidity, 90 percent distribution reserve"><span class="lp-share"></span><span class="reserve-share"></span></div><div class="allocation-labels"><span><b>100M</b> LP</span><span><b>900M</b> reserve</span></div></div></div>
   <div class="filters" role="group" aria-label="Trace a token flow"><button type="button" data-focus="all" aria-pressed="true">All flows</button><button type="button" data-focus="fees" aria-pressed="false">Fee loop</button><button type="button" data-focus="reserve" aria-pressed="false">Reserve</button><button type="button" data-focus="sinks" aria-pressed="false">Token sinks</button></div>
   <div class="board" data-flow="fees">
    <svg class="wires" aria-hidden="true"><defs><marker id="cw-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#6c42eb"/></marker><marker id="cw-grey" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#9aa5ad"/></marker></defs><path class="wire" id="cw-trade" marker-end="url(#cw-arrow)"/><path class="wire" id="cw-convert" marker-end="url(#cw-arrow)"/><path class="wire" id="cw-pay" marker-end="url(#cw-arrow)"/><path class="wire growth" id="cw-return" marker-end="url(#cw-grey)"/></svg>
    <div class="loop">
-    <div class="node groups"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2 21v-3a6 6 0 0 1 12 0v3m3-17a3 3 0 0 1 0 6m1 3a6 6 0 0 1 4 6v2"/></svg><h3>Trading groups</h3><p>Members buy + sell</p></div>
+    <div class="node groups"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2 21v-3a6 6 0 0 1 12 0v3m3-17a3 3 0 0 1 0 6m1 3a6 6 0 0 1 4 6v2"/></svg><h3>Your cabals</h3><p>Members buy + sell</p></div>
     <div class="node fee"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18l-3-2-4 2-4-2-3 2zM8 8h8m-8 4h8m-8 4h4"/></svg><h3>0.3% app fee</h3><p>Team keeps 50-70%</p></div>
-    <div class="node payees"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v14H3zM3 7l14-4v4m-2 5h6v5h-6z"/></svg><h3>Owners + authors</h3><p>Earn from group activity</p></div>
-    <div class="node payout"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16l-4-4m4 4-4 4M20 17H4l4-4m-4 4 4 4"/></svg><h3>Convert to CABAL</h3><p>For weekly payouts</p></div>
+    <div class="node payout"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16l-4-4m4 4-4 4M20 17H4l4-4m-4 4 4 4"/></svg><h3>Convert to CABAL</h3><p>30-50% of fee</p></div>
+    <div class="node payees"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v14H3zM3 7l14-4v4m-2 5h6v5h-6z"/></svg><h3>Owners + authors</h3><p>Paid weekly</p></div>
    </div>
-   <span class="edge edge-top">Trades</span><span class="edge edge-right">30-50% of fee</span><span class="edge edge-bottom">Weekly</span>
   </div>
-  <div class="loop-key" data-flow="fees"><i></i>Return loop depends on keeping traders active.</div>
+  <div class="loop-key" data-flow="fees"><i></i>Growth depends on traders staying active.</div>
   <div class="routes">
-   <section class="route" data-flow="reserve"><h3>Weekly tournaments</h3><div class="route-flow"><strong>Reserve</strong><span class="arrow" aria-hidden="true">&#8594;</span><span class="dest">Winning<br>members</span></div><p>From reserve; weekly cap not disclosed</p><div class="asset-tags"><span>Capped prize pot</span></div></section>
-   <section class="route" data-flow="sinks"><h3>Daily zk9 auction</h3><div class="route-flow"><strong class="red">100%</strong><span class="arrow" aria-hidden="true">&#8594;</span><span class="dest">Out of<br>circulation</span></div><p>Winning CABAL payment</p><div class="route-bar" aria-hidden="true"><i class="burn" style="width:100%"></i></div></section>
-   <section class="route" data-flow="sinks"><h3>Paid group entry</h3><div class="route-flow"><strong>70% owner</strong><span class="dest red">30% out of<br>circulation</span></div><p>Paid in CABAL</p><div class="route-bar" aria-hidden="true"><i style="width:70%"></i><i class="burn" style="width:30%"></i></div></section>
-   <section class="route" data-flow="sinks"><h3>Launch pool LP fees</h3><div class="route-flow"><strong class="red">CABAL out</strong><span class="dest">ETH to<br>team treasury</span></div><div class="asset-tags"><span>CABAL fees</span><span>ETH fees</span></div></section>
+   <section class="route" data-flow="reserve"><h3>Weekly prizes</h3><div class="route-flow"><strong>Reserve</strong><span class="arrow" aria-hidden="true">&#8594;</span><span class="dest">Winning members</span></div><p>Weekly cap undisclosed</p></section>
+   <section class="route" data-flow="sinks"><h3>Daily zk9 auction</h3><div class="route-flow"><strong class="red">100%</strong><span class="arrow" aria-hidden="true">&#8594;</span><span class="dest">Out of circulation</span></div><p>Winning bid in CABAL</p></section>
+   <section class="route" data-flow="sinks"><h3>Paid entry</h3><div class="route-flow"><strong>70% owner</strong><span class="dest red">30% out of circulation</span></div><p>Paid in CABAL</p></section>
+   <section class="route" data-flow="sinks"><h3>Launch LP fees</h3><div class="route-flow"><strong class="red">CABAL out</strong><span class="dest">ETH to team treasury</span></div><p>Fees, not LP capital</p></section>
   </div>
   <div class="genesis"><span>Genesis NFT ETH</span><span aria-hidden="true">&#8594;</span><b>ETH + 100M CABAL</b><span aria-hidden="true">&#8594;</span><span>Locked LP</span></div>
-  <p class="note">Payout conversion is not buyback-and-burn. Recipients can sell; total supply stays 1B.</p>
+  <p class="note">Payouts can be sold. Removing tokens from circulation does not change the 1B total supply.</p>
  </div>
  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
 </div>
 <script>
-(()=>{const root=document.getElementById('cabal-flywheel'),board=root.querySelector('.board');const box=s=>{const a=root.querySelector(s).getBoundingClientRect(),b=board.getBoundingClientRect();return{x:a.left-b.left,y:a.top-b.top,w:a.width,h:a.height}};const draw=()=>{const g=box('.groups'),f=box('.fee'),p=box('.payout'),o=box('.payees');root.querySelector('#cw-trade').setAttribute('d',`M${g.x+g.w+1},${g.y+g.h/2}H${f.x-4}`);root.querySelector('#cw-convert').setAttribute('d',`M${f.x+f.w/2},${f.y+f.h+1}V${p.y-4}`);root.querySelector('#cw-pay').setAttribute('d',`M${p.x-1},${p.y+p.h/2}H${o.x+o.w+4}`);root.querySelector('#cw-return').setAttribute('d',`M${o.x+o.w/2},${o.y-1}V${g.y+g.h+4}`);root.querySelector('.edge-top').style.top=(g.y+g.h/2)+'px';root.querySelector('.edge-bottom').style.top=(p.y+p.h/2)+'px';root.querySelector('.edge-bottom').style.bottom='auto';root.querySelector('.edge-bottom').style.transform='translate(-50%,-50%)';root.querySelector('.edge-right').style.top=((f.y+f.h+p.y)/2)+'px'};root.querySelectorAll('[data-focus]').forEach(button=>button.addEventListener('click',()=>{root.querySelectorAll('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));root.querySelectorAll('[data-flow]').forEach(n=>n.dataset.dim=String(button.dataset.focus!=='all'&&button.dataset.focus!==n.dataset.flow))}));new ResizeObserver(draw).observe(board);document.fonts.ready.then(draw);draw()})();
+(()=>{const root=document.getElementById('cabal-flywheel'),board=root.querySelector('.board');const box=s=>{const a=root.querySelector(s).getBoundingClientRect(),b=board.getBoundingClientRect();return{x:a.left-b.left,y:a.top-b.top,w:a.width,h:a.height}};const draw=()=>{const g=box('.groups'),f=box('.fee'),p=box('.payout'),o=box('.payees');root.querySelector('#cw-trade').setAttribute('d',`M${g.x+g.w+1},${g.y+g.h/2}H${f.x-4}`);if(innerWidth<=580){root.querySelector('#cw-convert').setAttribute('d',`M${f.x+f.w/2},${f.y+f.h+1}V${p.y-4}`);root.querySelector('#cw-pay').setAttribute('d',`M${p.x-1},${p.y+p.h/2}H${o.x+o.w+4}`);root.querySelector('#cw-return').setAttribute('d',`M${o.x+o.w/2},${o.y-1}V${g.y+g.h+4}`)}else{root.querySelector('#cw-convert').setAttribute('d',`M${f.x+f.w+1},${f.y+f.h/2}H${p.x-4}`);root.querySelector('#cw-pay').setAttribute('d',`M${p.x+p.w+1},${p.y+p.h/2}H${o.x-4}`);const y=board.getBoundingClientRect().height-10;root.querySelector('#cw-return').setAttribute('d',`M${o.x+o.w/2},${o.y+o.h+1}V${y}H${g.x+g.w/2}V${g.y+g.h+4}`)}};root.querySelectorAll('[data-focus]').forEach(button=>button.addEventListener('click',()=>{root.querySelectorAll('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));root.querySelectorAll('[data-flow]').forEach(n=>n.dataset.dim=String(button.dataset.focus!=='all'&&button.dataset.focus!==n.dataset.flow))}));new ResizeObserver(draw).observe(board);document.fonts.ready.then(draw);draw()})();
 (()=>{const root=document.getElementById('cabal-flywheel');if(!root||parent===window)return;const reportHeight=()=>{const a=root.getBoundingClientRect(),b=root.lastElementChild?.getBoundingClientRect();parent.postMessage({type:'moni-widget:resize',height:Math.max(1,Math.floor((b?.bottom??a.bottom)-a.top)-2)},'https://research.moni.ai')};new ResizeObserver(reportHeight).observe(root);addEventListener('load',reportHeight,{once:true});addEventListener('resize',reportHeight);addEventListener('message',e=>{if(e.origin==='https://research.moni.ai'&&e.data?.type==='moni-widget:request-resize')reportHeight()});document.fonts.ready.then(reportHeight);[0,100,500,1500].forEach(d=>setTimeout(reportHeight,d))})();
 </script>
 </body></html>

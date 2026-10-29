@@ -9,65 +9,67 @@
 html,body{margin:0;padding:0;background:transparent}
 #cabal-visibility{--accent:#6c42eb;--wash:#6c42eb14;--ink:#14151a;--body:#3b4049;--muted:#8b8f99;--line:#e8e8ed;--green:#0fa968;--amber:#b68129;font:12px/1.45 Geist,sans-serif;color:var(--body);background:#fff;width:100%;max-width:none;overflow:hidden}
 #cabal-visibility *{box-sizing:border-box}
-#cabal-visibility .inner{padding:22px}
-#cabal-visibility .head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:19px}
-#cabal-visibility .kicker{margin:0 0 7px;font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.12em;color:var(--accent)}
-#cabal-visibility h2{margin:0;font-size:25px;line-height:1.15;letter-spacing:-.025em;font-weight:700;color:var(--ink)}
+#cabal-visibility .inner{padding:16px}
+#cabal-visibility .head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+#cabal-visibility .kicker{margin:0 0 4px;font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--accent)}
+#cabal-visibility h2{margin:0;font-size:22px;line-height:1.15;letter-spacing:-.025em;font-weight:700;color:var(--ink)}
 #cabal-visibility .rules{font-size:10px;color:var(--muted);text-decoration:none;white-space:nowrap;margin-top:2px}
-#cabal-visibility button{padding:6px 12px;border:1px solid var(--line);background:#fff;color:var(--body);font:500 11px/1.4 Geist,sans-serif;cursor:pointer}
+#cabal-visibility button{padding:4px 10px;border:1px solid var(--line);background:#fff;color:var(--body);font:500 11px/1.4 Geist,sans-serif;cursor:pointer}
 #cabal-visibility button[aria-pressed=true]{border-color:var(--accent);background:var(--wash);color:var(--accent)}
 #cabal-visibility button:focus-visible,#cabal-visibility a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-#cabal-visibility .controls{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+#cabal-visibility .controls{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
 #cabal-visibility .example{font:400 9px/1.4 'IBM Plex Mono',monospace;color:var(--muted)}
-#cabal-visibility .board{position:relative;padding:18px 14px;background:linear-gradient(#f0f0f580 1px,transparent 1px),linear-gradient(90deg,#f0f0f580 1px,transparent 1px);background-size:20px 20px;border:1px solid var(--line)}
+#cabal-visibility .board{position:relative;padding:10px;background:linear-gradient(#f0f0f580 1px,transparent 1px),linear-gradient(90deg,#f0f0f580 1px,transparent 1px);background-size:20px 20px;border:1px solid var(--line)}
 #cabal-visibility .wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 #cabal-visibility .wire{fill:none;stroke:#b6afcd;stroke-width:1.4;stroke-linejoin:round}
 #cabal-visibility .send{stroke:var(--accent)}
 #cabal-visibility .top{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 100px minmax(0,1fr);align-items:center}
-#cabal-visibility .node{padding:13px;background:#fff;border:1px solid var(--line);min-width:0}
+#cabal-visibility .node{padding:9px 10px;background:#fff;border:1px solid var(--line);min-width:0}
 #cabal-visibility .pool{border-color:#b6a1f5;background:#f8f5ff}
 #cabal-visibility .eyebrow{font:500 9px/1.4 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-#cabal-visibility .node h3{font-size:16px;line-height:1.2;letter-spacing:-.025em;margin:8px 0 5px;color:var(--ink)}
+#cabal-visibility .node h3{font-size:15px;line-height:1.2;letter-spacing:-.025em;margin:4px 0 2px;color:var(--ink)}
 #cabal-visibility .node p{margin:0;font-size:11px}
-#cabal-visibility .step{font:400 9px/1.5 'IBM Plex Mono',monospace;text-align:center;color:var(--accent);align-self:end;padding-bottom:10px}
+#cabal-visibility .step{font:400 9px/1.4 'IBM Plex Mono',monospace;text-align:center;color:var(--accent);align-self:center;transform:translateY(12px)}
 #cabal-visibility .icon{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;color:var(--accent);display:block}
-#cabal-visibility .views{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:45px}
-#cabal-visibility .view{padding:13px 11px;background:#fff;border:1px solid var(--line);min-width:0;display:flex;flex-direction:column;align-items:flex-start}
-#cabal-visibility .view .icon{margin-bottom:11px;width:22px;height:22px}
-#cabal-visibility .view h3{font-size:13px;line-height:1.2;letter-spacing:-.02em;margin:0 0 12px;color:var(--ink)}
-#cabal-visibility .view .who{font-weight:600;font-size:11px;color:var(--ink);margin:0 0 4px}
-#cabal-visibility .view .trade{font-size:11px;margin:0 0 14px}
-#cabal-visibility .tag{margin-top:auto;padding-top:8px;border-top:1px solid var(--line);width:100%;font-size:10px;line-height:1.4}
+#cabal-visibility .views{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:26px}
+#cabal-visibility .view{padding:10px;background:#fff;border:1px solid var(--line);min-width:0;display:grid;grid-template-columns:17px minmax(0,1fr);grid-template-rows:auto 1fr auto;column-gap:6px}
+#cabal-visibility .view .icon{margin:0;width:17px;height:17px;grid-column:1;grid-row:1}
+#cabal-visibility .view h3{font-size:12px;line-height:17px;letter-spacing:-.02em;margin:0 0 7px;color:var(--ink)}
+#cabal-visibility .detail{grid-column:1/-1;grid-row:2}
+#cabal-visibility .view .who{display:inline;font-weight:600;font-size:10px;color:var(--ink);margin:0}
+#cabal-visibility .view .who::after{content:' / ';font-weight:400;color:var(--muted)}
+#cabal-visibility .view .trade{display:inline;font-size:10px;margin:0}
+#cabal-visibility .tag{margin-top:7px;padding-top:6px;border-top:1px solid var(--line);width:100%;font-size:10px;line-height:1.4;grid-column:1/-1;grid-row:3}
 #cabal-visibility .crew .icon,#cabal-visibility .crew .tag{color:var(--green)}
 #cabal-visibility .operator .icon,#cabal-visibility .operator .tag{color:var(--amber)}
-#cabal-visibility .fine{display:flex;justify-content:space-between;gap:12px;font-size:10px;color:var(--muted);margin:12px 0 0}
-#cabal-visibility .ft{padding:10px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+#cabal-visibility .fine{display:flex;justify-content:space-between;gap:12px;font-size:10px;color:var(--muted);margin:8px 0 0}
+#cabal-visibility .ft{padding:7px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
 #cabal-visibility .brand{display:inline-flex;align-items:center;gap:4px;font:600 12px/15px Geist,sans-serif;color:var(--accent)}
 #cabal-visibility .eye{width:15px;height:15px;display:block;flex:0 0 15px}
 #cabal-visibility .brand i{font:600 italic 12px/15px Geist,sans-serif;color:var(--ink)}
-@media(max-width:540px){#cabal-visibility .inner{padding:18px 16px}#cabal-visibility h2{font-size:23px}#cabal-visibility .top{grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr)}#cabal-visibility .board{padding:16px 10px}#cabal-visibility .node{padding:11px 9px}#cabal-visibility .node h3{font-size:14px}#cabal-visibility .views{gap:8px}#cabal-visibility .view{padding:11px 9px}#cabal-visibility .ft{padding-right:16px}}
-@media(max-width:460px){#cabal-visibility .views{grid-template-columns:1fr;margin-top:30px;gap:18px}#cabal-visibility .view{display:grid;grid-template-columns:30px 1fr 1fr;gap:4px 8px;align-items:center}#cabal-visibility .view .icon{grid-row:1/3;margin:0}#cabal-visibility .view h3{grid-column:2;margin:0}#cabal-visibility .view .who{grid-column:2;margin:0;font-weight:400}#cabal-visibility .view .trade{grid-column:3;grid-row:1;margin:0}#cabal-visibility .view .tag{grid-column:3;grid-row:2;border:0;padding:0;margin:0}#cabal-visibility .fine{display:block}#cabal-visibility .fine span{display:block;margin-top:4px}}
+@media(max-width:540px){#cabal-visibility .inner{padding:14px}#cabal-visibility h2{font-size:21px}#cabal-visibility .top{grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr)}#cabal-visibility .node{padding:8px}#cabal-visibility .node h3{font-size:14px}#cabal-visibility .view{padding:9px 8px}}
+@media(max-width:460px){#cabal-visibility .views{grid-template-columns:1fr;margin-top:24px;gap:10px}#cabal-visibility .view{grid-template-columns:20px 1fr 1fr;grid-template-rows:auto auto;gap:2px 7px;align-items:center}#cabal-visibility .view .icon{grid-row:1/3;margin:0}#cabal-visibility .view h3{grid-column:2;grid-row:1;margin:0}#cabal-visibility .detail{display:contents}#cabal-visibility .view .who{grid-column:2;grid-row:2;margin:0;font-weight:400}#cabal-visibility .view .who::after{content:''}#cabal-visibility .view .trade{grid-column:3;grid-row:1;margin:0}#cabal-visibility .view .tag{grid-column:3;grid-row:2;border:0;padding:0;margin:0}#cabal-visibility .fine{display:block}#cabal-visibility .fine span{display:block;margin-top:3px}}
 </style>
 </head>
 <body>
 <div id="cabal-visibility">
  <div class="inner">
-  <header class="head"><div><p class="kicker">CABAL / PRIVACY</p><h2>One trade. Three views.</h2></div><a class="rules" href="https://cabal.cooking/protocol/privacy" target="_blank" rel="noopener noreferrer">Rules &#8599;</a></header>
+  <header class="head"><div><p class="kicker">CABAL / PRIVACY</p><h2>Who sees your trade?</h2></div><a class="rules" href="https://cabal.cooking/protocol/privacy" target="_blank" rel="noopener noreferrer">Rules &#8599;</a></header>
   <div class="controls"><div role="group" aria-label="Example trade side"><button type="button" data-side="buy" aria-pressed="true">Buy</button><button type="button" data-side="sell" aria-pressed="false">Sell</button></div><span class="example">Example trade</span></div>
   <div class="board">
    <svg class="wires" aria-hidden="true"><defs><marker id="cv-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#b6afcd"/></marker><marker id="cv-purple" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#6c42eb"/></marker></defs><path class="wire send" id="cv-send" marker-end="url(#cv-purple)"/><path class="wire" id="cv-crew" marker-end="url(#cv-arrow)"/><path class="wire" id="cv-public" marker-end="url(#cv-arrow)"/><path class="wire" id="cv-team" marker-end="url(#cv-arrow)"/></svg>
    <div class="top">
     <div class="node you"><span class="eyebrow">Your device</span><h3 data-action>Buy $1,000</h3><p>TOKEN</p></div>
     <div class="step">Sign + prove</div>
-    <div class="node pool"><span class="eyebrow">Onchain</span><h3>Shared pool</h3><p>Executes your swap</p></div>
+    <div class="node pool"><span class="eyebrow">Onchain</span><h3>Shared pool</h3><p>Runs the swap</p></div>
    </div>
    <div class="views" aria-live="polite">
-    <section class="view crew"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M17 5a3 3 0 0 1 0 6m1 3a6 6 0 0 1 3 5v2"/></svg><h3>Your cabals</h3><p class="who">You</p><p class="trade" data-receipt>Bought $1,000 TOKEN</p><div class="tag">Full trades + positions</div></section>
-    <section class="view public"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18"/></svg><h3>The public</h3><p class="who">Pool</p><p class="trade" data-receipt>Bought $1,000 TOKEN</p><div class="tag">Wallet link not shown</div></section>
-    <section class="view operator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="4"/><path d="m11 12 9 9m-3-3 3-3m-6 0 3-3"/></svg><h3>Cabal team</h3><p class="who">Wallet &#8594; trade</p><p class="trade">Linked by viewing key</p><div class="tag">Operator can identify you</div></section>
+    <section class="view crew"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M17 5a3 3 0 0 1 0 6m1 3a6 6 0 0 1 3 5v2"/></svg><h3>Your cabals</h3><div class="detail"><p class="who">You</p><p class="trade" data-receipt>Bought $1,000 TOKEN</p></div><div class="tag">Full trades + positions</div></section>
+    <section class="view public"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18"/></svg><h3>The public</h3><div class="detail"><p class="who">Pool</p><p class="trade" data-receipt>Bought $1,000 TOKEN</p></div><div class="tag">Wallet link hidden</div></section>
+    <section class="view operator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="4"/><path d="m11 12 9 9m-3-3 3-3m-6 0 3-3"/></svg><h3>Cabal team</h3><div class="detail"><p class="who">Wallet &#8594; trade</p><p class="trade">Via viewing key</p></div><div class="tag">Wallet link visible</div></section>
    </div>
   </div>
-  <p class="fine"><span>Deposits + withdrawals are public.</span><span>Group members can leak information.</span></p>
+  <p class="fine"><span>Deposits + withdrawals are public.</span><span>Members can share your trades.</span></p>
  </div>
  <footer class="ft"><span class="brand"><img class="eye" src="https://research.moni.ai/assets/logo-eye.svg" alt="">moni <i>research</i></span></footer>
 </div>
@@ -75,7 +77,7 @@ html,body{margin:0;padding:0;background:transparent}
 (()=>{
  const root=document.getElementById('cabal-visibility'),board=root.querySelector('.board');
  const box=s=>{const a=root.querySelector(s).getBoundingClientRect(),b=board.getBoundingClientRect();return{x:a.left-b.left,y:a.top-b.top,w:a.width,h:a.height}};
- const draw=()=>{const a=box('.you'),p=box('.pool'),targets=['.crew','.public','.operator'].map(box);root.querySelector('#cv-send').setAttribute('d',`M${a.x+a.w+1},${a.y+a.h/2}H${p.x-4}`);targets.forEach((t,i)=>{const x=p.x+p.w/2,y=p.y+p.h+1,end=t.x+t.w/2;let d;if(innerWidth<=460){const rail=5;d=`M${x},${y}V${y+14}H${rail}V${t.y+t.h/2}H${t.x-3}`}else{d=`M${x},${y}V${y+22}H${end}V${t.y-4}`}root.querySelector(['#cv-crew','#cv-public','#cv-team'][i]).setAttribute('d',d)})};
+ const draw=()=>{const a=box('.you'),p=box('.pool'),targets=['.crew','.public','.operator'].map(box);root.querySelector('#cv-send').setAttribute('d',`M${a.x+a.w+1},${a.y+a.h/2}H${p.x-4}`);targets.forEach((t,i)=>{const x=p.x+p.w/2,y=p.y+p.h+1,end=t.x+t.w/2;let d;if(innerWidth<=460){const rail=5;d=`M${x},${y}V${y+14}H${rail}V${t.y+t.h/2}H${t.x-3}`}else{d=`M${x},${y}V${y+10}H${end}V${t.y-4}`}root.querySelector(['#cv-crew','#cv-public','#cv-team'][i]).setAttribute('d',d)})};
  root.querySelectorAll('[data-side]').forEach(button=>button.addEventListener('click',()=>{root.querySelectorAll('[data-side]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));const buy=button.dataset.side==='buy';root.querySelector('[data-action]').textContent=(buy?'Buy':'Sell')+' $1,000';root.querySelectorAll('[data-receipt]').forEach(n=>n.textContent=(buy?'Bought':'Sold')+' $1,000 TOKEN')}));
  new ResizeObserver(draw).observe(board);document.fonts.ready.then(draw);draw();
 })();
