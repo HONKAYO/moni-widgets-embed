@@ -97,6 +97,7 @@ html,body{margin:0;padding:0;background:transparent}
 #sqk-eco .project .row{display:block}
 #sqk-eco .project h3{font-size:17px;overflow-wrap:anywhere}
 #sqk-eco .project .stage{display:block;max-width:none;text-align:left;margin-top:5px;font-size:8px;line-height:1.4}
+#sqk-eco .verification{margin:6px 0 0;font-size:10px;line-height:1.4}
 #sqk-eco .project .description{margin:8px 0 10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
 #sqk-eco .project summary{font-weight:600}
 #sqk-eco .project .detail{background:#fff}
@@ -148,8 +149,9 @@ html,body{margin:0;padding:0;background:transparent}
  const PAGE_SIZE=4, INTERVAL=60000;
  const list=root.querySelector('.list'), filters=root.querySelector('.filters'), pages=root.querySelector('.pages');
  const status=root.querySelector('#feed-state'), result=root.querySelector('#eco-result');
- const labels={nft:'NFTs',game:'Games',games:'Games',defi:'DeFi',vault:'Vaults',vaults:'Vaults',memecoin:'Memecoins',launchpad:'Launchpads',tools:'Tools',other:'Other'};
- const stages={unknown:'Testnet',research:'Early signal',development:'In development',testnet_announced:'Testnet announced',launch_announced:'Launch announced',live_confirmed:'Live activity confirmed',announced:'Announced'};
+ const VERIFIED='__squeek_verified';
+ const labels={nft:'NFTs',game:'Games',defi:'DeFi',vault:'Vaults',memecoin:'Memecoins',launchpad:'Launchpads',tools:'Tools',other:'Other',infrastructure:'Infrastructure',[VERIFIED]:'Verified by Squeek'};
+ const stages={unknown:'Stage unconfirmed',research:'Early signal',development:'In development',testnet_announced:'Testnet announced',testnet:'Testnet',mainnet:'Mainnet',launch_announced:'Launch announced',live_confirmed:'Live activity confirmed',live:'Live (reported)',deployed:'Deployed (reported)',paused:'Paused',inactive:'Inactive',announced:'Announced'};
  const linkNames={website:'Website',x:'X',announcement:'Announcement',github:'Code',docs:'Docs',telegram:'Telegram',explorer:'Explorer'};
  let data=JSON.parse(document.getElementById('radar-fallback').textContent), filter='all', page=0, busy=false, signature='', lastSuccess=0;
  const node=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
@@ -157,9 +159,33 @@ html,body{margin:0;padding:0;background:transparent}
  const link=(url,text)=>{const href=safeURL(url);if(!href)return null;const a=node('a','',text);a.href=href;a.target='_blank';a.rel='noopener noreferrer';return a;};
  function validated(value){
   if(!value||value.public!==true||!Array.isArray(value.projects))throw Error('Invalid public feed');
-  const ids=new Set();return {projects:value.projects.filter(p=>{if(!p||typeof p.id!=='string'||typeof p.name!=='string'||ids.has(p.id))return false;ids.add(p.id);return true;})};
+  if(value.projects.length>500)throw Error('Too many projects');
+  const ids=new Set();return {projects:canonicalProjects(value.projects.filter(p=>{if(!p||typeof p.id!=='string'||!p.id||p.id.length>160||typeof p.name!=='string'||!p.name||p.name.length>200||ids.has(p.id))return false;ids.add(p.id);return true;}))};
  }
- function category(p){const c=typeof p.category==='string'?p.category:'other';return c==='games'?'game':c;}
+ function canonicalProjects(projects){
+  // Both sites serve identical HTML and link the same X profile (checked 2 Nov 2026).
+  const primary=projects.find(p=>p.id==='c6a9651f4ba6680c'),duplicate=projects.find(p=>p.id==='340d5e78056bc292');
+  if(!primary||!duplicate||primary.links?.x!=='https://x.com/sqkstr'||duplicate.links?.x!==primary.links.x)return projects;
+  return projects.filter(p=>p.id!==duplicate.id).map(p=>p.id!==primary.id?p:{...p,alias_ids:[duplicate.id],evidence:[...new Map([...(p.evidence||[]),...(duplicate.evidence||[])].map(e=>[e.url,e])).values()].slice(0,60)});
+ }
+ function category(p){const c=typeof p.category==='string'?p.category.trim().toLowerCase().replace(/[\s-]+/g,'_'):'other';const aliases={games:'game',nfts:'nft',vaults:'vault',launchpads:'launchpad',memecoins:'memecoin'};return (Object.hasOwn(aliases,c)?aliases[c]:c)||'other';}
+ function categoryLabel(key){return Object.hasOwn(labels,key)?labels[key]:key.replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());}
+ function verification(p){
+  const v=p.verified_by_squeek;if(!v||v.version!==1||typeof v.stale!=='boolean')return null;
+  const url=safeURL(v.source_url);
+  if(!url||!/^https:\/\/squeekchain\.com\/genesis\/(?:code|i\/[A-Za-z0-9_-]{1,64})\/?$/.test(url)||!Number.isFinite(Date.parse(v.verified_at))||!Number.isFinite(Date.parse(v.last_checked)))return null;
+  return {...v,source_url:url};
+ }
+ function matchesCategory(p,key){return key==='all'||(key===VERIFIED?!!verification(p):category(p)===key);}
+ function readingGuide(p){return p.publication_origin==='owner_curated'&&p.curated_text?p.curated_text:p.checked_text||p.curated_text;}
+ function stageValue(p){return [p.stage,p.lifecycle_stage].filter(v=>typeof v==='string').map(v=>v.trim().toLowerCase()).find(v=>v&&v!=='unknown')||'unknown';}
+ async function readFeed(response){
+  if(!response.body)throw Error('Empty feed');
+  const reader=response.body.getReader(),chunks=[];let length=0;
+  try{while(true){const {done,value}=await reader.read();if(done)break;length+=value.byteLength;if(length>2*1024*1024)throw Error('Feed too large');chunks.push(value);}}finally{await reader.cancel().catch(()=>{});}
+  const bytes=new Uint8Array(length);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}
+  return JSON.parse(new TextDecoder().decode(bytes));
+ }
  function ordered(){return [...data.projects].sort((a,b)=>String(b.first_seen||'').localeCompare(String(a.first_seen||''))||a.name.localeCompare(b.name));}
  function paragraph(parent,text){if(text)parent.append(node('p','',String(text)));}
  function xProfile(p){
@@ -211,14 +237,16 @@ html,body{margin:0;padding:0;background:transparent}
   const article=node('article','project');article.dataset.projectId=p.id;article.dataset.category=category(p);
   const mark=projectAvatar(p);
   const body=node('div'),row=node('div','row');row.append(node('h3','',p.name));
-  const stage=p.stage||p.lifecycle_stage||'unknown';
+  const stage=stageValue(p);
   // A dated editorial verification fills an unknown feed stage only.
   // Explicit future stage changes from Radar continue to take precedence.
-  const verifiedMainnet=p.id==='82c3c3c9cd2c39a7'&&stage==='unknown'&&(!p.lifecycle_stage||p.lifecycle_stage==='unknown');
-  const stageTag=node('span','stage',verifiedMainnet?'Mainnet contract':stages[stage]||'Testnet');
+  const verifiedMainnet=p.id==='82c3c3c9cd2c39a7'&&stage==='unknown';
+  const stageTag=node('span','stage',verifiedMainnet?'Mainnet contract':Object.hasOwn(stages,stage)?stages[stage]:categoryLabel(stage));
   if(verifiedMainnet)stageTag.title='Hamster Hour v2 game contract on Ethereum mainnet; checked 27 Oct 2026. Player activity unconfirmed.';
-  else if(stage==='unknown'||!stages[stage])stageTag.title='Squeekchain testnet · project deployment not independently confirmed';
+  else stageTag.title=stage==='unknown'?"Radar has not supplied a project stage. The network being on testnet does not confirm this project's deployment.":'Stage supplied by Squeek Radar; not independent deployment verification.';
   row.append(stageTag);body.append(row);
+  const verified=verification(p);
+  if(verified){const badge=node('p','verification');const a=link(verified.source_url,verified.stale?'Squeek listing - recheck pending':'Verified by Squeek');a.title="Listed on Squeekchain's Genesis board after team review; not a security audit or deployment verification.";badge.append(a);if(verified.stale)badge.append(document.createTextNode(' · last checked '+new Date(verified.last_checked).toLocaleDateString('en-GB')));body.append(badge);}
   body.append(node('p','description',typeof p.description_en==='string'?p.description_en:'Details are being reviewed by Squeek Radar.'));
   const actions=node('div','actions');
   const links=projectLinks(p);
@@ -232,8 +260,9 @@ html,body{margin:0;padding:0;background:transparent}
   }
   for(const [url,label] of [[!projectDocs(p)&&safeURL(links.docs),'Documentation reference ↗'],[safeURL(links.explorer),'Explorer reference ↗']]){if(!url)continue;const para=node('p'),a=link(url,label);if(a){para.append(a);content.append(para);}}
   if(typeof p.description_en==='string')paragraph(content,p.description_en);
-  if(p.curated_text?.version===1&&Array.isArray(p.curated_text.paragraphs)){
-   p.curated_text.paragraphs.slice(0,8).forEach(parts=>{if(!Array.isArray(parts))return;const para=node('p');parts.slice(0,30).forEach(part=>{if(typeof part?.text!=='string')return;const a=part.url&&link(part.url,part.text);para.append(a||document.createTextNode(part.text));});content.append(para);});
+  const guide=readingGuide(p);
+  if(guide?.version===1&&Array.isArray(guide.paragraphs)){
+   guide.paragraphs.slice(0,12).forEach(parts=>{if(!Array.isArray(parts))return;const para=node('p');parts.slice(0,40).forEach(part=>{if(typeof part?.text!=='string')return;const text=part.text.slice(0,12000),a=part.url&&link(part.url,text);para.append(a||document.createTextNode(text));});content.append(para);});
   }
   if(p.description_origin==='x_profile')paragraph(content,'Description from the project’s X profile.');
   if(p.description_origin==='website')paragraph(content,'Description from the project’s website.');
@@ -267,16 +296,18 @@ html,body{margin:0;padding:0;background:transparent}
  function render(){
   const openId=list.querySelector('details[open]')?.closest('article')?.dataset.projectId;
   const counts=new Map();data.projects.forEach(p=>counts.set(category(p),(counts.get(category(p))||0)+1));
+  const verifiedCount=data.projects.filter(p=>verification(p)).length;
+  if(verifiedCount)counts.set(VERIFIED,verifiedCount);
   if(filter!=='all'&&!counts.has(filter)){filter='all';page=0;}
   filters.replaceChildren();
-  for(const [key,count] of [['all',data.projects.length],...[...counts].sort((a,b)=>a[0].localeCompare(b[0]))]){
-   const b=node('button','filter',key==='all'?'All':labels[key]||key.replaceAll('_',' ').replace(/^./,c=>c.toUpperCase()));b.type='button';b.dataset.filter=key;b.setAttribute('aria-pressed',String(filter===key));b.append(node('span','',String(count)));
+  for(const [key,count] of [['all',data.projects.length],...[...counts].sort((a,b)=>a[0]===VERIFIED?-1:b[0]===VERIFIED?1:categoryLabel(a[0]).localeCompare(categoryLabel(b[0])))]){
+   const b=node('button','filter',key==='all'?'All':categoryLabel(key));b.type='button';b.dataset.filter=key;b.setAttribute('aria-pressed',String(filter===key));b.append(node('span','',String(count)));
    b.addEventListener('click',()=>{filter=key;page=0;render();[...filters.children].find(e=>e.dataset.filter===key)?.focus();});filters.append(b);
   }
-  const visible=ordered().filter(p=>filter==='all'||category(p)===filter),total=Math.max(1,Math.ceil(visible.length/PAGE_SIZE));page=Math.min(page,total-1);
+  const visible=ordered().filter(p=>matchesCategory(p,filter)),total=Math.max(1,Math.ceil(visible.length/PAGE_SIZE));page=Math.min(page,total-1);
   list.replaceChildren(...visible.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE).map(card));list.scrollTop=0;
   if(!visible.length)list.append(node('p','empty','No projects in this category yet.'));
-  list.querySelectorAll('article').forEach(a=>{if(a.dataset.projectId===openId)a.querySelector('details').open=true;});
+  list.querySelectorAll('article').forEach(a=>{const p=data.projects.find(p=>p.id===a.dataset.projectId);if(p&&(p.id===openId||p.alias_ids?.includes(openId)))a.querySelector('details').open=true;});
   reserveSlots();
   pages.hidden=false;pages.querySelector('[data-page="prev"]').disabled=page===0;pages.querySelector('[data-page="next"]').disabled=page>=total-1;
   root.querySelector('#page-state').textContent=(page+1)+' / '+total;
@@ -290,7 +321,7 @@ html,body{margin:0;padding:0;background:transparent}
   try{
    const url=new URL(FEED);url.searchParams.set('v',Math.floor(Date.now()/INTERVAL));
    const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(12000)});if(!response.ok)throw Error('Feed unavailable');
-   const next=validated(await response.json()),key=JSON.stringify(next);
+   const next=validated(await readFeed(response)),key=JSON.stringify(next);
    if(key!==signature){data=next;signature=key;render();}
    lastSuccess=Date.now();status.textContent='Connected · Squeek Radar';status.title='The public project feed is checked every minute. Project review dates are supplied by the radar.';
   }catch{
