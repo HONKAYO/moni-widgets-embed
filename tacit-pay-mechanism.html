@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>What happens to ETH inside Tacit?</title>
+<title>Follow the ETH through Tacit</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
   html, body { margin: 0; padding: 0; background: transparent; }
@@ -16,345 +16,390 @@
     --line: #e8e8ed;
     --accent: #6c42eb;
     --accent-soft: #6c42eb14;
+    --faint-line: #6c42eb35;
     --mono: "IBM Plex Mono", monospace;
+    position: relative;
     width: 100%;
     max-width: none;
     overflow: hidden;
-    position: relative;
     background: var(--bg);
     color: var(--body);
     font: 400 14px/1.45 "Geist", system-ui, sans-serif;
   }
+
   #tacit-pay-mechanism * { box-sizing: border-box; }
-  #tacit-pay-mechanism h2,
-  #tacit-pay-mechanism p { margin: 0; }
+  #tacit-pay-mechanism :is(h2,h3,p) { margin: 0; }
   #tacit-pay-mechanism .widget-head {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px 20px;
-    padding: 22px 22px 17px;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px 18px;
+    padding: 22px 22px 13px;
   }
-  #tacit-pay-mechanism .kicker,
+  #tacit-pay-mechanism .widget-head > div { flex: 1 1 220px; min-width: 0; }
   #tacit-pay-mechanism .label,
-  #tacit-pay-mechanism .tag {
-    font: 600 10px/1.4 var(--mono);
-    text-transform: uppercase;
+  #tacit-pay-mechanism .kicker {
+    font: 600 10px/1.35 var(--mono);
     letter-spacing: .075em;
+    text-transform: uppercase;
   }
   #tacit-pay-mechanism .kicker { color: var(--accent); margin-bottom: 5px; }
   #tacit-pay-mechanism h2 {
     color: var(--text);
-    font-size: clamp(22px, 4.65vw, 29px);
-    line-height: 1.13;
+    font-size: clamp(24px, 4.4vw, 30px);
+    line-height: 1.1;
     letter-spacing: -.025em;
     font-weight: 700;
   }
-  #tacit-pay-mechanism .widget-head > div { flex: 1 1 230px; min-width: 0; }
   #tacit-pay-mechanism button {
     flex: none;
-    width: 136px;
+    width: 137px;
+    min-height: 40px;
+    padding: 9px 12px;
+    white-space: nowrap;
     border: 1px solid var(--accent);
-    border-radius: 0;
     background: var(--accent);
     color: var(--bg);
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.2;
-    white-space: nowrap;
-    padding: 10px 15px;
-    min-height: 40px;
+    font: 600 13px/1.2 "Geist", system-ui, sans-serif;
     cursor: pointer;
   }
-  #tacit-pay-mechanism button:hover { background: #5934cb; }
-  #tacit-pay-mechanism button:focus-visible,
-  #tacit-pay-mechanism a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   #tacit-pay-mechanism[data-playback="playing"] button {
     background: var(--accent-soft);
     color: var(--accent);
   }
-  #tacit-pay-mechanism .steps {
+  #tacit-pay-mechanism button:hover { filter: brightness(.91); }
+  #tacit-pay-mechanism :is(button,a):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  #tacit-pay-mechanism .stage-readout {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
-    list-style: none;
-    padding: 0 22px;
-    margin: 0 0 13px;
-  }
-  #tacit-pay-mechanism .steps li {
-    padding-top: 6px;
-    border-top: 2px solid var(--line);
-    color: var(--body);
-    font-size: 11px;
-    line-height: 1.22;
-    overflow-wrap: anywhere;
-  }
-  #tacit-pay-mechanism .steps li[data-done] { border-color: #6c42eb66; }
-  #tacit-pay-mechanism .steps li[aria-current="step"] {
-    border-color: var(--accent);
-    color: var(--accent);
-    font-weight: 700;
-  }
-  #tacit-pay-mechanism .scene { padding: 0 22px 14px; }
-  #tacit-pay-mechanism .routes {
-    display: grid;
-    grid-template-columns: minmax(86px, .75fr) 32px minmax(0, 1.65fr);
-    align-items: stretch;
-    padding: 9px 10px;
-    background: var(--soft);
-    border: 1px solid var(--line);
-    margin-bottom: 10px;
-  }
-  #tacit-pay-mechanism .routes > * { min-width: 0; }
-  #tacit-pay-mechanism .deposit {
-    display: grid;
-    align-content: center;
-    gap: 1px;
-  }
-  #tacit-pay-mechanism .route-targets {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    gap: 3px;
-    padding-left: 8px;
-  }
-  #tacit-pay-mechanism .route-targets p {
-    display: flex;
-    justify-content: space-between;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 8px 11px;
     align-items: baseline;
-    gap: 4px 8px;
-    flex-wrap: wrap;
+    padding: 8px 11px;
+    margin: 0 22px;
+    border-top: 1px solid var(--line);
+    background: var(--soft);
     font-size: 12px;
-    min-width: 0;
   }
+  #tacit-pay-mechanism .stage-readout > .label { color: var(--accent); }
+  #tacit-pay-mechanism .scene { padding: 14px 22px 11px; }
   #tacit-pay-mechanism .amount {
     color: var(--text);
-    font-weight: 700;
     font-variant-numeric: tabular-nums;
+    font-weight: 700;
     white-space: nowrap;
   }
-  #tacit-pay-mechanism .deposit .amount { font-size: 18px; }
-  #tacit-pay-mechanism .route-targets p:last-child .amount { color: var(--accent); }
-  #tacit-pay-mechanism .fork {
+
+  #tacit-pay-mechanism .deposit,
+  #tacit-pay-mechanism .exit-card { text-align: center; }
+  #tacit-pay-mechanism .deposit .amount,
+  #tacit-pay-mechanism .exit-card .amount { font-size: 19px; line-height: 1.17; }
+  #tacit-pay-mechanism .eth-static {
+    display: inline-block;
+    width: 10px;
+    height: 15px;
+    margin-inline-end: 4px;
+    vertical-align: -.1em;
+    background: linear-gradient(120deg, #a788ff, var(--accent) 72%);
+    clip-path: polygon(50% 0, 100% 55%, 50% 100%, 0 55%);
+  }
+  #tacit-pay-mechanism .deposit .label,
+  #tacit-pay-mechanism .exit-card .label { color: var(--body); }
+  #tacit-pay-mechanism .routing {
+    height: 51px;
     position: relative;
-    align-self: stretch;
-    min-height: 36px;
   }
-  #tacit-pay-mechanism .fork::before,
-  #tacit-pay-mechanism .fork::after,
-  #tacit-pay-mechanism .fork span {
+  #tacit-pay-mechanism .routing::before,
+  #tacit-pay-mechanism .exit-line::before {
     content: "";
     position: absolute;
-    background: #c8c4d2;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--faint-line);
   }
-  #tacit-pay-mechanism .fork::before { left: 0; width: 43%; top: 50%; height: 1px; }
-  #tacit-pay-mechanism .fork::after { left: 43%; width: 1px; height: 50%; top: 25%; }
-  #tacit-pay-mechanism .fork span { left: 43%; width: 57%; height: 1px; }
-  #tacit-pay-mechanism .fork span:first-child { top: 25%; }
-  #tacit-pay-mechanism .fork span:last-child { top: 75%; }
-  #tacit-pay-mechanism .fork span::after {
-    content: "";
+  #tacit-pay-mechanism .junction {
     position: absolute;
-    right: 0;
-    top: -2px;
-    width: 4px;
-    height: 4px;
-    border-top: 1px solid #c8c4d2;
-    border-right: 1px solid #c8c4d2;
-    transform: rotate(45deg);
-  }
-  #tacit-pay-mechanism .runner {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    top: 50%;
-    left: 0;
-    transform: translate(-50%, -50%);
-    background: var(--accent);
-    opacity: 0;
-  }
-  #tacit-pay-mechanism .runner[data-route="tornado"] { --fork-end: 25%; background: #777189; }
-  #tacit-pay-mechanism .runner[data-route="tacit"] { --fork-end: 75%; }
-  #tacit-pay-mechanism[data-phase="split"] .runner { animation: tacit-fork .96s linear .15s both; }
-  #tacit-pay-mechanism[data-phase="split"] .route-targets .amount { animation: tacit-reveal .29s ease-out .93s both; }
-  #tacit-pay-mechanism .contract {
-    border: 1px solid #6c42eb58;
-    background: var(--bg);
-  }
-  #tacit-pay-mechanism .reserve {
-    padding: 10px 12px;
-    background: var(--accent-soft);
-    border-bottom: 1px solid #6c42eb30;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(76px, max-content);
-    align-items: center;
-    gap: 7px 12px;
-  }
-  #tacit-pay-mechanism .contract-name { color: var(--text); font-weight: 700; }
-  #tacit-pay-mechanism .reserve .label { color: var(--accent); }
-  #tacit-pay-mechanism .balance { text-align: right; color: var(--accent); }
-  #tacit-pay-mechanism .balance .amount { font-size: 23px; color: var(--accent); line-height: 1.05; }
-  #tacit-pay-mechanism .holdings {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 4px;
-  }
-  #tacit-pay-mechanism .unit {
-    height: 8px;
-    border: 1px solid #6c42eb3d;
-    background: transparent;
-  }
-  #tacit-pay-mechanism .unit[data-held] {
-    border-color: var(--accent);
+    width: 6px;
+    height: 6px;
+    left: 50%;
+    top: 16px;
+    transform: translate(-2.5px, -2.5px) rotate(45deg);
     background: var(--accent);
   }
-  #tacit-pay-mechanism[data-phase="shield"] .unit[data-held] {
-    animation: tacit-fund .37s ease-out both;
-    animation-delay: calc(var(--unit-index) * 55ms);
-  }
-  #tacit-pay-mechanism[data-phase="withdraw"] .unit[data-held]:nth-child(n+3) {
-    animation: tacit-exit .55s ease-in both;
-    animation-delay: calc(var(--unit-index) * 90ms);
-  }
-  #tacit-pay-mechanism .eth-flight {
+  #tacit-pay-mechanism .tornado-branch {
     position: absolute;
-    z-index: 2;
-    width: 8px;
-    height: 8px;
-    background: var(--accent);
-    pointer-events: none;
-  }
-  #tacit-pay-mechanism .notes { padding: 9px 12px 11px; }
-  #tacit-pay-mechanism .notes > .label { margin-bottom: 6px; color: var(--body); }
-  #tacit-pay-mechanism .note-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(46px, .4fr) minmax(0, 1fr);
-    gap: 6px;
-    align-items: center;
-  }
-  #tacit-pay-mechanism .note {
-    min-width: 0;
-    padding: 7px 8px;
+    left: calc(50% + 28px);
+    top: 5px;
+    display: flex;
+    justify-content: space-between;
+    gap: 3px 7px;
+    flex-wrap: wrap;
+    width: min(164px, calc(50% - 33px));
+    padding: 4px 7px;
     border: 1px solid var(--line);
     background: var(--soft);
+    font-size: 11px;
   }
-  #tacit-pay-mechanism .note > p:first-child { color: var(--body); font-size: 11px; line-height: 1.3; }
-  #tacit-pay-mechanism .note .amount { font-size: 17px; }
-  #tacit-pay-mechanism .note[data-funded] { border-color: #6c42eb58; }
-  #tacit-pay-mechanism .note[data-funded] .amount { color: var(--accent); }
-  #tacit-pay-mechanism[data-phase="pay"] .note[data-funded] { animation: tacit-note .53s ease-out both; }
-  #tacit-pay-mechanism .proof-path {
+  #tacit-pay-mechanism .tornado-branch::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 100%;
+    width: 28px;
+    height: 1px;
+    background: #d7d2e3;
+  }
+  #tacit-pay-mechanism .tacit-inlet {
+    position: absolute;
+    top: 31px;
+    right: calc(50% + 7px);
     color: var(--accent);
-    position: relative;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    text-align: center;
-    gap: 2px;
+    font-size: 11px;
   }
-  #tacit-pay-mechanism .proof-path::after {
+
+  #tacit-pay-mechanism .contract {
+    border: 1px solid #6c42eb52;
+    background: var(--bg);
+  }
+  #tacit-pay-mechanism .contract-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 11px;
+    border-bottom: 1px solid var(--faint-line);
+    background: var(--accent-soft);
+  }
+  #tacit-pay-mechanism h3 {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -.015em;
+  }
+  #tacit-pay-mechanism .contract-top .label { color: var(--accent); }
+  #tacit-pay-mechanism .reserve {
+    display: grid;
+    grid-template-columns: repeat(7, 5px);
+    gap: 3px;
+  }
+  #tacit-pay-mechanism .unit {
+    width: 5px;
+    height: 7px;
+    background: #ddd1fb;
+    clip-path: polygon(50% 0, 100% 55%, 50% 100%, 0 55%);
+  }
+  #tacit-pay-mechanism .unit[data-held] { background: var(--accent); }
+  #tacit-pay-mechanism .held {
+    text-align: right;
+    color: var(--accent);
+    font-size: 21px;
+    line-height: 1;
+  }
+  #tacit-pay-mechanism .holding-caption { font-size: 10px; text-align: right; }
+
+  #tacit-pay-mechanism .arena {
+    position: relative;
+    height: 173px;
+    background:
+      radial-gradient(circle at 50% 45%, #6c42eb16, transparent 56%),
+      linear-gradient(180deg, #6c42eb05, #6c42eb0a 70%, #ffffff);
+    overflow: hidden;
+  }
+  #tacit-pay-mechanism .arena::before,
+  #tacit-pay-mechanism .arena::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  #tacit-pay-mechanism .arena::before {
+    width: min(83%, 350px);
+    height: 115px;
+    border: 1px dashed #6c42eb37;
+    border-radius: 50%;
+  }
+  #tacit-pay-mechanism .arena::after {
+    width: min(60%, 236px);
+    height: 75px;
+    border: 1px solid #6c42eb1a;
+    border-radius: 50%;
+  }
+  #tacit-pay-mechanism .arena-note {
+    position: absolute;
+    z-index: 1;
+    left: var(--note-x);
+    top: var(--note-y);
+    width: 25px;
+    height: 16px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #b8a5ef;
+    background: #f5efff;
+    color: #806bbf;
+    font: 600 9px/1 var(--mono);
+    letter-spacing: .03em;
+  }
+  #tacit-pay-mechanism .arena-center {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+  }
+  #tacit-pay-mechanism .arena-center .label {
+    display: inline-block;
+    padding: 5px 7px;
+    color: var(--accent);
+    background: var(--bg);
+    border: 1px solid var(--faint-line);
+  }
+  #tacit-pay-mechanism .notes {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 7px;
+    padding: 0 11px 9px;
+  }
+  #tacit-pay-mechanism .note {
+    display: grid;
+    align-content: center;
+    min-width: 0;
+    gap: 1px;
+    padding: 5px 7px;
+    border: 1px solid var(--line);
+    background: var(--soft);
+    font-size: 11px;
+  }
+  #tacit-pay-mechanism .note .amount { font-size: 16px; }
+  #tacit-pay-mechanism .note[data-funded] {
+    border-color: var(--faint-line);
+    background: #6c42eb08;
+  }
+  #tacit-pay-mechanism .note[data-funded] .amount { color: var(--accent); }
+  #tacit-pay-mechanism[data-phase="pay"] .note[data-funded] {
+    animation: tacit-note-reveal .48s ease-out .55s both;
+  }
+  #tacit-pay-mechanism .note-label {
+    position: absolute;
+    inset-inline: 8px;
+    bottom: 9px;
+    color: var(--body);
+    text-align: center;
+    font-size: 10px;
+  }
+
+  #tacit-pay-mechanism .exit-line { height: 19px; position: relative; }
+  #tacit-pay-mechanism .exit-line::after {
     content: "";
     position: absolute;
     bottom: 1px;
-    width: 100%;
-    height: 1px;
-    background: #6c42eb45;
+    left: calc(50% - 2px);
+    width: 4px;
+    height: 4px;
+    border-bottom: 1px solid var(--accent);
+    border-right: 1px solid var(--accent);
+    transform: rotate(45deg);
   }
-  #tacit-pay-mechanism .proof-path .tag { position: relative; margin-bottom: 4px; font-size: 9px; }
-  #tacit-pay-mechanism .proof-path i {
-    z-index: 1;
-    height: 5px;
-    width: 5px;
-    left: 0;
-    bottom: -1px;
-    position: absolute;
-    opacity: 0;
-    background: var(--accent);
+  #tacit-pay-mechanism .exit-card {
+    display: grid;
+    gap: 2px;
+    justify-items: center;
+    padding: 3px 0 8px;
   }
-  #tacit-pay-mechanism[data-phase="proof"] .proof-path i { animation: tacit-proof 1.12s ease-in-out both; }
+  #tacit-pay-mechanism .exit-amount {
+    display: block;
+    font-size: 19px;
+    line-height: 1.17;
+  }
+  #tacit-pay-mechanism[data-phase="complete"] .exit-amount { color: var(--accent); }
   #tacit-pay-mechanism .receipt {
     display: grid;
     grid-template-columns: max-content minmax(0, 1fr);
-    gap: 4px 9px;
     align-items: baseline;
-    background: var(--soft);
+    padding: 6px 8px;
+    gap: 3px 10px;
     border: 1px solid var(--line);
-    border-top: 0;
-    padding: 7px 9px;
-    font-size: 12px;
+    background: var(--soft);
+    font-size: 11px;
   }
-  #tacit-pay-mechanism .receipt .label { color: var(--body); }
-  #tacit-pay-mechanism .caption { margin-top: 8px; color: var(--text); font-size: 13px; }
   #tacit-pay-mechanism .context {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 2px 10px;
-    color: var(--body);
+    flex-wrap: wrap;
+    gap: 3px 9px;
+    margin-top: 7px;
     font-size: 11px;
-    margin-top: 8px;
   }
   #tacit-pay-mechanism .context a { color: var(--accent); text-underline-offset: 2px; }
   #tacit-pay-mechanism .ft {
-    border-top: 1px solid var(--line);
-    padding: 9px 22px;
     display: flex;
     justify-content: flex-end;
+    padding: 9px 22px;
+    border-top: 1px solid var(--line);
   }
   #tacit-pay-mechanism .lockup {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    line-height: 1.15;
     font-size: 12px;
+    line-height: 1.15;
     font-weight: 700;
   }
   #tacit-pay-mechanism .eye { width: 15px; height: 15px; display: block; flex: 0 0 15px; }
   #tacit-pay-mechanism .lockup span { color: var(--accent); }
   #tacit-pay-mechanism .lockup em { color: var(--text); }
+
+  #tacit-pay-mechanism .motion-mark {
+    position: absolute;
+    z-index: 5;
+    width: 15px;
+    height: 22px;
+    pointer-events: none;
+    background: linear-gradient(120deg,#af90ff 11%,var(--accent) 71%);
+    clip-path: polygon(50% 0, 100% 55%, 50% 100%, 0 55%);
+    will-change: transform, opacity;
+  }
+  #tacit-pay-mechanism .motion-mark.note-mark {
+    width: 19px;
+    height: 12px;
+    clip-path: none;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--bg);
+    font: 600 8px/10px var(--mono);
+    text-align: center;
+  }
+  #tacit-pay-mechanism .motion-mark.eth-flight { width: 9px; height: 13px; }
   #tacit-pay-mechanism[data-playback="paused"] * { animation-play-state: paused !important; }
-  @keyframes tacit-fork {
-    0% { top: 50%; left: 0; opacity: 1; }
-    36% { top: 50%; left: 43%; opacity: 1; }
-    65% { top: var(--fork-end); left: 43%; opacity: 1; }
-    100% { top: var(--fork-end); left: 100%; opacity: 0; }
-  }
-  @keyframes tacit-reveal {
-    from { opacity: 0; transform: translateX(-6px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes tacit-fund {
-    from { opacity: 0; transform: translateY(-6px); }
+  @keyframes tacit-note-reveal {
+    from { opacity: .2; transform: translateY(-4px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  @keyframes tacit-note {
-    from { background: var(--accent-soft); transform: translateY(-3px); }
-    to { background: var(--soft); transform: translateY(0); }
-  }
-  @keyframes tacit-proof {
-    0% { left: 0; opacity: 1; }
-    90% { opacity: 1; }
-    100% { left: calc(100% - 5px); opacity: 0; }
-  }
-  @keyframes tacit-exit {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: .16; transform: translateY(4px); }
-  }
   @media (max-width: 520px) {
-    #tacit-pay-mechanism .widget-head { padding: 16px 14px 12px; }
-    #tacit-pay-mechanism .steps { padding: 0 14px; gap: 6px; margin-bottom: 10px; }
-    #tacit-pay-mechanism .scene { padding: 0 14px 11px; }
+    #tacit-pay-mechanism .widget-head { padding: 16px 14px 11px; }
+    #tacit-pay-mechanism .stage-readout { margin-inline: 14px; }
+    #tacit-pay-mechanism .scene { padding-inline: 14px; }
     #tacit-pay-mechanism .ft { padding-inline: 14px; }
   }
-  @media (max-width: 360px) {
-    #tacit-pay-mechanism .routes { grid-template-columns: minmax(73px, .8fr) 20px minmax(0, 1.5fr); }
-    #tacit-pay-mechanism .receipt { grid-template-columns: minmax(0, 1fr); gap: 1px; }
-    #tacit-pay-mechanism .note-grid { grid-template-columns: minmax(0, 1fr) 41px minmax(0, 1fr); }
+  @media (max-width: 400px) {
+    #tacit-pay-mechanism .tornado-branch { left: calc(50% + 16px); width: calc(50% - 17px); }
+    #tacit-pay-mechanism .tornado-branch::before { width: 16px; }
+    #tacit-pay-mechanism .stage-readout { grid-template-columns: minmax(0, 1fr); gap: 3px; }
+    #tacit-pay-mechanism .arena { height: 151px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    #tacit-pay-mechanism *, #tacit-pay-mechanism *::after { animation: none !important; }
+    #tacit-pay-mechanism * { animation: none !important; }
   }
 </style>
 </head>
@@ -363,66 +408,65 @@
   <header class="widget-head">
     <div>
       <p class="kicker">Tacit Pay</p>
-      <h2>What happens to ETH inside Tacit?</h2>
+      <h2>Follow the ETH through Tacit</h2>
     </div>
     <button type="button" data-play>Play example</button>
   </header>
 
-  <ol class="steps" aria-label="Payment stages">
-    <li>Split deposit</li>
-    <li>Shield ETH</li>
-    <li>Pay privately</li>
-    <li>Withdraw</li>
-  </ol>
+  <div class="stage-readout" aria-live="polite">
+    <p class="label" data-stage>01 / 04 · Deposit</p>
+    <p data-caption>Watch an ETH deposit become a private payment and a public withdrawal.</p>
+  </div>
 
   <div class="scene">
-    <div class="routes" role="group" aria-label="Deposit routing">
-      <div class="deposit">
-        <p class="label">Public deposit</p>
-        <p class="amount">1.37 ETH</p>
-      </div>
-      <div class="fork" aria-hidden="true">
-        <span></span><i class="runner" data-route="tornado"></i>
-        <i class="runner" data-route="tacit"></i><span></span>
-      </div>
-      <div class="route-targets">
-        <p><span>Tornado Cash</span> <b class="amount" data-tornado>—</b></p>
-        <p><span>Tacit Pay</span> <b class="amount" data-tacit>—</b></p>
-      </div>
+    <div class="deposit">
+      <p class="label">Public deposit</p>
+      <p class="amount"><i class="eth-static" data-deposit-mark aria-hidden="true"></i>1.37 ETH</p>
+    </div>
+    <div class="routing">
+      <span class="junction" data-junction aria-hidden="true"></span>
+      <div class="tornado-branch" data-tornado-branch><span>Tornado Cash</span> <b class="amount" data-tornado>—</b></div>
+      <b class="tacit-inlet amount" data-tacit>—</b>
     </div>
 
     <section class="contract" aria-labelledby="tacit-contract-title">
-      <div class="reserve">
+      <div class="contract-top">
         <div>
-          <p class="label">Example ETH held</p>
-          <p class="contract-name" id="tacit-contract-title">Tacit Pay contract</p>
+          <p class="label">Shielded pool</p>
+          <h3 id="tacit-contract-title">Tacit Pay contract</h3>
+          <div class="reserve" data-units aria-hidden="true"></div>
         </div>
-        <p class="balance"><b class="amount" data-held-eth>0.00 ETH</b></p>
-        <div class="holdings" data-units aria-hidden="true"></div>
+        <div>
+          <p class="amount held" data-held-eth>0.00 ETH</p>
+          <p class="holding-caption">ETH held in this example</p>
+        </div>
+      </div>
+      <div class="arena" data-arena>
+        <div class="arena-center" data-center><span class="label" data-proof>Private notes</span></div>
+        <p class="note-label" data-note-label>Illustrated note commitments</p>
       </div>
       <div class="notes">
-        <p class="label">Private notes in this example</p>
-        <div class="note-grid">
-          <div class="note" data-sender-note>
-            <p>Sender</p>
-            <p class="amount" data-sender>—</p>
-          </div>
-          <div class="proof-path">
-            <span class="tag" data-proof>Proof</span><i aria-hidden="true"></i>
-          </div>
-          <div class="note" data-recipient-note>
-            <p>Contractor</p>
-            <p class="amount" data-recipient>—</p>
-          </div>
+        <div class="note" data-sender-note>
+          <span>Sender’s note</span>
+          <b class="amount" data-sender>—</b>
+        </div>
+        <div class="note" data-recipient-note>
+          <span>Contractor’s note</span>
+          <b class="amount" data-recipient>—</b>
         </div>
       </div>
     </section>
+
+    <div class="exit-line" aria-hidden="true"></div>
+    <div class="exit-card" data-exit>
+      <p class="label">Public withdrawal</p>
+      <b class="amount exit-amount" data-exit-amount>—</b>
+    </div>
     <div class="receipt">
       <p class="label">Visible on Ethereum</p>
-      <p data-public>Deposit amounts and depositing address</p>
+      <p data-public>Deposit amount and depositing address</p>
     </div>
-    <p class="caption" aria-live="polite" data-caption>Follow a deposit, a private payment and a public withdrawal.</p>
-    <p class="context"><span>Illustrative amounts, before fees</span><a href="https://github.com/z0r0z/tacit/blob/main/docs/EVM-POOL.md#what-each-action-shows" target="_blank" rel="noopener noreferrer">Tacit Pay docs ↗</a></p>
+    <p class="context"><span>Illustrative animation, before fees</span><a href="https://github.com/z0r0z/tacit/blob/main/docs/EVM-POOL.md#what-each-action-shows" target="_blank" rel="noopener noreferrer">Tacit Pay docs ↗</a></p>
   </div>
 
   <footer class="ft">
@@ -435,48 +479,62 @@
 <script>
 (() => {
   const root = document.getElementById("tacit-pay-mechanism");
-  const find = (key) => root.querySelector(`[data-${key}]`);
+  const find = (key) => root.querySelector("[data-" + key + "]");
   const button = find("play");
   const fields = Object.fromEntries(
-    ["tornado", "tacit", "held-eth", "sender", "recipient", "proof", "public", "caption"]
+    ["tornado", "tacit", "held-eth", "sender", "recipient", "stage", "proof", "public", "caption", "exit-amount"]
       .map((key) => [key, find(key)])
   );
-  const steps = [...root.querySelectorAll(".steps li")];
-  const flights = new Set();
+  const animations = new Set();
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  // All illustrative amounts are in hundredths of an ETH.
   const deposit = 137;
   const shielded = deposit % 10;
   const tornado = deposit - shielded;
   const invoice = 5;
   const change = shielded - invoice;
-  const eth = (units) => `${(units / 100).toFixed(2)} ETH`;
-  const units = Array.from({ length: shielded }, (_, index) => {
+  const eth = (units) => (units / 100).toFixed(2) + " ETH";
+  const amountOrDash = (units) => units ? eth(units) : "—";
+
+  const units = Array.from({ length: shielded }, () => {
     const unit = document.createElement("span");
     unit.className = "unit";
-    unit.style.setProperty("--unit-index", index);
     return unit;
   });
   find("units").append(...units);
 
+  const spots = [[26,29],[43,15],[61,18],[76,37],[69,58],[53,69],[33,62],[20,45]];
+  const arena = find("arena");
+  const notes = spots.map(([x, y]) => {
+    const note = document.createElement("i");
+    note.className = "arena-note";
+    note.setAttribute("aria-hidden", "true");
+    note.style.setProperty("--note-x", x + "%");
+    note.style.setProperty("--note-y", y + "%");
+    note.textContent = "•••";
+    arena.append(note);
+    return note;
+  });
+
   const sequence = [
-    { key: "split", step: 0, duration: 1550, held: 0, sender: 0, recipient: 0,
-      proof: "Proof", public: "Deposit amounts and depositing address",
-      caption: "Fixed denominations go to Tornado Cash. The remainder goes to Tacit Pay." },
-    { key: "shield", step: 1, duration: 2100, held: shielded, sender: shielded, recipient: 0,
-      proof: "Proof", public: "Deposit amount, depositing address and a note hash",
-      caption: "The contract holds the ETH. The private note records what the sender can spend." },
-    { key: "proof", step: 2, duration: 1650, held: shielded, sender: shielded, recipient: 0,
-      proof: "Checking", public: "Proof, spent marker and new note hashes",
-      caption: "The wallet proves it can spend the note. Ethereum checks the proof." },
-    { key: "pay", step: 2, duration: 2900, held: shielded, sender: change, recipient: invoice,
-      proof: "Verified", public: "Spent marker, new note hashes and encrypted memos",
-      caption: "One note is spent. The wallet creates a payment note and a change note. The ETH stays in the contract." },
-    { key: "withdraw", step: 3, duration: 1550, held: shielded, sender: change, recipient: invoice,
-      proof: "Checking", public: "Withdrawal amount and the public recipient address",
-      caption: "The contractor proves the payment note can be spent to withdraw ETH." },
-    { key: "complete", step: 3, duration: 0, held: change, sender: change, recipient: 0,
-      proof: "Verified", public: `${eth(invoice)} sent to the contractor’s public address`,
-      caption: "The contract releases the ETH. The sender’s change remains in the pool." }
+    { key: "split", stage: "01 / 04 · Split deposit", duration: 1830, held: 0, sender: 0, recipient: 0,
+      proof: "Private notes", public: "Deposit amount and depositing address",
+      caption: "Fixed amounts go to Tornado. The remainder drops into Tacit." },
+    { key: "shield", stage: "02 / 04 · Shield", duration: 2190, held: shielded, sender: shielded, recipient: 0,
+      proof: "Sender note", public: "Deposit amount, depositing address and a note hash",
+      caption: "Tacit holds the ETH and creates a private note the sender can spend." },
+    { key: "proof", stage: "03 / 04 · Pay privately", duration: 2790, held: shielded, sender: shielded, recipient: 0,
+      proof: "Checking proof", public: "Proof, spent marker and new note hashes",
+      caption: "The wallet proves it can spend a note. Ethereum checks the proof." },
+    { key: "pay", stage: "03 / 04 · Pay privately", duration: 2870, held: shielded, sender: change, recipient: invoice,
+      proof: "Proof verified", public: "Spent marker, new note hashes and encrypted memos",
+      caption: "One note becomes two. The payment and change stay backed by the same ETH." },
+    { key: "withdraw", stage: "04 / 04 · Withdraw", duration: 1820, held: shielded, sender: change, recipient: invoice,
+      proof: "Exit proof", public: "Withdrawal amount and public recipient address",
+      caption: "The contractor proves the payment note can be spent." },
+    { key: "complete", stage: "04 / 04 · Withdraw", duration: 0, held: change, sender: change, recipient: 0,
+      proof: "ETH released", public: eth(invoice) + " sent to the contractor’s public address",
+      caption: "ETH leaves the pool. The sender’s change remains inside." }
   ];
 
   let index = 0;
@@ -484,57 +542,98 @@
   let lastFrameTime = null;
   let frame = 0;
 
-  function animateWithdrawal() {
-    if (reducedMotion.matches) return;
+  function runAnimation(element, keyframes, timing, onFinish) {
+    const animation = element.animate(keyframes, timing);
+    animations.add(animation);
+    animation.finished.then(() => {
+      animations.delete(animation);
+      if (onFinish) onFinish();
+    }, () => animations.delete(animation));
+  }
 
-    const rootBox = root.getBoundingClientRect();
-    const receipt = fields.public.getBoundingClientRect();
-    units.slice(change).forEach((unit, position) => {
-      const source = unit.getBoundingClientRect();
-      const fromX = source.left + source.width / 2;
-      const fromY = source.top + source.height / 2;
-      const dx = receipt.left + 5 - fromX;
-      const dy = receipt.top + 6 - fromY;
+  function center(element) {
+    const box = element.getBoundingClientRect();
+    return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+  }
 
-      const chip = document.createElement("span");
-      chip.className = "eth-flight";
-      chip.setAttribute("aria-hidden", "true");
-      chip.style.left = `${fromX - rootBox.left - 4}px`;
-      chip.style.top = `${fromY - rootBox.top - 4}px`;
-      // Keep the footer as the visible bottom edge for iframe sizing.
-      root.insertBefore(chip, root.lastElementChild);
-      const flight = chip.animate([
-        { transform: "translate(0, 0)", opacity: 1 },
-        { transform: `translate(${dx * .78}px, ${dy * .55}px)`, opacity: 1, offset: .62 },
-        { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }
-      ], { duration: 720, delay: 180 + position * 85, easing: "ease-in-out", fill: "both" });
-      flights.add(flight);
-      flight.finished.then(() => {
-        flights.delete(flight);
-        chip.remove();
+  function fly(route, type, duration, delay = 0) {
+    const positions = route.map((key) => center(find(key)));
+    const from = positions[0];
+    const bounds = root.getBoundingClientRect();
+    const marker = document.createElement("i");
+    marker.className = "motion-mark" + (type ? " " + type : "");
+    marker.setAttribute("aria-hidden", "true");
+    if (type === "note-mark") marker.textContent = "•••";
+    root.insertBefore(marker, root.lastElementChild);
+    marker.style.left = (from.x - bounds.left - marker.offsetWidth / 2) + "px";
+    marker.style.top = (from.y - bounds.top - marker.offsetHeight / 2) + "px";
+    const movements = positions.map((point, position) => ({
+      transform: "translate(" + (point.x - from.x) + "px," + (point.y - from.y) + "px)",
+      opacity: position === positions.length - 1 ? 0 : 1
+    }));
+    runAnimation(marker, movements, { duration, delay, easing: "ease-in-out", fill: "both" }, () => marker.remove());
+  }
+
+  function swirlNotes() {
+    const hub = center(find("center"));
+    const radius = Math.min(arena.clientWidth * .32, 160);
+    notes.forEach((note, position) => {
+      const start = center(note);
+      const direction = position % 2 === 0 ? 1 : -1;
+      const trackWidth = direction === 1 ? radius : radius * .67;
+      const trackHeight = direction === 1 ? 46 : 32;
+      const angle = Math.atan2((start.y - hub.y) / trackHeight, (start.x - hub.x) / trackWidth);
+      const orbit = Array.from({ length: 13 }, (_, step) => {
+        if (step === 0 || step === 12) return { transform: "translate(0,0)", opacity: .8 };
+        const theta = angle + direction * step * Math.PI / 5.5;
+        const x = hub.x + Math.cos(theta) * trackWidth - start.x;
+        const y = hub.y + Math.sin(theta) * trackHeight - start.y;
+        return {
+          transform: "translate(" + x + "px," + y + "px) rotate(" + (step * 14) + "deg)",
+          opacity: .48 + ((position + step) % 4) * .16
+        };
       });
+      runAnimation(note, orbit, { duration: 2270, delay: position * 38, easing: "ease-in-out" });
     });
+  }
+
+  function animateScene(key) {
+    if (reducedMotion.matches) return;
+    if (key === "split") {
+      fly(["deposit-mark", "junction", "tornado-branch"], "", 1050);
+      fly(["deposit-mark", "junction", "center"], "", 1250, 145);
+    }
+    if (key === "proof") {
+      fly(["sender-note", "center"], "note-mark", 680);
+      swirlNotes();
+    }
+    if (key === "pay") {
+      fly(["center", "sender-note"], "note-mark", 920, 60);
+      fly(["center", "recipient-note"], "note-mark", 920, 60);
+    }
+    if (key === "withdraw") {
+      for (let piece = 0; piece < invoice; piece++) {
+        fly(["recipient-note", "exit"], "eth-flight", 1040, 105 * piece);
+      }
+    }
   }
 
   function show(state) {
     root.dataset.phase = state.key;
+    fields.stage.textContent = state.stage;
     fields.tornado.textContent = eth(tornado);
-    fields.tacit.textContent = eth(shielded);
+    fields.tacit.textContent = eth(shielded) + " ↓";
     fields["held-eth"].textContent = eth(state.held);
-    fields.sender.textContent = state.sender ? eth(state.sender) : "—";
-    fields.recipient.textContent = state.recipient ? eth(state.recipient) : "—";
+    fields.sender.textContent = amountOrDash(state.sender);
+    fields.recipient.textContent = amountOrDash(state.recipient);
+    fields["exit-amount"].textContent = state.key === "complete" ? eth(invoice) : "—";
     fields.proof.textContent = state.proof;
     fields.public.textContent = state.public;
     fields.caption.textContent = state.caption;
     find("sender-note").toggleAttribute("data-funded", state.sender > 0);
     find("recipient-note").toggleAttribute("data-funded", state.recipient > 0);
     units.forEach((unit, position) => unit.toggleAttribute("data-held", position < state.held));
-    steps.forEach((step, position) => {
-      if (position === state.step) step.setAttribute("aria-current", "step");
-      else step.removeAttribute("aria-current");
-      step.toggleAttribute("data-done", position < state.step || state.key === "complete");
-    });
-    if (state.key === "withdraw") animateWithdrawal();
+    animateScene(state.key);
   }
 
   function tick(time) {
@@ -558,18 +657,18 @@
     const playback = root.dataset.playback;
     if (playback === "playing") {
       cancelAnimationFrame(frame);
-      flights.forEach((flight) => flight.pause());
+      animations.forEach((animation) => animation.pause());
       root.dataset.playback = "paused";
       button.textContent = "Resume";
       return;
     }
 
-    if (playback !== "paused") {
+    if (playback === "paused") {
+      animations.forEach((animation) => animation.play());
+    } else {
       index = 0;
       elapsed = 0;
       show(sequence[index]);
-    } else {
-      flights.forEach((flight) => flight.play());
     }
     lastFrameTime = null;
     root.dataset.playback = "playing";
